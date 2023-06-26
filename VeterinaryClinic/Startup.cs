@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using VeterinaryClinic.Data;
+using VeterinaryClinic.Repositories;
 
 namespace VeterinaryClinic
 {
@@ -24,6 +25,9 @@ namespace VeterinaryClinic
             {
                 cfg.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection"));
             });
+            services.AddScoped<ICustomerRepository,CustomerRepository>();
+            services.AddScoped<IPetRepository, PetRepository>();
+            services.AddScoped<IVetRepository,VetRepository>();     
             services.AddControllersWithViews();
         }
 

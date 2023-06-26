@@ -7,22 +7,23 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using VeterinaryClinic.Data;
 using VeterinaryClinic.Data.Entities;
+using VeterinaryClinic.Repositories;
 
 namespace VeterinaryClinic.Controllers
 {
     public class PetsController : Controller
     {
-        private readonly DataContext _context;
+        private readonly IPetRepository _petRepository;
 
-        public PetsController(DataContext context)
+        public PetsController(IPetRepository petRepository)
         {
-            _context = context;
+            _petRepository = petRepository;
         }
 
         // GET: Pets
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Pets.ToListAsync());
+            return View(_petRepository.GetAll().OrderBy(p => p.Name));
         }
 
         // GET: Pets/Details/5
@@ -33,8 +34,7 @@ namespace VeterinaryClinic.Controllers
                 return NotFound();
             }
 
-            var pet = await _context.Pets
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var pet = await _petRepository.GetByIdAsync(id.Value);
             if (pet == null)
             {
                 return NotFound();
@@ -54,12 +54,12 @@ namespace VeterinaryClinic.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ImageId,Name,DateOfBirth,Type,Gender")] Pet pet)
+        public async Task<IActionResult> Create(Pet pet)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(pet);
-                await _context.SaveChangesAsync();
+                await _petRepository.CreateAsync(pet);
+
                 return RedirectToAction(nameof(Index));
             }
             return View(pet);
@@ -73,7 +73,7 @@ namespace VeterinaryClinic.Controllers
                 return NotFound();
             }
 
-            var pet = await _context.Pets.FindAsync(id);
+            var pet = await _petRepository.GetByIdAsync(id.Value);
             if (pet == null)
             {
                 return NotFound();
@@ -86,7 +86,7 @@ namespace VeterinaryClinic.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ImageId,Name,DateOfBirth,Type,Gender")] Pet pet)
+        public async Task<IActionResult> Edit(int id, Pet pet)
         {
             if (id != pet.Id)
             {
@@ -97,12 +97,11 @@ namespace VeterinaryClinic.Controllers
             {
                 try
                 {
-                    _context.Update(pet);
-                    await _context.SaveChangesAsync();
+                   await _petRepository.UpdateAsync(pet);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PetExists(pet.Id))
+                    if (!await _petRepository.ExistAsync(pet.Id))
                     {
                         return NotFound();
                     }
@@ -124,8 +123,7 @@ namespace VeterinaryClinic.Controllers
                 return NotFound();
             }
 
-            var pet = await _context.Pets
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var pet = await _petRepository.GetByIdAsync(id.Value);
             if (pet == null)
             {
                 return NotFound();
@@ -139,15 +137,11 @@ namespace VeterinaryClinic.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var pet = await _context.Pets.FindAsync(id);
-            _context.Pets.Remove(pet);
-            await _context.SaveChangesAsync();
+            var pet = await _petRepository.GetByIdAsync(id);
+            await _petRepository.DeleteAsync(pet);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool PetExists(int id)
-        {
-            return _context.Pets.Any(e => e.Id == id);
-        }
+       
     }
 }

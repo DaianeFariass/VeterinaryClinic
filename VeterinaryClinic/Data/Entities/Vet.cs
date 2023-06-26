@@ -4,7 +4,7 @@ using System;
 
 namespace VeterinaryClinic.Data.Entities
 {
-    public class Vet
+    public class Vet : IEntity
     {
         public int Id { get; set; }
 

@@ -7,22 +7,24 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using VeterinaryClinic.Data;
 using VeterinaryClinic.Data.Entities;
+using VeterinaryClinic.Repositories;
 
 namespace VeterinaryClinic.Controllers
 {
     public class VetsController : Controller
     {
-        private readonly DataContext _context;
+       
+        private readonly IVetRepository _vetRepository;
 
-        public VetsController(DataContext context)
+        public VetsController(IVetRepository vetRepository)
         {
-            _context = context;
+          _vetRepository = vetRepository;
         }
 
         // GET: Vets
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Vets.ToListAsync());
+            return View(_vetRepository.GetAll().OrderBy(v => v.Name));
         }
 
         // GET: Vets/Details/5
@@ -33,8 +35,7 @@ namespace VeterinaryClinic.Controllers
                 return NotFound();
             }
 
-            var vet = await _context.Vets
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var vet = await _vetRepository.GetByIdAsync(id.Value);
             if (vet == null)
             {
                 return NotFound();
@@ -54,12 +55,11 @@ namespace VeterinaryClinic.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ImageId,Name,Address,Phone,Email,Room")] Vet vet)
+        public async Task<IActionResult> Create(Vet vet)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(vet);
-                await _context.SaveChangesAsync();
+                await _vetRepository.CreateAsync(vet);
                 return RedirectToAction(nameof(Index));
             }
             return View(vet);
@@ -73,7 +73,7 @@ namespace VeterinaryClinic.Controllers
                 return NotFound();
             }
 
-            var vet = await _context.Vets.FindAsync(id);
+            var vet = await _vetRepository.GetByIdAsync(id.Value);
             if (vet == null)
             {
                 return NotFound();
@@ -86,7 +86,7 @@ namespace VeterinaryClinic.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ImageId,Name,Address,Phone,Email,Room")] Vet vet)
+        public async Task<IActionResult> Edit(int id, Vet vet)
         {
             if (id != vet.Id)
             {
@@ -97,12 +97,11 @@ namespace VeterinaryClinic.Controllers
             {
                 try
                 {
-                    _context.Update(vet);
-                    await _context.SaveChangesAsync();
+                   await _vetRepository.UpdateAsync(vet);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!VetExists(vet.Id))
+                    if (!await _vetRepository.ExistAsync(vet.Id))
                     {
                         return NotFound();
                     }
@@ -124,8 +123,7 @@ namespace VeterinaryClinic.Controllers
                 return NotFound();
             }
 
-            var vet = await _context.Vets
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var vet = await _vetRepository?.GetByIdAsync(id.Value);
             if (vet == null)
             {
                 return NotFound();
@@ -139,15 +137,9 @@ namespace VeterinaryClinic.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var vet = await _context.Vets.FindAsync(id);
-            _context.Vets.Remove(vet);
-            await _context.SaveChangesAsync();
+            var vet = await _vetRepository.GetByIdAsync(id);
+            await _vetRepository.DeleteAsync(vet);
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool VetExists(int id)
-        {
-            return _context.Vets.Any(e => e.Id == id);
         }
     }
 }

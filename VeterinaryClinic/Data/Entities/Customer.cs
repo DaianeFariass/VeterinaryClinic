@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace VeterinaryClinic.Data.Entities
 {
-    public class Customer
+    public class Customer : IEntity
     {
         public int Id { get; set; }
 

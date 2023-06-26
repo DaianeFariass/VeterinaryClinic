@@ -7,22 +7,24 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using VeterinaryClinic.Data;
 using VeterinaryClinic.Data.Entities;
+using VeterinaryClinic.Repositories;
 
 namespace VeterinaryClinic.Controllers
 {
     public class CustomersController : Controller
     {
-        private readonly DataContext _context;
+       
+        private readonly ICustomerRepository _customerRepository;
 
-        public CustomersController(DataContext context)
+        public CustomersController(ICustomerRepository customerRepository)
         {
-            _context = context;
+            _customerRepository = customerRepository;
         }
 
         // GET: Customers
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Customers.ToListAsync());
+            return View(_customerRepository.GetAll().OrderBy(c => c.Name));
         }
 
         // GET: Customers/Details/5
@@ -33,8 +35,8 @@ namespace VeterinaryClinic.Controllers
                 return NotFound();
             }
 
-            var customer = await _context.Customers
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var customer = await _customerRepository.GetByIdAsync(id.Value);
+               
             if (customer == null)
             {
                 return NotFound();
@@ -54,12 +56,12 @@ namespace VeterinaryClinic.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ImageId,Name,Document,Address,Phone,Email")] Customer customer)
+        public async Task<IActionResult> Create(Customer customer)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(customer);
-                await _context.SaveChangesAsync();
+                await _customerRepository.CreateAsync(customer);
+                
                 return RedirectToAction(nameof(Index));
             }
             return View(customer);
@@ -73,7 +75,7 @@ namespace VeterinaryClinic.Controllers
                 return NotFound();
             }
 
-            var customer = await _context.Customers.FindAsync(id);
+            var customer = await _customerRepository.GetByIdAsync(id.Value);
             if (customer == null)
             {
                 return NotFound();
@@ -86,7 +88,7 @@ namespace VeterinaryClinic.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ImageId,Name,Document,Address,Phone,Email")] Customer customer)
+        public async Task<IActionResult> Edit(int id,Customer customer)
         {
             if (id != customer.Id)
             {
@@ -97,12 +99,11 @@ namespace VeterinaryClinic.Controllers
             {
                 try
                 {
-                    _context.Update(customer);
-                    await _context.SaveChangesAsync();
+                    await _customerRepository.UpdateAsync(customer);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CustomerExists(customer.Id))
+                    if (!await _customerRepository.ExistAsync(customer.Id))
                     {
                         return NotFound();
                     }
@@ -124,8 +125,7 @@ namespace VeterinaryClinic.Controllers
                 return NotFound();
             }
 
-            var customer = await _context.Customers
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var customer = await _customerRepository.GetByIdAsync(id.Value);
             if (customer == null)
             {
                 return NotFound();
@@ -139,15 +139,10 @@ namespace VeterinaryClinic.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var customer = await _context.Customers.FindAsync(id);
-            _context.Customers.Remove(customer);
-            await _context.SaveChangesAsync();
+            var customer = await _customerRepository.GetByIdAsync(id);
+            await _customerRepository.DeleteAsync(customer);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CustomerExists(int id)
-        {
-            return _context.Customers.Any(e => e.Id == id);
-        }
     }
 }
