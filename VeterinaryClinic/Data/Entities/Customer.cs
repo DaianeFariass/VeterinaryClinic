@@ -8,7 +8,7 @@ namespace VeterinaryClinic.Data.Entities
         public int Id { get; set; }
 
         [Display(Name = "Image")]
-        public Guid ImageId { get; set; }
+        public Guid? ImageId { get; set; }
 
         [Required]
         [MaxLength(50, ErrorMessage = "The field {0} can contain {1} characters lenght.")]
