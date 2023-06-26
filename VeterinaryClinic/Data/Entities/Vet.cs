@@ -25,6 +25,7 @@ namespace VeterinaryClinic.Data.Entities
         [Required]
         public string Room { get; set; }
 
+        public User User { get; set; }
 
     }
 }

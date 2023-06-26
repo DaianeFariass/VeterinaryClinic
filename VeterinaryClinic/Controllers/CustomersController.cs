@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using VeterinaryClinic.Data;
 using VeterinaryClinic.Data.Entities;
+using VeterinaryClinic.Helpers;
 using VeterinaryClinic.Repositories;
 
 namespace VeterinaryClinic.Controllers
@@ -15,10 +16,13 @@ namespace VeterinaryClinic.Controllers
     {
        
         private readonly ICustomerRepository _customerRepository;
+        private readonly IUserHelper _userHelper;
 
-        public CustomersController(ICustomerRepository customerRepository)
+        public CustomersController(ICustomerRepository customerRepository,
+            IUserHelper userHelper)
         {
             _customerRepository = customerRepository;
+            _userHelper = userHelper;
         }
 
         // GET: Customers
@@ -58,8 +62,14 @@ namespace VeterinaryClinic.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Customer customer)
         {
+            var email = Request.Form["Email"].ToString();
+            email = customer.Name.Replace(" ", "_") + "@cinel.com";
+            var password = Request.Form["Password"].ToString();
+            password = "123456";
+
             if (ModelState.IsValid)
             {
+                customer.User = await _userHelper.GetUserByEmailAsync("daiane.farias@cinel.pt");
                 await _customerRepository.CreateAsync(customer);
                 
                 return RedirectToAction(nameof(Index));

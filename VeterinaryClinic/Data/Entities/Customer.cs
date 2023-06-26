@@ -26,5 +26,7 @@ namespace VeterinaryClinic.Data.Entities
 
         [Required]
         public string Email { get; set; }
+
+        public User User { get; set; }
     }
 }
