@@ -109,6 +109,7 @@ namespace VeterinaryClinic.Controllers
             {
                 try
                 {
+                    customer.User = await _userHelper.GetUserByEmailAsync("daiane.farias@cinel.pt");
                     await _customerRepository.UpdateAsync(customer);
                 }
                 catch (DbUpdateConcurrencyException)

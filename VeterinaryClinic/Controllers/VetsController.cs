@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using VeterinaryClinic.Data;
 using VeterinaryClinic.Data.Entities;
+using VeterinaryClinic.Helpers;
 using VeterinaryClinic.Repositories;
 
 namespace VeterinaryClinic.Controllers
@@ -15,10 +16,13 @@ namespace VeterinaryClinic.Controllers
     {
        
         private readonly IVetRepository _vetRepository;
+        private readonly IUserHelper _userHelper;
 
-        public VetsController(IVetRepository vetRepository)
+        public VetsController(IVetRepository vetRepository,
+            IUserHelper userHelper)
         {
           _vetRepository = vetRepository;
+          _userHelper = userHelper;
         }
 
         // GET: Vets
@@ -57,9 +61,16 @@ namespace VeterinaryClinic.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Vet vet)
         {
+            var email = Request.Form["Email"].ToString();
+            email = vet.Name.Replace(" ", "_") + "@cinel.com";
+            var password = Request.Form["Password"].ToString();
+            password = "123456";
+
             if (ModelState.IsValid)
             {
+                vet.User = await _userHelper.GetUserByEmailAsync("daiane.farias@cinel.pt");
                 await _vetRepository.CreateAsync(vet);
+
                 return RedirectToAction(nameof(Index));
             }
             return View(vet);
@@ -97,7 +108,8 @@ namespace VeterinaryClinic.Controllers
             {
                 try
                 {
-                   await _vetRepository.UpdateAsync(vet);
+                    vet.User = await _userHelper.GetUserByEmailAsync("daiane.farias@cinel.pt");
+                    await _vetRepository.UpdateAsync(vet);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
