@@ -17,7 +17,7 @@ namespace VeterinaryClinic.Controllers.API
         [HttpGet]
         public IActionResult GetVets() 
         {
-            return Ok(_vetRepository.GetAll());
+            return Ok(_vetRepository.GetAllWithUsers());
         
         }
     }

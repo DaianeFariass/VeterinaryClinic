@@ -27,5 +27,9 @@ namespace VeterinaryClinic.Data.Entities
 
         public User User { get; set; }
 
+        public string ImageFullPath => ImageId == Guid.Empty
+              ? $" https://veterinaryclinic.azurewebsites.net/images//imagemindisponivel.png"
+              : $" https://veterinaryclinicsystem.blob.core.windows.net/vets/{ImageId}";
+
     }
 }

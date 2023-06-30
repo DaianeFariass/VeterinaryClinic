@@ -1,4 +1,6 @@
-﻿using VeterinaryClinic.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using VeterinaryClinic.Data;
 using VeterinaryClinic.Data.Entities;
 
 namespace VeterinaryClinic.Repositories
@@ -11,5 +13,10 @@ namespace VeterinaryClinic.Repositories
         {
             _context = context;
         }
+        public IQueryable GetAllWithUsers()
+        {
+            return _context.Customers.Include(c => c.User);
+        }
+
     }
 }

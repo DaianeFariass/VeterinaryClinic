@@ -44,7 +44,8 @@ namespace VeterinaryClinic.Data
                 }
 
             }
-            if(!_context.Customers.Any())
+
+            if (!_context.Customers.Any())
             {
                 AddCustomer("Carmelita Alves", user);
                 AddCustomer("Reinaldo Pires", user);
@@ -55,9 +56,10 @@ namespace VeterinaryClinic.Data
                 await _context.SaveChangesAsync();
             }
             var customer = _context.Customers.FirstOrDefault();
+
             if (!_context.Pets.Any())
             {
-                AddPet("Lola", customer);
+                AddPet("Lola",customer);
                 AddPet("Max", customer);
                 AddPet("Zeus", customer);
                 AddPet("Bob", customer);
