@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +15,7 @@ using VeterinaryClinic.Repositories;
 
 namespace VeterinaryClinic.Controllers
 {
+    [Authorize(Roles = "Vet")]
     public class PetsController : Controller
     {
         private readonly DataContext _context;
@@ -57,6 +60,7 @@ namespace VeterinaryClinic.Controllers
         }
 
         // GET: Pets/Create
+   
         public IActionResult Create()
         {
             return View();
@@ -87,6 +91,7 @@ namespace VeterinaryClinic.Controllers
         }
 
         // GET: Pets/Edit/5
+      
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -145,6 +150,7 @@ namespace VeterinaryClinic.Controllers
         }
 
         // GET: Pets/Delete/5
+     
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)

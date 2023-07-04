@@ -23,11 +23,19 @@ namespace VeterinaryClinic.Data
         {
             await _context.Database.EnsureCreatedAsync();
 
-            var user = await _userHelper.GetUserByEmailAsync("daiane.farias@cinel.pt");
+            await _userHelper.CheckRoleAsync("Admin");
 
-            if (user == null)
+            await _userHelper.CheckRoleAsync("Customer");
+
+            await _userHelper.CheckRoleAsync("Vet");
+
+            await _userHelper.CheckRoleAsync("Anonymous");
+
+            var userAdmin = await _userHelper.GetUserByEmailAsync("daiane.farias@cinel.pt");
+
+            if (userAdmin == null)
             {
-                user = new User
+                userAdmin = new User
                 {
                     FirstName = "Daiane",
                     LastName = "Farias",
@@ -36,7 +44,7 @@ namespace VeterinaryClinic.Data
                     PhoneNumber = GenerateRandomNumbers(9),
                 };
 
-                var result = await _userHelper.AddUserAsync(user, "123456");
+                var result = await _userHelper.AddUserAsync(userAdmin, "123456");
 
                 if (result != IdentityResult.Success)
                 {
@@ -44,14 +52,103 @@ namespace VeterinaryClinic.Data
                 }
 
             }
+            var userCustomer = await _userHelper.GetUserByEmailAsync("reinaldo.pires@cinel.pt");
+
+            if (userCustomer == null)
+            {
+                userCustomer = new User
+                {
+                    FirstName = "Reinaldo",
+                    LastName = "Pires",
+                    UserName = "reinaldo.pires@cinel.pt",
+                    Email = "reinaldo.pires@cinel.pt",
+                    PhoneNumber = GenerateRandomNumbers(9),
+                };
+                var result = await _userHelper.AddUserAsync(userCustomer, "123456");
+
+                if (result != IdentityResult.Success)
+                {
+                    throw new InvalidOperationException("Could not create the user in seeder");
+                }
+                await _userHelper.AddUserToRoleAsync(userCustomer, "Customer");
+
+            }
+            var userVet = await _userHelper.GetUserByEmailAsync("oliviaborba@cinel.pt");
+
+            if (userVet == null)
+            {
+                userVet = new User
+                {
+                    FirstName = "Olivia",
+                    LastName = "Borba",
+                    UserName = "oliviaborba@cinel.pt",
+                    Email = "oliviaborba@cinel.pt",
+                    PhoneNumber = GenerateRandomNumbers(9),
+                };
+                var result = await _userHelper.AddUserAsync(userVet, "123456");
+
+                if (result != IdentityResult.Success)
+                {
+                    throw new InvalidOperationException("Could not create the user in seeder");
+                }
+                await _userHelper.AddUserToRoleAsync(userVet, "Vet");
+
+            }
+            var userAnonymous = await _userHelper.GetUserByEmailAsync("rafael.alves@cinel.pt");
+
+            if (userAnonymous == null)
+            {
+                userAnonymous = new User
+                {
+                    FirstName = "Rafael",
+                    LastName = "Alves",
+                    UserName = "rafael.alves@cinel.pt",
+                    Email = "rafael.alves@cinel.pt",
+                    PhoneNumber = GenerateRandomNumbers(9),
+                };
+                var result = await _userHelper.AddUserAsync(userAnonymous, "123456");
+
+                if (result != IdentityResult.Success)
+                {
+                    throw new InvalidOperationException("Could not create the user in seeder");
+                }
+                await _userHelper.AddUserToRoleAsync(userAnonymous, "Vet");
+
+            }
+
+            var isInRole = await _userHelper.IsUserInRoleAsync(userAdmin, "Admin");
+            var isInRoleCustomer = await _userHelper.IsUserInRoleAsync(userCustomer, "Customer");
+            var isInRoleVet = await _userHelper.IsUserInRoleAsync(userVet, "Vet");
+            var isInRoleAnonymous = await _userHelper.IsUserInRoleAsync(userAnonymous, "Anonymous");
+
+            if (!isInRole)
+            {
+                await _userHelper.AddUserToRoleAsync(userAdmin, "Admin");
+
+            }
+            if (!isInRoleCustomer)
+            {
+                await _userHelper.AddUserToRoleAsync(userCustomer, "Customer");
+
+            }
+            if (!isInRoleVet)
+            {
+                await _userHelper.AddUserToRoleAsync(userVet, "Vet");
+
+            }
+            if (!isInRoleAnonymous)
+            {
+                await _userHelper.AddUserToRoleAsync(userAnonymous, "Anonymous");
+
+            }
 
             if (!_context.Customers.Any())
             {
-                AddCustomer("Carmelita Alves", user);
-                AddCustomer("Reinaldo Pires", user);
-                AddCustomer("Cecilia Borba", user);
-                AddCustomer("Romeu Bezerra", user);
-                AddCustomer("Clara Dias", user);
+                AddCustomer("Carmelita Alves", userCustomer);
+                AddCustomer("Reinaldo Pires", userCustomer);
+                AddCustomer("Cecilia Borba", userCustomer);
+                AddCustomer("Romeu Bezerra", userCustomer);
+                AddCustomer("Clara Dias", userCustomer);
 
                 await _context.SaveChangesAsync();
             }
@@ -59,7 +156,7 @@ namespace VeterinaryClinic.Data
 
             if (!_context.Pets.Any())
             {
-                AddPet("Lola",customer);
+                AddPet("Lola", customer);
                 AddPet("Max", customer);
                 AddPet("Zeus", customer);
                 AddPet("Bob", customer);
@@ -67,18 +164,31 @@ namespace VeterinaryClinic.Data
 
                 await _context.SaveChangesAsync();
             }
+          
             if (!_context.Vets.Any())
             {
-                AddVet("Carlos Nobrega", user);
-                AddVet("Maria Batista", user);
-                AddVet("Francisco Magalhães", user);
-                AddVet("Carla Nascimento", user);
-                AddVet("Eduardo Santos", user);
-
+                AddVet("Carlos Nobrega", userVet);
+                AddVet("Maria Batista", userVet);
+                AddVet("Francisco Magalhães", userVet);
+                AddVet("Carla Nascimento", userVet);
+                AddVet("Eduardo Santos", userVet);
 
                 await _context.SaveChangesAsync();
             }
 
+        }
+        private void AddCustomer(string name, User user)
+        {
+            _context.Customers.Add(new Customer
+            {
+                Name = name,
+                Document = GenerateRandomNumbers(9),
+                Address = GenerateRandomAddress(),
+                Phone = GenerateRandomNumbers(9),
+                Email = name.Replace(" ", "_") + "@cinel.com",
+                User = user
+
+            });
         }
 
         private void AddPet(string name, Customer customer)
@@ -108,19 +218,7 @@ namespace VeterinaryClinic.Data
         
         }
 
-        private void AddCustomer(string name, User user)
-        {
-            _context.Customers.Add(new Customer
-            {
-                Name = name,
-                Document = GenerateRandomNumbers(9),
-                Address = GenerateRandomAddress(),
-                Phone = GenerateRandomNumbers(9),
-                Email = name.Replace(" ", "_") + "@cinel.com",
-                User= user
-
-            });
-        }
+    
 
         private string GenerateRandomNumbers(int value)
         {

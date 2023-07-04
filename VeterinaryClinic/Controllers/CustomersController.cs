@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using VeterinaryClinic.Helpers;
@@ -9,6 +11,7 @@ using VeterinaryClinic.Repositories;
 
 namespace VeterinaryClinic.Controllers
 {
+    [Authorize(Roles = "Vet")]
     public class CustomersController : Controller
     {
 
@@ -53,6 +56,7 @@ namespace VeterinaryClinic.Controllers
         }
 
         // GET: Customers/Create
+        [Authorize(Roles = "Vet")]
         public IActionResult Create()
         {
             return View();
@@ -90,6 +94,7 @@ namespace VeterinaryClinic.Controllers
 
 
         // GET: Customers/Edit/5
+        [Authorize(Roles = "Vet")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -149,6 +154,7 @@ namespace VeterinaryClinic.Controllers
         }
 
         // GET: Customers/Delete/5
+        [Authorize(Roles = "Vet")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)

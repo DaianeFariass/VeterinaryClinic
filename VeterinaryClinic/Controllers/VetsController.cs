@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,7 @@ using VeterinaryClinic.Repositories;
 
 namespace VeterinaryClinic.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class VetsController : Controller
     {
        
@@ -56,6 +58,7 @@ namespace VeterinaryClinic.Controllers
         }
 
         // GET: Vets/Create
+     
         public IActionResult Create()
         {
             return View();
@@ -91,6 +94,7 @@ namespace VeterinaryClinic.Controllers
         }
 
         // GET: Vets/Edit/5
+      
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -148,6 +152,7 @@ namespace VeterinaryClinic.Controllers
         }
 
         // GET: Vets/Delete/5
+        
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -164,7 +169,7 @@ namespace VeterinaryClinic.Controllers
             return View(vet);
         }
 
-        // POST: Vets/Delete/5
+        // POST: Vets/Delete/5    
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

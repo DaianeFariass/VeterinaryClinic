@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using VeterinaryClinic.Data.Entities;
@@ -16,6 +18,7 @@ namespace VeterinaryClinic.Controllers
         {
             _userHelper = userHelper;
         }
+       
         public ActionResult Login() 
         { 
             if(User.Identity.IsAuthenticated) 
@@ -45,12 +48,14 @@ namespace VeterinaryClinic.Controllers
             this.ModelState.AddModelError(string.Empty, "Failed to login");
             return View(model);
         }
+      
         public async Task<IActionResult> Logout()
         {
             await _userHelper.LogoutAsync();
             return RedirectToAction("Index", "Home");
 
         }
+        [Authorize(Roles = "Admin")]
         public IActionResult Register()
         {        
             return View();
@@ -93,6 +98,7 @@ namespace VeterinaryClinic.Controllers
             }
             return View(model);        
         }
+        [Authorize(Roles = "Admin, Customer, Vet")]
         public async Task<IActionResult> ChangeUser()
         {
             var user = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
@@ -130,6 +136,7 @@ namespace VeterinaryClinic.Controllers
 
             return View(model);
         }
+        [Authorize(Roles = "Admin, Customer, Vet")]
         public IActionResult ChangePassword()
         {
             return View();
