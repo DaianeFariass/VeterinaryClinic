@@ -83,7 +83,7 @@ namespace VeterinaryClinic.Controllers
 
                 }
                 var vet = _converterHelper.ToVet(model, imageId, true);
-                vet.User = await _userHelper.GetUserByEmailAsync("daiane.farias@cinel.pt");
+                vet.User = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
                 await _vetRepository.CreateAsync(vet);
                 return RedirectToAction(nameof(Index));
             }
@@ -128,7 +128,7 @@ namespace VeterinaryClinic.Controllers
 
                     }
                     var vet = _converterHelper.ToVet(model, imageId,false);
-                    vet.User = await _userHelper.GetUserByEmailAsync("daiane.farias@cinel.pt");
+                    vet.User = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
                     await _vetRepository.UpdateAsync(vet);
                 }
                 catch (DbUpdateConcurrencyException)
