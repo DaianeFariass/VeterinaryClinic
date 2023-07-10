@@ -47,13 +47,13 @@ namespace VeterinaryClinic.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("PetNotFound");
             }
 
             var pet = await _petRepository.GetByIdAsync(id.Value);
             if (pet == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("PetNotFound");
             }
 
             return View(pet);
@@ -96,14 +96,14 @@ namespace VeterinaryClinic.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("PetNotFound");
             }
 
             var pet = await _petRepository.GetByIdAsync(id.Value);
 
             if (pet == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("PetNotFound");
             }
             var model = _converterHelper.ToPetViewModel(pet);
             return View(model);
@@ -137,7 +137,7 @@ namespace VeterinaryClinic.Controllers
                 {
                     if (!await _petRepository.ExistAsync(model.Id))
                     {
-                        return NotFound();
+                        return new NotFoundViewResult("PetNotFound");
                     }
                     else
                     {
@@ -155,13 +155,13 @@ namespace VeterinaryClinic.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("PetNotFound");
             }
 
             var pet = await _petRepository.GetByIdAsync(id.Value);
             if (pet == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("PetNotFound");
             }
 
             return View(pet);
@@ -176,7 +176,11 @@ namespace VeterinaryClinic.Controllers
             await _petRepository.DeleteAsync(pet);
             return RedirectToAction(nameof(Index));
         }
+        public IActionResult PetNotFound()
+        {
+            return View();
+        }
 
-       
+
     }
 }

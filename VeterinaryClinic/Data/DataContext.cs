@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using VeterinaryClinic.Data.Entities;
 
@@ -14,5 +15,6 @@ namespace VeterinaryClinic.Data
 
 
         }
+      
     }
 }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace VeterinaryClinic.Data.Entities
@@ -22,8 +24,8 @@ namespace VeterinaryClinic.Data.Entities
 
         public string Type { get; set; }
 
-        public string Gender { get; set; }  
-
+        public string Gender { get; set; }   
+   
         public Customer Customer { get; set; }
 
         public string ImageFullPath => ImageId == Guid.Empty

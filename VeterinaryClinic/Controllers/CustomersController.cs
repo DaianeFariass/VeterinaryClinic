@@ -42,21 +42,20 @@ namespace VeterinaryClinic.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("CustomerNotFound");
             }
 
             var customer = await _customerRepository.GetByIdAsync(id.Value);
 
             if (customer == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("CustomerNotFound");
             }
 
             return View(customer);
         }
 
         // GET: Customers/Create
-        [Authorize(Roles = "Vet")]
         public IActionResult Create()
         {
             return View();
@@ -94,18 +93,17 @@ namespace VeterinaryClinic.Controllers
 
 
         // GET: Customers/Edit/5
-        [Authorize(Roles = "Vet")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("CustomerNotFound");
             }
 
             var customer = await _customerRepository.GetByIdAsync(id.Value);
             if (customer == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("CustomerNotFound");
             }
             var model = _converterHelper.ToCustomerViewModel(customer);
             return View(model);
@@ -141,7 +139,7 @@ namespace VeterinaryClinic.Controllers
                 {
                     if (!await _customerRepository.ExistAsync(model.Id))
                     {
-                        return NotFound();
+                        return new NotFoundViewResult("CustomerNotFound");
                     }
                     else
                     {
@@ -154,18 +152,17 @@ namespace VeterinaryClinic.Controllers
         }
 
         // GET: Customers/Delete/5
-        [Authorize(Roles = "Vet")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("CustomerNotFound");
             }
 
             var customer = await _customerRepository.GetByIdAsync(id.Value);
             if (customer == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("CustomerNotFound");
             }
 
             return View(customer);
@@ -179,6 +176,10 @@ namespace VeterinaryClinic.Controllers
             var customer = await _customerRepository.GetByIdAsync(id);
             await _customerRepository.DeleteAsync(customer);
             return RedirectToAction(nameof(Index));
+        }
+        public IActionResult CustomerNotFound()
+        {
+            return View();
         }
 
     }

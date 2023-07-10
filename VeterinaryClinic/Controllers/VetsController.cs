@@ -45,13 +45,13 @@ namespace VeterinaryClinic.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("VetNotFound");
             }
 
             var vet = await _vetRepository.GetByIdAsync(id.Value);
             if (vet == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("VetNotFound");
             }
 
             return View(vet);
@@ -99,13 +99,13 @@ namespace VeterinaryClinic.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("VetNotFound");
             }
 
             var vet = await _vetRepository.GetByIdAsync(id.Value);
             if (vet == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("VetNotFound");
             }
             var model = _converterHelper.ToVetViewModel(vet);
             return View(model);
@@ -139,7 +139,7 @@ namespace VeterinaryClinic.Controllers
                 {
                     if (!await _vetRepository.ExistAsync(model.Id))
                     {
-                        return NotFound();
+                        return new NotFoundViewResult("VetNotFound");
                     }
                     else
                     {
@@ -157,13 +157,13 @@ namespace VeterinaryClinic.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("VetNotFound");
             }
 
             var vet = await _vetRepository?.GetByIdAsync(id.Value);
             if (vet == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("VetNotFound");
             }
 
             return View(vet);
@@ -177,6 +177,10 @@ namespace VeterinaryClinic.Controllers
             var vet = await _vetRepository.GetByIdAsync(id);
             await _vetRepository.DeleteAsync(vet);
             return RedirectToAction(nameof(Index));
+        }
+        public IActionResult VetNotFound()
+        {
+            return View();
         }
     }
 }
