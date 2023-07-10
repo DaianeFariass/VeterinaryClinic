@@ -48,6 +48,8 @@ namespace VeterinaryClinic
             services.AddScoped<ICustomerRepository,CustomerRepository>();
             services.AddScoped<IPetRepository, PetRepository>();
             services.AddScoped<IVetRepository,VetRepository>();
+            services.AddScoped<IAppointmentRespository, AppointmentRepository>();
+
 
             services.ConfigureApplicationCookie(options =>
             {
