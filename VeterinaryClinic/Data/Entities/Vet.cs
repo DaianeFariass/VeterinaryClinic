@@ -13,6 +13,7 @@ namespace VeterinaryClinic.Data.Entities
 
         [Required]
         [MaxLength(50, ErrorMessage = "The field {0} can contain {1} characters lenght.")]
+        [Display(Name = "Vet Name")]
         public string Name { get; set; }
 
         public string Address { get; set; }

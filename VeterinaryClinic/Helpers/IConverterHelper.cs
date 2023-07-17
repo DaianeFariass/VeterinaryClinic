@@ -17,5 +17,7 @@ namespace VeterinaryClinic.Helpers
         Vet ToVet(VetViewModel model, Guid imageId, bool isNew);
 
         VetViewModel ToVetViewModel(Vet vet);
+
+      
     }
 }

@@ -11,7 +11,7 @@
 <table class="table">
     <thead>
         <tr>
-            @if (this.User.IsInRole("Vet"))
+            @if (this.User.IsInRole("Customer") || this.User.IsInRole("Vet"))
             {
                 <th>
                     @Html.DisplayNameFor(model => model.User.FullName)
@@ -24,7 +24,7 @@
                 @Html.DisplayNameFor(model => model.Time)
             </th>
             <th>
-                # Lines
+                @Html.DisplayNameFor(model => model.Lines)
             </th>
             <th></th>
         </tr>
@@ -33,7 +33,7 @@
         @foreach (var item in Model)
         {
             <tr>
-                @if (this.User.IsInRole("Vet"))
+                @if(this.User.IsInRole("Customer") || this.User.IsInRole("Vet"))
                 {
                     <th>
                         @Html.DisplayFor(modelItem => item.User.FullName)
@@ -46,11 +46,11 @@
                     @Html.DisplayFor(modelItem => item.Time)
                 </td>
                 <td>
-                    # Lines
+                    @Html.DisplayFor(modelItem => item.Lines)
                 </td>
                
                 <td>
-                    <a asp-action="Book" asp-route-id="@item.Id" class="btn btn-info" id="btnBook">Book</a>
+                    
                     <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger" id="btnDelete">Delete</a>
                 </td>
             </tr>

@@ -1,0 +1,122 @@
+﻿@model IEnumerable<VeterinaryClinic.Data.Entities.AppointmentDetailTemp>
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+
+<p>
+    <a asp-action="AddAppointment" class="btn btn-success">Add Appointment </a>
+    <a asp-action="ConfirmAppointment" class="btn btn-primary" id="btnConfirm">Confirm Appointment</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Pet.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Vet.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Time)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Pet.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Vet.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Time)
+                </td>
+                <td id="@item.Id">
+                    <a asp-action="DeleteAppointment" asp-route-id="@item.Id" class="btn btn-danger" id="btnDeleteItem">Delete</a>
+                    <a asp-action="Index" class="btn btn-success">Back to List</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div id="confirmDialog" class="modal fade">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Confirm Appointment</h4>
+                <button type="button" class="close" data-dismiss="modal"><i class="fa fa-window-close"></i></button>
+            </div>
+            <div class="modal-body">
+                <p>Do you want to confirm the appointment ?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="btnYesConfirm">Yes</button>
+                <button type="button" class="btn btn-success" id="btnNoConfirm">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="deleteDialog" class="modal fade">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Delete</h4>
+                <button type="button" class="close" data-dismiss="modal"><i class="fa fa-window-close"></i></button>
+            </div>
+            <div class="modal-body">
+                <p>Do you want to delete appointment ?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="btnYesDelete">Yes</button>
+                <button type="button" class="btn btn-success" id="btnNoDelete">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function(){
+            var id = 0;
+            $("#btnConfirm").click(function() {
+                $("#confirmDialog").modal("show");
+                return false;
+            });
+            $("#btnNoConfirm").click(function() {
+                $("#confirmDialog").modal("hide");
+                return false;
+            });
+            $("#btnYesConfirm").click(function() {
+                window.location.href = "/Appointments/ConfirmAppointment";
+            });
+            $("a[id*=btnDeleteItem]").click(function() {
+                debugger;
+                id=$(this).parent()[0].id;
+                $("#deleteDialog").modal("show");
+                return false;
+            });
+            $("#btnNoDelete").click(function() {
+                $("#deleteDialog").modal("hide");
+                return false;
+            });
+            $("#btnYesDelete").click(function() {
+                window.location.href = "/Appointments/DeleteAppointment/" + id;
+            });
+        });
+    </script>
+    }
+
+

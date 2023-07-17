@@ -23,6 +23,7 @@ namespace VeterinaryClinic.Controllers
         private readonly IUserHelper _userHelper;
         private readonly IConverterHelper _converterHelper;
         private readonly IBlobHelper _blobHelper;
+
         public PetsController(IPetRepository petRepository,
             IUserHelper userHelper,
             IConverterHelper converterHelper,
@@ -39,7 +40,7 @@ namespace VeterinaryClinic.Controllers
         // GET: Pets
         public IActionResult Index()
         {
-            return View(_petRepository.GetAll().OrderBy(p => p.Name));
+            return View(_petRepository.GetCustomerName());
         }
 
         // GET: Pets/Details/5
@@ -63,7 +64,11 @@ namespace VeterinaryClinic.Controllers
    
         public IActionResult Create()
         {
-            return View();
+            var model = new PetViewModel
+            {
+                Customers = _petRepository.GetComboCustomers()
+            };
+            return View(model);
         }
 
         // POST: Pets/Create
@@ -74,17 +79,8 @@ namespace VeterinaryClinic.Controllers
         public async Task<IActionResult> Create(PetViewModel model)
         {
             if (ModelState.IsValid)
-            {
-                Guid imageId = Guid.Empty;
-
-                if (model.ImageFile != null && model.ImageFile.Length > 0)
-                {
-                    imageId = await _blobHelper.UploadBlobAsync(model.ImageFile, "pets");
-
-                }
-                var pet = _converterHelper.ToPet(model, imageId, true);
-                pet.Customer = _context.Customers.FirstOrDefault();
-                await _petRepository.CreateAsync(pet);
+            {             
+                await _petRepository.AddCustomerToPetAsync(model, this.User.Identity.Name);
                 return RedirectToAction(nameof(Index));
             }
             return View(model);

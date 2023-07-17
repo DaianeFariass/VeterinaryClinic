@@ -36,7 +36,12 @@
                 <label asp-for="Gender" class="control-label"></label>
                 <input asp-for="Gender" class="form-control" />
                 <span asp-validation-for="Gender" class="text-danger"></span>
-            </div>       
+            </div> 
+            <div class="form-group">
+                <label asp-for="CustomerId" class="control-label"></label>
+                <select asp-for="CustomerId" asp-items="Model.Customers" class="form-control"></select>
+                <span asp-validation-for="CustomerId" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-primary">Create</button>
                 <a asp-action="Index" class="btn btn-success">Back to List</a>

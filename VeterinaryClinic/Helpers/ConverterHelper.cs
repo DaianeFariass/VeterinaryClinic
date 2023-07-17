@@ -6,7 +6,7 @@ using VeterinaryClinic.Models;
 namespace VeterinaryClinic.Helpers
 {
     public class ConverterHelper : IConverterHelper
-    {
+    { 
         public Customer ToCustomer(CustomerViewModel model, Guid imageId, bool isNew)
         {
             return new Customer

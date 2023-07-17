@@ -3,6 +3,7 @@ using System.Xml.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace VeterinaryClinic.Data.Entities
 {
@@ -20,10 +21,14 @@ namespace VeterinaryClinic.Data.Entities
 
         [Required]
         [Display(Name = "Time")]
-        [DisplayFormat(DataFormatString = "{hh:mm tt}", ApplyFormatInEditMode = false)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy hh:mm tt}", ApplyFormatInEditMode = false)]
         public DateTime Time { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:N0}")]
         public IEnumerable<AppointmentDetail> Items { get; set; }
+
+        public int Lines => Items == null ? 0 : Items.Count();
+   
 
     }
 }
