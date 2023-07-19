@@ -19,12 +19,10 @@ namespace VeterinaryClinic.Data.Entities
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = false)]
         public DateTime Date { get; set; }
 
-        [Required]
-        [Display(Name = "Time")]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy hh:mm tt}", ApplyFormatInEditMode = false)]
+        [Display(Name = "Appointment Time")]
+        [DisplayFormat(DataFormatString = "{0:HH:mm}", ApplyFormatInEditMode = false)]
         public DateTime Time { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:N0}")]
         public IEnumerable<AppointmentDetail> Items { get; set; }
 
         public int Lines => Items == null ? 0 : Items.Count();

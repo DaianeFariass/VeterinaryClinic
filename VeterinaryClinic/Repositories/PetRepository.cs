@@ -98,7 +98,7 @@ namespace VeterinaryClinic.Repositories
             var petIndex = await _context.Pets
                 .Where(p => p.Customer.User == user && p.Customer.Id == customer.Id)
                 .FirstOrDefaultAsync();
-
+          
 
             if (petIndex == null)
             {

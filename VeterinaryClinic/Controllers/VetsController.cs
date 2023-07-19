@@ -175,8 +175,25 @@ namespace VeterinaryClinic.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var vet = await _vetRepository.GetByIdAsync(id);
-            await _vetRepository.DeleteAsync(vet);
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                await _vetRepository.DeleteAsync(vet);
+                return RedirectToAction(nameof(Index));
+
+            }
+            catch (DbUpdateException ex)
+            {
+                if (ex.InnerException != null && ex.InnerException.Message.Contains("DELETE"))
+                {
+                    ViewBag.ErrorTitle = $"{vet.Name} probably in been used!!!";
+                    ViewBag.ErrorMessage = $"{vet.Name} can not be deleted because there are appointments with this Vet!!!</br></br>" +
+                        $"First delete all the appointments with this Vet" +
+                        $"And Please try again delete it";
+
+                }
+                return View("Error");
+            }
+          
         }
         public IActionResult VetNotFound()
         {

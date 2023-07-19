@@ -25,8 +25,19 @@
 
             <div class="form-group">
                 <label asp-for="Date" class="control-label"></label>
-                <input asp-for="Date" class="form-control" />
+                <input asp-for="Date" class="form-control" id="DateSelected" />
                 <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Time" class="control-label"></label>
+                <select asp-for="Time">
+                    @for (DateTime _time = DateTime.Today.AddHours(8); _time < DateTime.Today.AddHours(18); _time = _time.AddMinutes(30))
+                    {
+                        <option>@(_time.ToShortTimeString())</option>
+
+                    }
+                </select>
+                <span asp-validation-for="Time" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
