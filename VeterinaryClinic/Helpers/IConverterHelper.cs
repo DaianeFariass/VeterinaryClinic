@@ -1,6 +1,7 @@
 ﻿using System;
 using VeterinaryClinic.Data.Entities;
 using VeterinaryClinic.Models;
+using VeterinaryClinic.Repositories;
 
 namespace VeterinaryClinic.Helpers
 {
@@ -18,6 +19,9 @@ namespace VeterinaryClinic.Helpers
 
         VetViewModel ToVetViewModel(Vet vet);
 
-      
+        AppointmentDetailTemp ToAppointmentDetailTemp(EditAppointmentDetailTempViewModel model);
+
+        EditAppointmentDetailTempViewModel ToAppointmentViewModel(AppointmentDetailTemp appointment);
+
     }
 }

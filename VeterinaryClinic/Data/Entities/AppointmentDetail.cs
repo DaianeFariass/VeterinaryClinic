@@ -19,8 +19,9 @@ namespace VeterinaryClinic.Data.Entities
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = false)]
         public DateTime Date { get; set; }
 
+        [Required]
         [Display(Name = "Appointment Time")]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = false)]
+        [DisplayFormat(DataFormatString = "{0:HH:mm}", ApplyFormatInEditMode = false)]
         public DateTime Time { get; set; }
 
     }

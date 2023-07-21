@@ -48,11 +48,13 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Lines)
                 </td>
-               
+                @if(this.User.IsInRole("Customer") || this.User.IsInRole("Vet"))
+                {
                 <td>
-                    
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger" id="btnDelete">Delete</a>
+                      <a asp-action="ConfirmDelete" asp-route-id="@item.Id" class="btn btn-danger" id="btnDelete">Delete</a>
                 </td>
+                    
+                }           
             </tr>
         }
     </tbody>

@@ -1,4 +1,4 @@
-﻿@model VeterinaryClinic.Models.AddItemViewModel
+﻿@model VeterinaryClinic.Models.AppointmentViewModel
 @{
     ViewData["Title"] = "AddAppointment";
 }
@@ -22,12 +22,21 @@
                 <select asp-for="VetId" asp-items="Model.Vets" class="form-control"></select>
                 <span asp-validation-for="VetId" class="text-danger"></span>
             </div>
-
             <div class="form-group">
                 <label asp-for="Date" class="control-label"></label>
-                <input asp-for="Date" class="form-control" id="DateSelected" />
+                <input asp-for="Date" class="form-control" />
                 <span asp-validation-for="Date" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="Date" class="control-label"></label>
+                <div class="input-group date" data-provide="datepicker">
+                    <input type="text" asp-for="Date" class="form-control">
+                    <div class="input-group-append">
+                        <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                    </div>
+                    <span asp-validation-for="Date" class="text-danger"></span>
+                </div>
+            </div>      
             <div class="form-group">
                 <label asp-for="Time" class="control-label"></label>
                 <select asp-for="Time">
@@ -48,8 +57,20 @@
 </div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                var userLang = navigator.language || navigator.userLanguage;
+                console.log(userLang);
+                var options = $.extend({}, // empty object    
+                    $datepicker.regional[pt-Pt],{
+                    dateFormat: "dd/MM/yyyy"
+                });
+            $(".date").datepicker(options);
+        });
+        </script>
+        }
 }
+
 

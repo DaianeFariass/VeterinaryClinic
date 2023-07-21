@@ -2,6 +2,7 @@
 using System.IO;
 using VeterinaryClinic.Data.Entities;
 using VeterinaryClinic.Models;
+using VeterinaryClinic.Repositories;
 
 namespace VeterinaryClinic.Helpers
 {
@@ -97,6 +98,34 @@ namespace VeterinaryClinic.Helpers
             };
               
         }
-           
+        public AppointmentDetailTemp ToAppointmentDetailTemp (EditAppointmentDetailTempViewModel model)
+        {
+            return new AppointmentDetailTemp
+            {
+                Id= model.Id,
+                User= model.User,
+                Vet= model.Vet,
+                Pet= model.Pet,
+                Date= model.Date,
+                Time= model.Time,           
+
+            };
+
+        }
+        public EditAppointmentDetailTempViewModel ToAppointmentViewModel(AppointmentDetailTemp appointment)
+        {
+            return new EditAppointmentDetailTempViewModel
+            {             
+                PetId = appointment.Pet.Id,
+                VetId= appointment.Vet.Id,
+                Date= appointment.Date,
+                Time= appointment.Time,
+                //Pets = appointment.Pets,
+                //Vets = appointment.Vets,
+                //Times = appointment.Times,
+
+            };
+        }
+        
     }
 }

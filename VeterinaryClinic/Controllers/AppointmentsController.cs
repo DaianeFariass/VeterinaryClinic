@@ -1,6 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Threading.Tasks;
+using VeterinaryClinic.Data.Entities;
+using VeterinaryClinic.Helpers;
 using VeterinaryClinic.Models;
 using VeterinaryClinic.Repositories;
 
@@ -12,14 +16,17 @@ namespace VeterinaryClinic.Controllers
         private readonly IAppointmentRespository _appointmentRespository;
         private readonly IPetRepository _petRepository;
         private readonly IVetRepository _vetRepository;
+        private readonly IConverterHelper _converter;
 
         public AppointmentsController(IAppointmentRespository appointmentRespository,
             IPetRepository petRepository,
-            IVetRepository vetRepository)
+            IVetRepository vetRepository,
+            IConverterHelper converter)
         {
             _appointmentRespository = appointmentRespository;
             _petRepository = petRepository;
             _vetRepository = vetRepository;
+            _converter = converter;
         }
         public async Task<IActionResult> Index()
         {
@@ -33,16 +40,18 @@ namespace VeterinaryClinic.Controllers
         }
         public IActionResult AddAppointment()
         {
-            var model = new AddItemViewModel
+            var model = new AppointmentViewModel
             {
+                
                 Pets = _petRepository.GetComboPets(),
-                Vets = _vetRepository.GetComboVets()
-
+                Vets = _vetRepository.GetComboVets(),
+                Date= DateTime.Now,
+       
             };
             return View(model);
         }
         [HttpPost]
-        public async Task<IActionResult> AddAppointment(AddItemViewModel model)
+        public async Task<IActionResult> AddAppointment(AppointmentViewModel model)
         {
             if(ModelState.IsValid) 
             { 
@@ -60,28 +69,56 @@ namespace VeterinaryClinic.Controllers
                 return NotFound();
 
             }
-            var appointment = await _appointmentRespository.GetByIdAsync(id.Value);
-           
-            return View(appointment);
+            var appointmentToEdit = await _appointmentRespository.GetAppointmentDetailTempAsync(id.Value);
+
+            if(appointmentToEdit == null) 
+            {
+                return NotFound();
+            
+            }
+            var model = new EditAppointmentDetailTempViewModel
+            {
+                Id = appointmentToEdit.Id,
+                Pet= appointmentToEdit.Pet,
+                Vet= appointmentToEdit.Vet,             
+                User = appointmentToEdit.User,
+                Pets = _petRepository.GetComboPets(),
+                Vets = _vetRepository.GetComboVets(),
+                Date = DateTime.Now.Date,
+                Time= DateTime.Now.AddHours(8),
+
+            };
+            
+            return View(model);
         }
         [HttpPost]
-        public async Task<IActionResult> EditAppointment(AddItemViewModel model)
+        public async Task<IActionResult> EditAppointment(EditAppointmentDetailTempViewModel model)
         {
             if(ModelState.IsValid)
             {
                 try
                 {
-                    
+                    await _appointmentRespository.EditAppointmentDetailTempAsync(model);
+                    return RedirectToAction("Index");
 
                 }
-                catch (System.Exception)
+                catch (DbUpdateConcurrencyException)
                 {
 
-                    throw;
+                    //if (!await _appointmentRespository.ExistAsync())
+                    //{
+                    //    return new NotFoundViewResult("AppointmentNotFound");
+                    //}
+                    //else
+                    //{
+                    //    throw;
+                    //}
+                   
                 }
+            
             }
 
-            return View();
+            return View(model);
         }
         public async Task<IActionResult> DeleteAppointment(int? id)
         {
@@ -103,6 +140,18 @@ namespace VeterinaryClinic.Controllers
 
             }
             return RedirectToAction("Criate");
+        }
+        public async Task<IActionResult> ConfirmDelete(int? id)
+        {
+            if (id == null)
+            {
+
+                return NotFound();
+
+            }
+            await _appointmentRespository.DeleteAppointment(id.Value);
+            return RedirectToAction("Create");
+
         }
 
     }

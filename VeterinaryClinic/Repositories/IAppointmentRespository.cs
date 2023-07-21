@@ -12,12 +12,18 @@ namespace VeterinaryClinic.Repositories
 
         Task<IQueryable<AppointmentDetailTemp>> GetDetailsTempsAsync(string userName);
 
-        Task AddItemToAppointmenteAsync(AddItemViewModel model, string userName);
+        Task AddItemToAppointmenteAsync(AppointmentViewModel model, string userName);
 
         Task ModifyAppointmentDetailAsync(int id);
 
         Task DeleteDetailTempAsync(int id);
 
         Task<bool> ConfirmAppointmentAsync(string userName);
+
+        public Task DeleteAppointment(int id);
+
+        Task<AppointmentDetailTemp> GetAppointmentDetailTempAsync(int id);
+
+        Task EditAppointmentDetailTempAsync(EditAppointmentDetailTempViewModel model);
     }
 }

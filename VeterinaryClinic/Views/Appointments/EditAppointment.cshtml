@@ -1,4 +1,4 @@
-﻿@model VeterinaryClinic.Data.Entities.AppointmentDetailTemp
+﻿@model VeterinaryClinic.Models.EditAppointmentDetailTempViewModel
 @{
     ViewData["Title"] = "EditAppointment";
 }
@@ -13,14 +13,30 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <label asp-for="Pet.Name" class="control-label"></label>
-                <input asp-for="Pet.Name" class="form-control" />
-                <span asp-validation-for="Pet.Name" class="text-danger"></span>
+                <label asp-for="PetId" class="control-label"></label>
+                <select asp-for="PetId" asp-items="Model.Pets" class="form-control"></select>
+                <span asp-validation-for="PetId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Vet.Name" class="control-label"></label>
-                <input asp-for="Vet.Name" class="form-control" />
-                <span asp-validation-for="Vet.Name" class="text-danger"></span>
+                <label asp-for="VetId" class="control-label"></label>
+                <select asp-for="VetId" asp-items="Model.Vets" class="form-control"></select>
+                <span asp-validation-for="VetId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Date" class="control-label"></label>
+                <input asp-for="Date" class="form-control" id="DateSelected" />
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Time" class="control-label"></label>
+                <select asp-for="Time">
+                    @for (DateTime _time = DateTime.Today.AddHours(8); _time < DateTime.Today.AddHours(18); _time = _time.AddMinutes(30))
+                    {
+                        <option>@(_time.ToShortTimeString())</option>
+
+                    }
+                </select>
+                <span asp-validation-for="Time" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

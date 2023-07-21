@@ -2,10 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using VeterinaryClinic.Data.Entities;
 
 namespace VeterinaryClinic.Models
 {
-    public class AddItemViewModel
+    public class AppointmentViewModel 
     {
         [Display(Name="Pet Name")]
         [Range(1, int.MaxValue, ErrorMessage = "You must select your Pet!")]
@@ -21,7 +22,7 @@ namespace VeterinaryClinic.Models
         public DateTime Date { get; set; }
 
         [Required]
-        [Display(Name = "Time")]
+        [Display(Name = "Appointment Time")]
         [DisplayFormat(DataFormatString = "{0:HH:mm}", ApplyFormatInEditMode = false)]
         public DateTime Time { get; set; }
 

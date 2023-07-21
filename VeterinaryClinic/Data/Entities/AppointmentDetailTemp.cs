@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace VeterinaryClinic.Data.Entities
@@ -25,6 +27,7 @@ namespace VeterinaryClinic.Data.Entities
         [Display(Name = "Appointment Time")]
         [DisplayFormat(DataFormatString = "{0:HH:mm}", ApplyFormatInEditMode = false)]
         public DateTime Time { get; set; }
+
 
     }
 }
