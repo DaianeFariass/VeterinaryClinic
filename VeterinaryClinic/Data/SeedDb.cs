@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using VeterinaryClinic.Data.Entities;
@@ -32,6 +33,22 @@ namespace VeterinaryClinic.Data
 
             await _userHelper.CheckRoleAsync("Anonymous");
 
+            if (!_context.Countries.Any())
+            {
+                var cities = new List<City>();
+                cities.Add(new City { Name = "Lisboa" });
+                cities.Add(new City { Name = "Porto" });
+                cities.Add(new City { Name = "Faro" });
+
+                _context.Countries.Add(new Country
+                {
+                    Cities = cities,
+                    Name = "Portugal"
+                });
+
+                await _context.SaveChangesAsync();
+            }
+
             var userAdmin = await _userHelper.GetUserByEmailAsync("daiane.farias@cinel.pt");
 
             if (userAdmin == null)
@@ -43,6 +60,9 @@ namespace VeterinaryClinic.Data
                     Email = "daiane.farias@cinel.pt",
                     UserName = "daiane.farias@cinel.pt",
                     PhoneNumber = GenerateRandomNumbers(9),
+                    Address = GenerateRandomAddress(),
+                    CityId = _context.Countries.FirstOrDefault().Cities.FirstOrDefault().Id,
+                    City = _context.Countries.FirstOrDefault().Cities.FirstOrDefault(),
                 };
 
                 var result = await _userHelper.AddUserAsync(userAdmin, "123456");
@@ -64,6 +84,9 @@ namespace VeterinaryClinic.Data
                     UserName = "reinaldo.pires@cinel.pt",
                     Email = "reinaldo.pires@cinel.pt",
                     PhoneNumber = GenerateRandomNumbers(9),
+                    Address = GenerateRandomAddress(),
+                    CityId = _context.Countries.FirstOrDefault().Cities.FirstOrDefault().Id,
+                    City = _context.Countries.FirstOrDefault().Cities.FirstOrDefault(),
                 };
                 var result = await _userHelper.AddUserAsync(userCustomer, "123456");
 
@@ -85,6 +108,9 @@ namespace VeterinaryClinic.Data
                     UserName = "oliviaborba@cinel.pt",
                     Email = "oliviaborba@cinel.pt",
                     PhoneNumber = GenerateRandomNumbers(9),
+                    Address = GenerateRandomAddress(),
+                    CityId = _context.Countries.FirstOrDefault().Cities.FirstOrDefault().Id,
+                    City = _context.Countries.FirstOrDefault().Cities.FirstOrDefault(),
                 };
                 var result = await _userHelper.AddUserAsync(userVet, "123456");
 
@@ -106,6 +132,9 @@ namespace VeterinaryClinic.Data
                     UserName = "rafael.alves@cinel.pt",
                     Email = "rafael.alves@cinel.pt",
                     PhoneNumber = GenerateRandomNumbers(9),
+                    Address = GenerateRandomAddress(),
+                    CityId = _context.Countries.FirstOrDefault().Cities.FirstOrDefault().Id,
+                    City = _context.Countries.FirstOrDefault().Cities.FirstOrDefault(),
                 };
                 var result = await _userHelper.AddUserAsync(userAnonymous, "123456");
 

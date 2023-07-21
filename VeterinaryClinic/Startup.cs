@@ -45,11 +45,12 @@ namespace VeterinaryClinic
             services.AddScoped<IUserHelper, UserHelper>();
             services.AddScoped<IConverterHelper, ConverterHelper>();
             services.AddScoped<IBlobHelper, BlobHelper>();
+
             services.AddScoped<ICustomerRepository,CustomerRepository>();
             services.AddScoped<IPetRepository, PetRepository>();
             services.AddScoped<IVetRepository,VetRepository>();
             services.AddScoped<IAppointmentRespository, AppointmentRepository>();
-
+            services.AddScoped<ICountryRepository, CountryRepository>();
 
             services.ConfigureApplicationCookie(options =>
             {
