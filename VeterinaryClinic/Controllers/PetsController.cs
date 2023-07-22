@@ -38,7 +38,7 @@ namespace VeterinaryClinic.Controllers
         }
 
         // GET: Pets
-        public IActionResult Index()
+        public  IActionResult Index()
         {
             return View(_petRepository.GetCustomerName());
         }

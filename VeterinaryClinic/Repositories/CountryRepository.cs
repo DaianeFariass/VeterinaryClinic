@@ -54,12 +54,43 @@ namespace VeterinaryClinic.Repositories
 
         public IEnumerable<SelectListItem> GetComboCities(int countryId)
         {
-            throw new System.NotImplementedException();
+            var country = _context.Countries.Find(countryId);
+            var list = new List<SelectListItem>();
+            if (country != null)
+            {
+                list = _context.Cities.Select(c => new SelectListItem
+                {
+                    Text = c.Name,
+                    Value = c.Id.ToString(),
+
+                }).OrderBy(l => l.Text).ToList();
+                list.Insert(0, new SelectListItem
+                {
+                    Text = "Select a citie...",
+                    Value = "0"
+
+                });
+            }
+
+            return list;
         }
 
         public IEnumerable<SelectListItem> GetComboCountries()
         {
-            throw new System.NotImplementedException();
+            var list = _context.Countries.Select(c => new SelectListItem
+            {
+                Text = c.Name,
+                Value = c.Id.ToString(),
+
+            }).OrderBy(l => l.Text).ToList();
+            list.Insert(0, new SelectListItem
+            {
+                Text = "Select a country...",
+                Value = "0"
+
+            });
+
+            return list;
         }
 
         public IQueryable GetCountriesWithCities()
