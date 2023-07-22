@@ -72,6 +72,8 @@ namespace VeterinaryClinic.Data
                     throw new InvalidOperationException("Could not create the user in seeder");
                 }
                 await _userHelper.AddUserToRoleAsync(userAdmin, "Admin");
+                var token = await _userHelper.GenerateEmailConfirmationTokenAsync(userAdmin);
+                await _userHelper.ConfirmEmailAsync(userAdmin, token);
 
             }
             var userCustomer = await _userHelper.GetUserByEmailAsync("reinaldo.pires@cinel.pt");
@@ -96,6 +98,8 @@ namespace VeterinaryClinic.Data
                     throw new InvalidOperationException("Could not create the user in seeder");
                 }
                 await _userHelper.AddUserToRoleAsync(userCustomer, "Customer");
+                var token = await _userHelper.GenerateEmailConfirmationTokenAsync(userCustomer);
+                await _userHelper.ConfirmEmailAsync(userCustomer, token);
 
             }
             var userVet = await _userHelper.GetUserByEmailAsync("oliviaborba@cinel.pt");
@@ -120,6 +124,8 @@ namespace VeterinaryClinic.Data
                     throw new InvalidOperationException("Could not create the user in seeder");
                 }
                 await _userHelper.AddUserToRoleAsync(userVet, "Vet");
+                var token = await _userHelper.GenerateEmailConfirmationTokenAsync(userVet);
+                await _userHelper.ConfirmEmailAsync(userVet, token);
 
             }
             var userAnonymous = await _userHelper.GetUserByEmailAsync("rafael.alves@cinel.pt");
@@ -143,7 +149,9 @@ namespace VeterinaryClinic.Data
                 {
                     throw new InvalidOperationException("Could not create the user in seeder");
                 }
-                await _userHelper.AddUserToRoleAsync(userAnonymous, "Vet");
+                await _userHelper.AddUserToRoleAsync(userAnonymous, "Anonymous");
+                var token = await _userHelper.GenerateEmailConfirmationTokenAsync(userVet);
+                await _userHelper.ConfirmEmailAsync(userVet, token);
 
             }
 
@@ -248,9 +256,6 @@ namespace VeterinaryClinic.Data
         
         
         }
-
-    
-
         private string GenerateRandomNumbers(int value)
         {
             string phoneNumber = "";

@@ -10,7 +10,8 @@ namespace VeterinaryClinic.Helpers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        public UserHelper(UserManager<User> userManager,
+        public UserHelper(
+            UserManager<User> userManager,
             SignInManager<User> signInManager,
             RoleManager<IdentityRole> roleManager)
         {
@@ -46,19 +47,19 @@ namespace VeterinaryClinic.Helpers
             }
         }
 
-        public Task<IdentityResult> ConfirmEmailAsync(User user, string token)
+        public async Task<IdentityResult> ConfirmEmailAsync(User user, string token)
         {
-            throw new System.NotImplementedException();
+            return await _userManager.ConfirmEmailAsync(user, token);
         }
 
-        public Task<string> GenerateEmailConfirmationTokenAsync(User user)
+        public async Task<string> GenerateEmailConfirmationTokenAsync(User user)
         {
-            throw new System.NotImplementedException();
+            return await _userManager.GenerateEmailConfirmationTokenAsync(user);
         }
 
-        public Task<string> GeneratePasswordResetTokenAsync(User user)
+        public async Task<string> GeneratePasswordResetTokenAsync(User user)
         {
-            throw new System.NotImplementedException();
+            return await _userManager.GeneratePasswordResetTokenAsync(user);
         }
 
         public async Task<User> GetUserByEmailAsync(string email)
@@ -66,9 +67,9 @@ namespace VeterinaryClinic.Helpers
             return await _userManager.FindByEmailAsync(email);
         }
 
-        public Task<User> GetUserByIdAsync(string userId)
+        public async Task<User> GetUserByIdAsync(string userId)
         {
-            throw new System.NotImplementedException();
+            return await _userManager.FindByIdAsync(userId);
         }
 
         public async Task<bool> IsUserInRoleAsync(User user, string roleName)
@@ -90,9 +91,9 @@ namespace VeterinaryClinic.Helpers
             await _signInManager.SignOutAsync();
         }
 
-        public Task<IdentityResult> ResetPasswordAsync(User user, string token, string password)
+        public async Task<IdentityResult> ResetPasswordAsync(User user, string token, string password)
         {
-            throw new System.NotImplementedException();
+            return await _userManager.ResetPasswordAsync(user, token, password);
         }
 
         public async Task<IdentityResult> UpdateUserAsync(User user)
