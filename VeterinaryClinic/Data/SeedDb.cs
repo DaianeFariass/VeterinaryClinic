@@ -71,6 +71,7 @@ namespace VeterinaryClinic.Data
                 {
                     throw new InvalidOperationException("Could not create the user in seeder");
                 }
+                await _userHelper.AddUserToRoleAsync(userAdmin, "Admin");
 
             }
             var userCustomer = await _userHelper.GetUserByEmailAsync("reinaldo.pires@cinel.pt");

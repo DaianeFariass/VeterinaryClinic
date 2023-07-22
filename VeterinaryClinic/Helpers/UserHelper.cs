@@ -46,9 +46,29 @@ namespace VeterinaryClinic.Helpers
             }
         }
 
+        public Task<IdentityResult> ConfirmEmailAsync(User user, string token)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task<string> GenerateEmailConfirmationTokenAsync(User user)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task<string> GeneratePasswordResetTokenAsync(User user)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public async Task<User> GetUserByEmailAsync(string email)
         {
             return await _userManager.FindByEmailAsync(email);
+        }
+
+        public Task<User> GetUserByIdAsync(string userId)
+        {
+            throw new System.NotImplementedException();
         }
 
         public async Task<bool> IsUserInRoleAsync(User user, string roleName)
@@ -70,9 +90,22 @@ namespace VeterinaryClinic.Helpers
             await _signInManager.SignOutAsync();
         }
 
+        public Task<IdentityResult> ResetPasswordAsync(User user, string token, string password)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public async Task<IdentityResult> UpdateUserAsync(User user)
         {
             return await _userManager.UpdateAsync(user);
+        }
+
+        public async Task<SignInResult> ValidatePasswordAsync(User user, string password)
+        {
+            return await _signInManager.CheckPasswordSignInAsync(
+                user,
+                password,
+                false);
         }
     }
 }

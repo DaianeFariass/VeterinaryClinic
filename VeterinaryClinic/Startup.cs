@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using VeterinaryClinic.Data;
 using VeterinaryClinic.Data.Entities;
 using VeterinaryClinic.Helpers;
@@ -34,7 +36,23 @@ namespace VeterinaryClinic
                 cfg.Password.RequireNonAlphanumeric = false;
                 cfg.Password.RequiredLength = 6;
 
-            }).AddEntityFrameworkStores<DataContext>();
+            })
+                .AddEntityFrameworkStores<DataContext>();
+
+            services.AddAuthentication()
+                .AddCookie()
+                .AddJwtBearer(cfg =>
+                {
+                    cfg.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidIssuer = this.Configuration["Token:Issuer"],
+                        ValidAudience = this.Configuration["Token:Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(
+                            Encoding.UTF8.GetBytes(this.Configuration["Tokens:Key"]))
+                    };
+
+                });
+
 
             services.AddDbContext<DataContext>(cfg =>
             {
