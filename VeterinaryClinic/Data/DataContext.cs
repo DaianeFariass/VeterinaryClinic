@@ -21,6 +21,14 @@ namespace VeterinaryClinic.Data
 
 
         }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Country>()
+                .HasIndex(c => c.Name)
+                .IsUnique();
+
+            base.OnModelCreating(modelBuilder);
+        }
 
         //-------------Habilitar a regra de apagar em cascata(Cascade Delete Rule)-------------
 

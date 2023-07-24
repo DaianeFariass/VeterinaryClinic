@@ -6,21 +6,21 @@ using VeterinaryClinic.Models;
 using VeterinaryClinic.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
+using Vereyon.Web;
 
 namespace VeterinaryClinic.Controllers
 {
     [Authorize(Roles = "Admin")]
     public class CountriesController : Controller
-    {
-        
+    {       
         private readonly ICountryRepository _countryRepository;
-        //private readonly IFlashMessage _flashMessage;
+        private readonly IFlashMessage _flashMessage;
 
-        public CountriesController(ICountryRepository countryRepository
-            /*IFlashMessage flashMessage*/)
+        public CountriesController(ICountryRepository countryRepository,
+         IFlashMessage flashMessage)
         {
             _countryRepository = countryRepository;
-            /*_flashMessage = flashMessage*/;
+            _flashMessage = flashMessage;
         }
         public IActionResult Index()
         {
@@ -138,7 +138,7 @@ namespace VeterinaryClinic.Controllers
                 }
                 catch (Exception)
                 {
-                    //_flashMessage.Danger("This country already exist!");
+                    _flashMessage.Danger("This country already exist!");
                 }
 
                 return View(country);

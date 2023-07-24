@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Vereyon.Web;
 using VeterinaryClinic.Data;
 using VeterinaryClinic.Data.Entities;
 using VeterinaryClinic.Helpers;
@@ -61,6 +62,8 @@ namespace VeterinaryClinic
             {
                 cfg.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection"));
             });
+
+            services.AddFlashMessage();
 
             services.AddTransient<SeedDb>();
             services.AddScoped<IUserHelper, UserHelper>();

@@ -3,12 +3,93 @@
 @{
     ViewData["Title"] = "Index";
 }
-<h1>Appointments</h1>
+
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css" />
+
+<br />
+
 
 <p>
-    <a asp-action="Create" class="btn btn-primary">Create New</a>
+    <a asp-action="Create" class="btn btn-primary"><i class="fa fa-save"></i>Create New</a>
 </p>
-<table class="table">
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Appointments</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-hover table-responsive table-striped" id="MyTable">
+                    <thead>
+                        <tr>
+                            @if (this.User.IsInRole("Customer") || this.User.IsInRole("Vet"))
+                            {
+                                <th>
+                                    @Html.DisplayNameFor(model => model.User.FullName)
+                                </th>
+                            }
+                            <th>
+                                @Html.DisplayNameFor(model => model.Date)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Time)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Lines)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                @if (this.User.IsInRole("Customer") || this.User.IsInRole("Vet"))
+                                {
+                                    <th>
+                                        @Html.DisplayFor(modelItem => item.User.FullName)
+                                    </th>
+                                }
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Date)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Time)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Lines)
+                                </td>
+                                @if (this.User.IsInRole("Customer") || this.User.IsInRole("Vet"))
+                                {
+                                    <td>
+                                        <a asp-action="ConfirmDelete" asp-route-id="@item.Id" id="btnDelete" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                                      
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts{
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#MyTable').DataTable();
+        });
+    </script>
+}
+
+@*<table class="table">
     <thead>
         <tr>
             @if (this.User.IsInRole("Customer") || this.User.IsInRole("Vet"))
@@ -59,5 +140,5 @@
         }
     </tbody>
 </table>
-
+*@
 

@@ -3,56 +3,71 @@
     ViewData["Title"] = "Create";
 }
 
-<h2>Create</h2>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css" />
 
+<br />
 
 <p>
-    <a asp-action="AddAppointment" class="btn btn-success">Add Appointment </a>
-    <a asp-action="ConfirmAppointment" class="btn btn-primary" id="btnConfirm">Confirm Appointment</a>
+
+    <a asp-action="AddAppointment" class="btn btn-success"><i class="fa fa-save"></i>Add Appointment</a>
+    <a asp-action="ConfirmAppointment" id="btnConfirm" class="btn btn-primary"><i class="fa fa-circle-check"></i>Confirm Appointment</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Pet.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Vet.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Date)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Time)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Pet.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Vet.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Date)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Time)
-                </td>
-                <td id="@item.Id">
-                    <a asp-action="EditAppointment" asp-route-id="@item.Id" class="btn btn-warning">Edit</a>
-                    <a asp-action="DeleteAppointment" asp-route-id="@item.Id" class="btn btn-danger" id="btnDeleteItem">Delete</a>
-                    <a asp-action="Index" class="btn btn-success">Back to List</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Appointments</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-hover table-responsive table-striped" id="MyTable">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Pet.Name)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Vet.Name)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Date)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Time)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Pet.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Vet.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Date)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Time)
+                                </td>
+                                <td id="@item.Id">
+                                    <a asp-action="EditAppointment" asp-route-id="@item.Id" class="btn btn-warning"><i class="far fa-edit"></i>Edit</a>
+                                    <a asp-action="DeleteAppointment" asp-route-id="@item.Id" class="btn btn-danger"><i class="fas fa-trash"></i>Delete</a>
+                                    <a asp-action="Index" class="btn btn-success"><i class="fa fa-chevron-left"></i>Back to List</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id="confirmDialog" class="modal fade">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
@@ -89,31 +104,38 @@
     </div>
 </div>
 @section Scripts{
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
     <script type="text/javascript">
-        $(document).ready(function(){
+        $(document).ready(function () {
+            $('#MyTable').DataTable();
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
             var id = 0;
-            $("#btnConfirm").click(function() {
+            $("#btnConfirm").click(function () {
                 $("#confirmDialog").modal("show");
                 return false;
             });
-            $("#btnNoConfirm").click(function() {
+            $("#btnNoConfirm").click(function () {
                 $("#confirmDialog").modal("hide");
                 return false;
             });
-            $("#btnYesConfirm").click(function() {
+            $("#btnYesConfirm").click(function () {
                 window.location.href = "/Appointments/ConfirmAppointment";
             });
-            $("a[id*=btnDeleteItem]").click(function() {
+            $("a[id*=btnDeleteItem]").click(function () {
                 debugger;
-                id=$(this).parent()[0].id;
+                id = $(this).parent()[0].id;
                 $("#deleteDialog").modal("show");
                 return false;
             });
-            $("#btnNoDelete").click(function() {
+            $("#btnNoDelete").click(function () {
                 $("#deleteDialog").modal("hide");
                 return false;
             });
-            $("#btnYesDelete").click(function() {
+            $("#btnYesDelete").click(function () {
                 window.location.href = "/Appointments/DeleteAppointment/" + id;
             });
         });
