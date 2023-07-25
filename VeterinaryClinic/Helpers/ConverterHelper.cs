@@ -78,7 +78,7 @@ namespace VeterinaryClinic.Helpers
                 Address= model.Address,
                 Phone= model.Phone,
                 Email= model.Email,
-                Room= model.Room,
+                Speciality= model.Speciality,
                 User= model.User,
 
             };
@@ -93,7 +93,7 @@ namespace VeterinaryClinic.Helpers
                 Address= vet.Address,
                 Phone= vet.Phone,
                 Email= vet.Email,
-                Room= vet.Room,
+                Speciality = vet.Speciality,
                 User= vet.User,
             };
               

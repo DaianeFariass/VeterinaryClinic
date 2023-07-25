@@ -89,56 +89,5 @@
     </script>
 }
 
-@*<table class="table">
-    <thead>
-        <tr>
-            @if (this.User.IsInRole("Customer") || this.User.IsInRole("Vet"))
-            {
-                <th>
-                    @Html.DisplayNameFor(model => model.User.FullName)
-                </th>
-            }
-            <th>
-                @Html.DisplayNameFor(model => model.Date)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Time)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Lines)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                @if(this.User.IsInRole("Customer") || this.User.IsInRole("Vet"))
-                {
-                    <th>
-                        @Html.DisplayFor(modelItem => item.User.FullName)
-                    </th>
-                }
-                <td>
-                    @Html.DisplayFor(modelItem => item.Date)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Time)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Lines)
-                </td>
-                @if(this.User.IsInRole("Customer") || this.User.IsInRole("Vet"))
-                {
-                <td>
-                      <a asp-action="ConfirmDelete" asp-route-id="@item.Id" class="btn btn-danger" id="btnDelete">Delete</a>
-                </td>
-                    
-                }           
-            </tr>
-        }
-    </tbody>
-</table>
-*@
+
 

@@ -38,7 +38,7 @@
                                 @Html.DisplayNameFor(model => model.Gender)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Customer)
+                                @Html.DisplayNameFor(model => model.Customer.Name)
                             </th>
                             <th></th>
                         </tr>
@@ -66,7 +66,7 @@
                                     @Html.DisplayFor(modelItem => item.Gender)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Customer)
+                                    @Html.DisplayFor(modelItem => item.Customer.Name)
                                 </td>
                                 <td>
                                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><i class="far fa-edit"></i></a>

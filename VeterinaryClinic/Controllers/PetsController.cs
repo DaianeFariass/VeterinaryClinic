@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Vereyon.Web;
 using VeterinaryClinic.Data;
 using VeterinaryClinic.Data.Entities;
 using VeterinaryClinic.Helpers;
@@ -23,17 +24,20 @@ namespace VeterinaryClinic.Controllers
         private readonly IUserHelper _userHelper;
         private readonly IConverterHelper _converterHelper;
         private readonly IBlobHelper _blobHelper;
+        private readonly IFlashMessage _flashMessage;
 
         public PetsController(IPetRepository petRepository,
             IUserHelper userHelper,
             IConverterHelper converterHelper,
             IBlobHelper blobHelper,
+            IFlashMessage flashMessage,
             DataContext context)
         {
             _petRepository = petRepository;
             _userHelper= userHelper;
             _converterHelper = converterHelper;
             _blobHelper = blobHelper;
+            _flashMessage = flashMessage;
             _context = context;
         }
 
@@ -66,7 +70,21 @@ namespace VeterinaryClinic.Controllers
         {
             var model = new PetViewModel
             {
-                Customers = _petRepository.GetComboCustomers()
+                ImageId = Guid.NewGuid(),
+                DateOfBirth = DateTime.Now.Date,
+                Types = new List<SelectListItem>
+                {
+                    new SelectListItem{Text = "Select the type...",Value = "0" },
+                    new SelectListItem{Text = "Dog", Value = "1"},
+                    new SelectListItem{Text = "Cat", Value = "2"},
+                    new SelectListItem{Text = "Hamster", Value = "3"},
+                    new SelectListItem{Text = "Chinchila", Value = "4"},
+                    new SelectListItem{Text = "Rabbit", Value = "5"},
+                    new SelectListItem{Text = "Lizard", Value = "6"},
+                    new SelectListItem{Text = "Guinea Pig", Value = "7"},
+
+                },
+                Customers = _petRepository.GetComboCustomers(),            
             };
             return View(model);
         }
@@ -79,9 +97,19 @@ namespace VeterinaryClinic.Controllers
         public async Task<IActionResult> Create(PetViewModel model)
         {
             if (ModelState.IsValid)
-            {             
-                await _petRepository.AddCustomerToPetAsync(model, this.User.Identity.Name);
-                return RedirectToAction(nameof(Index));
+            {   
+                if(model.DateOfBirth > DateTime.Now.Date)
+                {
+                    _flashMessage.Warning("Date Invalid!");
+                
+                }
+                else
+                {
+                    await _petRepository.AddCustomerToPetAsync(model, this.User.Identity.Name);
+                    return RedirectToAction(nameof(Index));
+
+                }
+               
             }
             return View(model);
         }

@@ -16,6 +16,9 @@ namespace VeterinaryClinic.Data
         public DbSet<AppointmentDetailTemp> AppointmentDetailsTemp { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<City> Cities { get; set; }
+        public DbSet<Room> Rooms { get; set; }
+        public DbSet<PetReport> PetReports { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
 

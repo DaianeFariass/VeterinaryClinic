@@ -19,7 +19,9 @@ namespace VeterinaryClinic.Repositories
         public IQueryable GetCustomerName();
 
         public Task AddCustomerToPetAsync(PetViewModel model, string userName);
+
      
+
 
     }
 }

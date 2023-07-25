@@ -108,7 +108,8 @@ namespace VeterinaryClinic.Repositories
                     Id = model.Id,
                     Name = model.Name,
                     DateOfBirth = model.DateOfBirth,
-                    Type = model.Type,
+                    Type = model.TypeId.ToString(),
+                    TypeId = model.TypeId,              
                     Gender = model.Gender,
                     Customer = customer,
                     CustomerId = customer.Id,
@@ -123,6 +124,6 @@ namespace VeterinaryClinic.Repositories
             await _context.SaveChangesAsync();
         }
 
-        
+  
     }
 }

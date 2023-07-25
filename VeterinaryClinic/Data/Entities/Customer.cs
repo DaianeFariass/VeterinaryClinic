@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace VeterinaryClinic.Data.Entities
@@ -28,8 +30,11 @@ namespace VeterinaryClinic.Data.Entities
         [Required]
         public string Email { get; set; }
 
+        public ICollection<Appointment> Appointments { get; set; }
+
         public User User { get; set; }
 
+  
         public string ImageFullPath => ImageId == Guid.Empty
               ? $" https://veterinaryclinic.azurewebsites.net/images//imagemindisponivel.png"
               : $" https://veterinaryclinicsystem.blob.core.windows.net/customers/{ImageId}";

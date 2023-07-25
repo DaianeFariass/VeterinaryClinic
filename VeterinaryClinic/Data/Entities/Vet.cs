@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
 using System;
+using System.Collections.Generic;
 
 namespace VeterinaryClinic.Data.Entities
 {
@@ -23,8 +24,9 @@ namespace VeterinaryClinic.Data.Entities
         [Required]
         public string Email { get; set; }
 
-        [Required]
-        public string Room { get; set; }
+        public string Speciality { get; set; }
+
+        public ICollection<Appointment> Appointments { get; set; }
 
         public User User { get; set; }
 

@@ -48,6 +48,8 @@ namespace VeterinaryClinic.Data
 
                 await _context.SaveChangesAsync();
             }
+            
+
 
             var userAdmin = await _userHelper.GetUserByEmailAsync("daiane.farias@cinel.pt");
 
@@ -250,7 +252,7 @@ namespace VeterinaryClinic.Data
                 Address = GenerateRandomAddress(),
                 Phone = GenerateRandomNumbers(9),
                 Email = name.Replace(" ", "_") + "@cinel.com",
-                Room = GenerateRandomNumbers(2),
+                Speciality = GenerateRandomSpecialist(),
                 User= user,
             });
         
@@ -289,13 +291,14 @@ namespace VeterinaryClinic.Data
 
             return petGender;
         }
-        private string GenerateRandomCustomer()
+        private string GenerateRandomSpecialist()
         {
-            string[] names = { "Olivia Santos ", "Romeo Alves", "Liz Silva", "Mariana Farias", "Felipe Santos", "Alice Marques", "Marcos Oliveira" };
-            string customerName = names[_random.Next(names.Length)];
+            string[] names = { "Cardiology ", "Neurology", "Dermatology", "Ophthalmology", "Surgery", "Pathology", "Anesthesia and analgesia" };
+            string specialistName = names[_random.Next(names.Length)];
 
-            return customerName;
+            return specialistName;
         }
+
 
     }
 }

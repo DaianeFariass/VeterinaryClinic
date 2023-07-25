@@ -16,6 +16,10 @@ namespace VeterinaryClinic.Models
         [Range(1, int.MaxValue, ErrorMessage = "You must select the Customer!")]
         public int CustomerId { get; set; }
         public IEnumerable<SelectListItem> Customers { get; set; }
+
+        [Display(Name = "Type")]
+        public int TypeId { get; set; }
+        public IEnumerable<SelectListItem> Types { get; set; }
     }
 
 }

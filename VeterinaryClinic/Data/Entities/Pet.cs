@@ -23,10 +23,13 @@ namespace VeterinaryClinic.Data.Entities
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = false)]
         public DateTime DateOfBirth { get; set; }
 
+       
         public string Type { get; set; }
 
-        public string Gender { get; set; }   
-   
+      
+        public string Gender { get; set; }
+
+      
         public Customer Customer { get; set; }
 
         public string ImageFullPath => ImageId == Guid.Empty

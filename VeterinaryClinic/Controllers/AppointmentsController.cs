@@ -45,7 +45,8 @@ namespace VeterinaryClinic.Controllers
                 
                 Pets = _petRepository.GetComboPets(),
                 Vets = _vetRepository.GetComboVets(),
-                Date= DateTime.Now,
+                Date= DateTime.Now.Date,
+                Time = DateTime.Now.AddHours(8),
        
             };
             return View(model);
