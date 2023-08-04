@@ -5,24 +5,38 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Vereyon.Web;
 using VeterinaryClinic.Data;
 using VeterinaryClinic.Data.Entities;
+using VeterinaryClinic.Helpers;
+using VeterinaryClinic.Models;
+using VeterinaryClinic.Repositories;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace VeterinaryClinic.Controllers
 {
     public class RoomsController : Controller
     {
         private readonly DataContext _context;
+        private readonly IRoomRepository _roomRepository;
+        private readonly IConverterHelper _converterHelper;
+        private readonly IFlashMessage _flashMessage;
 
-        public RoomsController(DataContext context)
+        public RoomsController(DataContext context,
+            IRoomRepository roomRepository,
+            IConverterHelper converterHelper,
+            IFlashMessage flashMessage)
         {
             _context = context;
+            _roomRepository = roomRepository;
+            _converterHelper = converterHelper;
+           _flashMessage = flashMessage;
         }
 
         // GET: Rooms
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Rooms.ToListAsync());
+            return View(_roomRepository.GetAllWithVets());
         }
 
         // GET: Rooms/Details/5
@@ -30,14 +44,13 @@ namespace VeterinaryClinic.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("RoomNotFound");
             }
 
-            var room = await _context.Rooms
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var room = await _roomRepository.GetByIdAsync(id.Value);
             if (room == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("RoomNotFound");
             }
 
             return View(room);
@@ -46,7 +59,14 @@ namespace VeterinaryClinic.Controllers
         // GET: Rooms/Create
         public IActionResult Create()
         {
-            return View();
+            var model = new RoomViewModel
+            {
+               
+                Vets = _roomRepository.GetComboVets(),
+                Types = _roomRepository.GetComboTypes(),
+                          
+            };
+            return View(model);
         }
 
         // POST: Rooms/Create
@@ -54,31 +74,78 @@ namespace VeterinaryClinic.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,RoomNumber,Type,Status")] Room room)
+        public async Task<IActionResult> Create(RoomViewModel model)
         {
+           
             if (ModelState.IsValid)
             {
-                _context.Add(room);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var rooms = await _roomRepository.GetRoomAsync(this.User.Identity.Name);
+                
+                bool room = rooms.Any(r =>
+                r.RoomNumber == model.RoomNumber);
+
+                if (room)
+                {
+                    _flashMessage.Warning("The room is unvailable");
+                    model = new RoomViewModel
+                    {
+                        Vets = _roomRepository.GetComboVets(),
+                        Types = _roomRepository.GetComboTypes(),
+
+                    };
+                    return View(model);
+
+                }
+
+                bool vet = rooms.Any(r =>
+                r.Vet.Id == model.VetId);
+
+                if (vet)
+                {
+                    _flashMessage.Warning("The vet is in another room");
+                    model = new RoomViewModel
+                    {
+                        Vets = _roomRepository.GetComboVets(),
+                        Types = _roomRepository.GetComboTypes(),
+
+                    };
+                    return View(model);
+
+                }
+                else
+                {
+                    await _roomRepository.AddVetToRoomAsync(model, this.User.Identity.Name);
+                    return RedirectToAction("Index");
+
+
+                }
+
+
             }
-            return View(room);
+           
+           
+            return View(model);
         }
 
         // GET: Rooms/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            var model = new RoomViewModel
+            {
+                Vets = _roomRepository.GetComboVets(),
+                Types = _roomRepository.GetComboTypes()
+            };
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("RoomNotFound");
             }
 
-            var room = await _context.Rooms.FindAsync(id);
+            var room = await _roomRepository.GetByIdAsync(id.Value);
             if (room == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("RoomNotFound");
             }
-            return View(room);
+            return View(model);
         }
 
         // POST: Rooms/Edit/5
@@ -86,34 +153,53 @@ namespace VeterinaryClinic.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,RoomNumber,Type,Status")] Room room)
+        public async Task<IActionResult> Edit(RoomViewModel model)
         {
-            if (id != room.Id)
-            {
-                return NotFound();
-            }
-
+          
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(room);
-                    await _context.SaveChangesAsync();
+                    var rooms = await _roomRepository.GetRoomAsync(this.User.Identity.Name);
+               
+                    bool vet = rooms.Any(r =>
+                    r.Vet.Id == model.VetId);
+
+                    if (vet)
+                    {
+                        _flashMessage.Warning("The vet is in another room");
+                        model = new RoomViewModel
+                        {
+                            Vets = _roomRepository.GetComboVets(),
+                            Types = _roomRepository.GetComboTypes(),
+
+                        };
+                        return View(model);
+
+                    }
+                    else
+                    {
+                        await _roomRepository.EditRoomAsync(model, this.User.Identity.Name);
+                        return RedirectToAction("Index");
+
+
+                    }
+                   
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!RoomExists(room.Id))
+                    if (!await _roomRepository.ExistAsync(model.Id))
                     {
-                        return NotFound();
+                        return new NotFoundViewResult("RoomNotFound");
                     }
                     else
                     {
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+             
             }
-            return View(room);
+            return View(model);
         }
 
         // GET: Rooms/Delete/5
@@ -121,17 +207,16 @@ namespace VeterinaryClinic.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("RoomNotFound");
             }
 
-            var room = await _context.Rooms
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var room = await _roomRepository.GetByIdAsync(id.Value);
             if (room == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("RoomNotFound");
             }
 
-            return View(room);
+           return View(room);
         }
 
         // POST: Rooms/Delete/5
@@ -139,15 +224,28 @@ namespace VeterinaryClinic.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var room = await _context.Rooms.FindAsync(id);
-            _context.Rooms.Remove(room);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            var room = await _roomRepository.GetByIdAsync(id);
+            try
+            {
+                await _roomRepository.DeleteAsync(room);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException ex)
+            {
+
+                if (ex.InnerException != null && ex.InnerException.Message.Contains("DELETE"))
+                {
+                    ViewBag.ErrorTitle = $"{room.Type} probably in been used!!!";
+                   
+                }
+                return View("Error");
+            }
+           
         }
 
-        private bool RoomExists(int id)
+        public IActionResult RoomNotFound()
         {
-            return _context.Rooms.Any(e => e.Id == id);
+            return View();
         }
     }
 }

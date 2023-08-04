@@ -33,8 +33,8 @@ namespace VeterinaryClinic.Data.Entities
         public Customer Customer { get; set; }
 
         public string ImageFullPath => ImageId == Guid.Empty
-             ? $" https://veterinaryclinic.azurewebsites.net/images//imagemindisponivel.png"
-             : $" https://veterinaryclinicsystem.blob.core.windows.net/pets/{ImageId}";
+              ? $" https://provetclinic.azurewebsites.net/images/imagemindisponivel.png"
+              : $" https://provetclinic.blob.core.windows.net/pets/{ImageId}";
 
     }
 }

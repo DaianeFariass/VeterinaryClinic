@@ -28,7 +28,7 @@
                                             <ul class="submenu">
                                                 <li><a href="blog.html">Blog</a></li>
                                                 <li><a href="blog_details.html">Blog Details</a></li>
-                                                <li><a href="elements.html">Element</a></li>
+                                                <li><a href="elements.html">Element</a></li>     
                                             </ul>
                                         </li>
                                         @if (this.User.Identity.IsAuthenticated && this.User.IsInRole("Admin"))
@@ -37,8 +37,8 @@
                                                 <a>Admin</a>
                                                 <ul class="submenu">
                                                     <li><a asp-controller="Vets" asp-action="Index">Vets</a></li>
-                                                    <li><a asp-controller="Rooms" asp-action="Index">Rooms</a></li>
                                                     <li><a asp-controller="Countries" asp-action="">Countries and cities</a></li>
+                                                 
                                                 </ul>
                                             </li>
                                         }
@@ -48,6 +48,17 @@
                                                 <a>Vet</a>
                                                 <ul class="submenu">
                                                     <li><a asp-controller="Customers" asp-action="Index">Customers</a></li>
+                                                    <li><a asp-controller="Pets" asp-action="Index">Pets</a></li>
+                                                    <li><a asp-controller="Appointments" asp-action="Index">Appointments</a></li>
+                                                </ul>
+                                            </li>
+                                        }
+                                        @if (this.User.Identity.IsAuthenticated && this.User.IsInRole("Receptionist"))
+                                        {
+                                            <li>
+                                                <a>Reception</a>
+                                                <ul class="submenu">                                                 
+                                                    <li><a asp-controller="Rooms" asp-action="Index">Rooms</a></li>
                                                     <li><a asp-controller="Appointments" asp-action="Index">Appointments</a></li>
                                                 </ul>
                                             </li>

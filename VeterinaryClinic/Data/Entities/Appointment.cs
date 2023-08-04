@@ -27,6 +27,8 @@ namespace VeterinaryClinic.Data.Entities
         public IEnumerable<AppointmentDetail> Items { get; set; }
 
         public int Lines => Items == null ? 0 : Items.Count();
+
+        
    
 
     }

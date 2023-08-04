@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using Vereyon.Web;
 using VeterinaryClinic.Data;
-using VeterinaryClinic.Data.Entities;
 using VeterinaryClinic.Helpers;
 using VeterinaryClinic.Models;
 using VeterinaryClinic.Repositories;
@@ -34,7 +30,7 @@ namespace VeterinaryClinic.Controllers
             DataContext context)
         {
             _petRepository = petRepository;
-            _userHelper= userHelper;
+            _userHelper = userHelper;
             _converterHelper = converterHelper;
             _blobHelper = blobHelper;
             _flashMessage = flashMessage;
@@ -42,7 +38,7 @@ namespace VeterinaryClinic.Controllers
         }
 
         // GET: Pets
-        public  IActionResult Index()
+        public IActionResult Index()
         {
             return View(_petRepository.GetCustomerName());
         }
@@ -65,26 +61,15 @@ namespace VeterinaryClinic.Controllers
         }
 
         // GET: Pets/Create
-   
+
         public IActionResult Create()
         {
             var model = new PetViewModel
             {
                 ImageId = Guid.NewGuid(),
                 DateOfBirth = DateTime.Now.Date,
-                Types = new List<SelectListItem>
-                {
-                    new SelectListItem{Text = "Select the type...",Value = "0" },
-                    new SelectListItem{Text = "Dog", Value = "1"},
-                    new SelectListItem{Text = "Cat", Value = "2"},
-                    new SelectListItem{Text = "Hamster", Value = "3"},
-                    new SelectListItem{Text = "Chinchila", Value = "4"},
-                    new SelectListItem{Text = "Rabbit", Value = "5"},
-                    new SelectListItem{Text = "Lizard", Value = "6"},
-                    new SelectListItem{Text = "Guinea Pig", Value = "7"},
-
-                },
-                Customers = _petRepository.GetComboCustomers(),            
+                Types = _petRepository.GetComboTypes(),
+                Customers = _petRepository.GetComboCustomers(),
             };
             return View(model);
         }
@@ -97,11 +82,19 @@ namespace VeterinaryClinic.Controllers
         public async Task<IActionResult> Create(PetViewModel model)
         {
             if (ModelState.IsValid)
-            {   
-                if(model.DateOfBirth > DateTime.Now.Date)
+            {
+                if (model.DateOfBirth > DateTime.Now.Date)
                 {
                     _flashMessage.Warning("Date Invalid!");
-                
+                    model = new PetViewModel
+                    {
+                        ImageId = Guid.NewGuid(),
+                        DateOfBirth = DateTime.Now.Date,
+                        Types = _petRepository.GetComboTypes(),
+                        Customers = _petRepository.GetComboCustomers(),
+                    };
+                    return View(model);
+
                 }
                 else
                 {
@@ -109,27 +102,37 @@ namespace VeterinaryClinic.Controllers
                     return RedirectToAction(nameof(Index));
 
                 }
-               
+
             }
             return View(model);
         }
 
         // GET: Pets/Edit/5
-      
+
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
                 return new NotFoundViewResult("PetNotFound");
             }
-
             var pet = await _petRepository.GetByIdAsync(id.Value);
-
             if (pet == null)
             {
                 return new NotFoundViewResult("PetNotFound");
             }
-            var model = _converterHelper.ToPetViewModel(pet);
+            //var model = _converterHelper.ToPetViewModel(pet);
+
+            var model = new PetViewModel
+            {
+                Id = pet.Id,
+                ImageId = pet.ImageId,
+                Name= pet.Name,
+                DateOfBirth = DateTime.Now.Date,
+                Types = _petRepository.GetComboTypes(),
+                Gender = pet.Gender,
+                Customers = _petRepository.GetComboCustomers(),
+            };
+            
             return View(model);
         }
 
@@ -145,17 +148,25 @@ namespace VeterinaryClinic.Controllers
             {
                 try
                 {
-                    Guid imageId = Guid.Empty;
-
-                    if (model.ImageFile != null && model.ImageFile.Length > 0)
+                    if (model.DateOfBirth > DateTime.Now.Date)
                     {
-
-                        imageId = await _blobHelper.UploadBlobAsync(model.ImageFile, "pets");
+                        _flashMessage.Warning("Date Invalid!");
+                        model = new PetViewModel
+                        {
+                            ImageId = Guid.NewGuid(),
+                            DateOfBirth = DateTime.Now.Date,
+                            Types = _petRepository.GetComboTypes(),
+                            Customers = _petRepository.GetComboCustomers(),
+                        };
+                        return View(model);
 
                     }
-                    var pet = _converterHelper.ToPet(model, imageId,false);
-                    pet.Customer = _context.Customers.FirstOrDefault();
-                    await _petRepository.UpdateAsync(pet);
+                    else
+                    {
+                        await _petRepository.EditCustomerToPetAsync(model, this.User.Identity.Name);
+
+                    }       
+              
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -174,7 +185,7 @@ namespace VeterinaryClinic.Controllers
         }
 
         // GET: Pets/Delete/5
-     
+
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -215,7 +226,7 @@ namespace VeterinaryClinic.Controllers
                 }
                 return View("Error");
             }
-            
+
         }
         public IActionResult PetNotFound()
         {

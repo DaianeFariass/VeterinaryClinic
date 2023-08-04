@@ -24,5 +24,7 @@ namespace VeterinaryClinic.Data.Entities
         [DisplayFormat(DataFormatString = "{0:HH:mm}", ApplyFormatInEditMode = false)]
         public DateTime Time { get; set; }
 
+       
+
     }
 }

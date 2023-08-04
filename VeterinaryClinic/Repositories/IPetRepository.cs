@@ -16,11 +16,16 @@ namespace VeterinaryClinic.Repositories
 
         IEnumerable<SelectListItem> GetComboPets();
 
+        IEnumerable<SelectListItem> GetComboTypes();
+
         public IQueryable GetCustomerName();
 
         public Task AddCustomerToPetAsync(PetViewModel model, string userName);
 
-     
+        public Task EditCustomerToPetAsync(PetViewModel model, string userName);
+
+
+
 
 
     }

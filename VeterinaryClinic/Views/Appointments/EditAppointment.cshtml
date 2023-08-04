@@ -1,4 +1,4 @@
-﻿@model VeterinaryClinic.Models.EditAppointmentDetailTempViewModel
+﻿@model VeterinaryClinic.Models.AppointmentViewModel
 @{
     ViewData["Title"] = "EditAppointment";
 }
@@ -7,11 +7,11 @@
 
 <h4>Appointment</h4>
 <hr />
+<flash dismissable="true" />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="EditAppointment" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <label asp-for="PetId" class="control-label"></label>
                 <select asp-for="PetId" asp-items="Model.Pets" class="form-control"></select>

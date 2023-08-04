@@ -10,13 +10,13 @@ namespace VeterinaryClinic.Data.Entities
         [Required]
         [Display(Name = "Room")]
         public string RoomNumber { get; set; }
-
-        [Required]
+   
         public string Type { get; set; }
 
-        [Required]
         public string Status { get; set; }
 
         public Vet Vet { get; set; }
+
+        public User User { get; set; }
     }
 }

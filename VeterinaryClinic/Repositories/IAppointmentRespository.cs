@@ -24,6 +24,6 @@ namespace VeterinaryClinic.Repositories
 
         Task<AppointmentDetailTemp> GetAppointmentDetailTempAsync(int id);
 
-        Task EditAppointmentDetailTempAsync(EditAppointmentDetailTempViewModel model);
+        Task EditAppointmentDetailTempAsync(AppointmentViewModel model, string username);
     }
 }

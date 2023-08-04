@@ -33,6 +33,8 @@ namespace VeterinaryClinic.Data
 
             await _userHelper.CheckRoleAsync("Anonymous");
 
+            await _userHelper.CheckRoleAsync("Receptionist");
+
             if (!_context.Countries.Any())
             {
                 var cities = new List<City>();
@@ -130,37 +132,37 @@ namespace VeterinaryClinic.Data
                 await _userHelper.ConfirmEmailAsync(userVet, token);
 
             }
-            var userAnonymous = await _userHelper.GetUserByEmailAsync("rafael.alves@cinel.pt");
+            var userReceptionist = await _userHelper.GetUserByEmailAsync("romeu.alves@cinel.pt");
 
-            if (userAnonymous == null)
+            if (userReceptionist == null)
             {
-                userAnonymous = new User
+                userReceptionist = new User
                 {
-                    FirstName = "Rafael",
+                    FirstName = "Romeu",
                     LastName = "Alves",
-                    UserName = "rafael.alves@cinel.pt",
-                    Email = "rafael.alves@cinel.pt",
+                    UserName = "romeu.alves@cinel.pt",
+                    Email = "romeu.alves@cinel.pt",
                     PhoneNumber = GenerateRandomNumbers(9),
                     Address = GenerateRandomAddress(),
                     CityId = _context.Countries.FirstOrDefault().Cities.FirstOrDefault().Id,
                     City = _context.Countries.FirstOrDefault().Cities.FirstOrDefault(),
                 };
-                var result = await _userHelper.AddUserAsync(userAnonymous, "123456");
+                var result = await _userHelper.AddUserAsync(userReceptionist, "123456");
 
                 if (result != IdentityResult.Success)
                 {
                     throw new InvalidOperationException("Could not create the user in seeder");
                 }
-                await _userHelper.AddUserToRoleAsync(userAnonymous, "Anonymous");
-                var token = await _userHelper.GenerateEmailConfirmationTokenAsync(userVet);
-                await _userHelper.ConfirmEmailAsync(userVet, token);
+                await _userHelper.AddUserToRoleAsync(userReceptionist, "Receptionist");
+                var token = await _userHelper.GenerateEmailConfirmationTokenAsync(userReceptionist);
+                await _userHelper.ConfirmEmailAsync(userReceptionist, token);
 
             }
 
             var isInRole = await _userHelper.IsUserInRoleAsync(userAdmin, "Admin");
             var isInRoleCustomer = await _userHelper.IsUserInRoleAsync(userCustomer, "Customer");
             var isInRoleVet = await _userHelper.IsUserInRoleAsync(userVet, "Vet");
-            var isInRoleAnonymous = await _userHelper.IsUserInRoleAsync(userAnonymous, "Anonymous");
+            var isInRoleReceptionist = await _userHelper.IsUserInRoleAsync(userReceptionist, "Receptionist");
 
             if (!isInRole)
             {
@@ -177,9 +179,9 @@ namespace VeterinaryClinic.Data
                 await _userHelper.AddUserToRoleAsync(userVet, "Vet");
 
             }
-            if (!isInRoleAnonymous)
+            if (!isInRoleReceptionist)
             {
-                await _userHelper.AddUserToRoleAsync(userAnonymous, "Anonymous");
+                await _userHelper.AddUserToRoleAsync(userReceptionist, "Receptionist");
 
             }
 
@@ -213,6 +215,13 @@ namespace VeterinaryClinic.Data
                 AddVet("Francisco Magalhães", userVet);
                 AddVet("Carla Nascimento", userVet);
                 AddVet("Eduardo Santos", userVet);
+
+                await _context.SaveChangesAsync();
+            }
+            var vet = _context.Vets.FirstOrDefault();
+            if (!_context.Rooms.Any())
+            {
+                AddRoom(vet, userReceptionist);  
 
                 await _context.SaveChangesAsync();
             }
@@ -254,9 +263,21 @@ namespace VeterinaryClinic.Data
                 Email = name.Replace(" ", "_") + "@cinel.com",
                 Speciality = GenerateRandomSpecialist(),
                 User= user,
+            });       
+        
+        }
+        private void AddRoom(Vet vet, User user)
+        {
+            _context.Rooms.Add(new Room
+            {
+                RoomNumber = GenerateRandomNumbers(3),
+                Type = GenerateRandomSpecialist(),
+                Status = "Unvailable",
+                Vet = vet,
+                User = user
+
             });
-        
-        
+     
         }
         private string GenerateRandomNumbers(int value)
         {
@@ -286,8 +307,8 @@ namespace VeterinaryClinic.Data
         }
         private string GenerateRandomGender() 
         {
-            string[] gender = { "Female", "Male" };
-            string petGender = gender[_random.Next(gender.Length)];
+            string[] genders = { "Female", "Male" };
+            string petGender = genders[_random.Next(genders.Length)];
 
             return petGender;
         }
@@ -298,7 +319,8 @@ namespace VeterinaryClinic.Data
 
             return specialistName;
         }
-
+     
+     
 
     }
 }

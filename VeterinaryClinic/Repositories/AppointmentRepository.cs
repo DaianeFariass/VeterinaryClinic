@@ -1,13 +1,16 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc.ApplicationParts;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations.Internal;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Vereyon.Web;
 using VeterinaryClinic.Data;
 using VeterinaryClinic.Data.Entities;
 using VeterinaryClinic.Helpers;
 using VeterinaryClinic.Migrations;
 using VeterinaryClinic.Models;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace VeterinaryClinic.Repositories
 {
@@ -16,12 +19,16 @@ namespace VeterinaryClinic.Repositories
         private readonly DataContext _context;
         private readonly IUserHelper _userHelper;
 
-        public AppointmentRepository(DataContext context, IUserHelper userHelper) : base(context) 
+
+        public AppointmentRepository(DataContext context, 
+            IUserHelper userHelper) : base(context) 
         {
              _context = context;
              _userHelper = userHelper;
+            
         }
-
+       
+      
         public async Task AddItemToAppointmenteAsync(AppointmentViewModel model, string userName)
         {
             var user = await _userHelper.GetUserByEmailAsync(userName);
@@ -188,23 +195,46 @@ namespace VeterinaryClinic.Repositories
                
         }
 
-        public async Task EditAppointmentDetailTempAsync(EditAppointmentDetailTempViewModel model)
+        public async Task EditAppointmentDetailTempAsync(AppointmentViewModel model, string username)
         {
-            var appointmentDetailTemp = await _context.AppointmentDetailsTemp.FindAsync(model);
-            if(appointmentDetailTemp == null) 
-            { 
-                return;      
-            }
-            appointmentDetailTemp = new AppointmentDetailTemp
+            var user = await _userHelper.GetUserByEmailAsync(username);
+            if (user == null)
             {
-                
-                Date = model.Date,
-                Time = model.Time,
-               
-            };
-            _context.AppointmentDetailsTemp.Update(appointmentDetailTemp);
+                return;
+
+            }
+            var pet = await _context.Pets.FindAsync(model.PetId);
+            if (pet == null)
+            {
+                return;
+            }
+            var vet = await _context.Vets.FindAsync(model.VetId);
+            if (pet == null)
+            {
+                return;
+            }
+            var appointmentDetailTemp = await _context.AppointmentDetailsTemp
+                .Where(p => p.Pet.Id == pet.Id && p.Vet.Id == vet.Id)
+                .FirstOrDefaultAsync();
+
+
+            if (appointmentDetailTemp == null)
+            {
+                appointmentDetailTemp = new AppointmentDetailTemp
+                {
+                    User = user,
+                    Pet = pet,
+                    Vet = vet,
+                    Date = model.Date,
+                    Time = model.Time,
+                    
+                };
+                _context.AppointmentDetailsTemp.Update(appointmentDetailTemp);
+
+            }
             await _context.SaveChangesAsync();
-            
+
         }
+
     }
 }

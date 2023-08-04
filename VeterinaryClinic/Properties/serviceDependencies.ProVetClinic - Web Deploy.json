@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "storage1": {
+      "ignored": "true",
+      "type": "storage",
+      "connectionId": "Blob:ConnectionString"
+    },
+    "mssql1": {
+      "secretStore": "AzureAppSettings",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/daiserver/databases/VeterinaryClinic_db",
+      "type": "mssql.azure",
+      "connectionId": "ConnectionStrings:DefaultConnection"
+    }
+  }
+}

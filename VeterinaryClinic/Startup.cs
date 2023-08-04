@@ -74,6 +74,7 @@ namespace VeterinaryClinic
             services.AddScoped<ICustomerRepository,CustomerRepository>();
             services.AddScoped<IPetRepository, PetRepository>();
             services.AddScoped<IVetRepository,VetRepository>();
+            services.AddScoped<IRoomRepository, RoomRepository>();
             services.AddScoped<IAppointmentRespository, AppointmentRepository>();
             services.AddScoped<ICountryRepository, CountryRepository>();
 

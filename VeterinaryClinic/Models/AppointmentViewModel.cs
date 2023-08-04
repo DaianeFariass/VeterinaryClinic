@@ -8,6 +8,7 @@ namespace VeterinaryClinic.Models
 {
     public class AppointmentViewModel 
     {
+        
         [Display(Name="Pet Name")]
         [Range(1, int.MaxValue, ErrorMessage = "You must select your Pet!")]
         public int PetId { get; set; }

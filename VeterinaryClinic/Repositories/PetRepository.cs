@@ -68,6 +68,26 @@ namespace VeterinaryClinic.Repositories
 
             return list;
         }
+        public IEnumerable<SelectListItem> GetComboTypes()
+        {
+            var model = new PetViewModel
+            {
+                Types = new List<SelectListItem>
+                {
+                    new SelectListItem{Text = "Select the type...",Value = "0" },
+                    new SelectListItem{Text = "Dog", Value = "1"},
+                    new SelectListItem{Text = "Cat", Value = "2"},
+                    new SelectListItem{Text = "Hamster", Value = "3"},
+                    new SelectListItem{Text = "Chinchila", Value = "4"},
+                    new SelectListItem{Text = "Rabbit", Value = "5"},
+                    new SelectListItem{Text = "Lizard", Value = "6"},
+                    new SelectListItem{Text = "Guinea Pig", Value = "7"},
+
+                },
+
+            };
+            return model.Types;
+        }
 
         public IQueryable GetCustomerName()
         {
@@ -123,7 +143,53 @@ namespace VeterinaryClinic.Repositories
             }
             await _context.SaveChangesAsync();
         }
+        public async Task EditCustomerToPetAsync(PetViewModel model, string userName)
+        {
+            Guid imageId = Guid.Empty;
 
-  
+            if (model.ImageFile != null && model.ImageFile.Length > 0)
+            {
+
+                imageId = await _blobHelper.UploadBlobAsync(model.ImageFile, "pets");
+
+            }
+            var pet = _converterHelper.ToPet(model, imageId, false);
+
+            var user = await _userHelper.GetUserByEmailAsync(userName);
+            if (user == null)
+            {
+                return;
+
+            }
+            var customer = await _context.Customers.FindAsync(model.CustomerId);
+            if (customer == null)
+            {
+                return;
+            }
+            var petIndex = await _context.Pets
+                .Where(p => p.Customer.User == user && p.Customer.Id == customer.Id)
+                .FirstOrDefaultAsync();
+
+
+            if (petIndex == null)
+            {
+                petIndex = new PetViewModel
+                {
+                    ImageId = imageId,
+                    Id = model.Id,
+                    Name = model.Name,
+                    DateOfBirth = model.DateOfBirth,
+                    Type = model.TypeId.ToString(),
+                    TypeId = model.TypeId,
+                    Gender = model.Gender,
+                    Customer = customer,
+                    CustomerId = customer.Id,
+                };
+                _context.Pets.Update(petIndex);
+
+            }
+            await _context.SaveChangesAsync();
+        }
+
     }
 }
