@@ -24,7 +24,7 @@ namespace VeterinaryClinic.Repositories
 
         public Task EditCustomerToPetAsync(PetViewModel model, string userName);
 
-
+        public IEnumerable<SelectListItem> GetComboCustomersEmail();
 
 
 

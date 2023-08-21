@@ -15,12 +15,12 @@ namespace VeterinaryClinic.Data.Entities
         public User User { get; set; }
 
         [Required]
-        [Display(Name = "Appointment date")]
+        [Display(Name = "Confirm date")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = false)]
         public DateTime Date { get; set; }
 
         [Required]
-        [Display(Name = "Appointment Time")]
+        [Display(Name = "Confirm Time")]
         [DisplayFormat(DataFormatString = "{0:HH:mm}", ApplyFormatInEditMode = false)]
         public DateTime Time { get; set; }
 

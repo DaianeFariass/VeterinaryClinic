@@ -96,9 +96,11 @@ namespace VeterinaryClinic.Repositories
                 Time = a.Time
 
             }).ToList();
+           
             var appointment = new Appointment
             {
                 Date = DateTime.UtcNow,
+                Time = DateTime.UtcNow,
                 User = user,
                 Items = details
             };
@@ -176,19 +178,7 @@ namespace VeterinaryClinic.Repositories
             }
             
         }
-        public async Task DeleteAppointment(int id)
-        {
-            var appointment = await _context.Appointments.FindAsync(id);
-            if (appointment== null)
-            {
-                return;
-
-            }
-            _context.Appointments.Remove(appointment);
-            await _context.SaveChangesAsync();
-
-        }
-
+  
         public async Task<AppointmentDetailTemp> GetAppointmentDetailTempAsync(int id)
         {
            return await _context.AppointmentDetailsTemp.FindAsync(id);

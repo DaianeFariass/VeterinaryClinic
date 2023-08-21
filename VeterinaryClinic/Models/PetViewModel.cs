@@ -18,7 +18,7 @@ namespace VeterinaryClinic.Models
         public IEnumerable<SelectListItem> Customers { get; set; }
 
         [Display(Name = "Type")]
-        public int TypeId { get; set; }
+        public string TypeId { get; set; }
         public IEnumerable<SelectListItem> Types { get; set; }
     }
 

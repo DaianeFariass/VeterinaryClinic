@@ -131,7 +131,7 @@ namespace VeterinaryClinic.Controllers
         public async Task<IActionResult> Edit(int? id)
         {
             var model = new RoomViewModel
-            {
+            {  
                 Vets = _roomRepository.GetComboVets(),
                 Types = _roomRepository.GetComboTypes()
             };

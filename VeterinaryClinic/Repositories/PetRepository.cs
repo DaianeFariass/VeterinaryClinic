@@ -74,14 +74,14 @@ namespace VeterinaryClinic.Repositories
             {
                 Types = new List<SelectListItem>
                 {
-                    new SelectListItem{Text = "Select the type...",Value = "0" },
-                    new SelectListItem{Text = "Dog", Value = "1"},
-                    new SelectListItem{Text = "Cat", Value = "2"},
-                    new SelectListItem{Text = "Hamster", Value = "3"},
-                    new SelectListItem{Text = "Chinchila", Value = "4"},
-                    new SelectListItem{Text = "Rabbit", Value = "5"},
-                    new SelectListItem{Text = "Lizard", Value = "6"},
-                    new SelectListItem{Text = "Guinea Pig", Value = "7"},
+                    new SelectListItem{Text = "Select the type...",Value = "" },
+                    new SelectListItem{Text = "Dog", Value = "Dog"},
+                    new SelectListItem{Text = "Cat", Value = "Cat"},
+                    new SelectListItem{Text = "Hamster", Value = "Hamster"},
+                    new SelectListItem{Text = "Chinchila", Value = "Chinchila"},
+                    new SelectListItem{Text = "Rabbit", Value = "Rabbit"},
+                    new SelectListItem{Text = "Lizard", Value = "Lizard"},
+                    new SelectListItem{Text = "Guinea Pig", Value = "Guinea Pig"},
 
                 },
 
@@ -133,6 +133,7 @@ namespace VeterinaryClinic.Repositories
                     Gender = model.Gender,
                     Customer = customer,
                     CustomerId = customer.Id,
+                    
                 };
                 _context.Pets.Add(petIndex);
             }
@@ -190,6 +191,34 @@ namespace VeterinaryClinic.Repositories
             }
             await _context.SaveChangesAsync();
         }
+        public IEnumerable<SelectListItem> GetComboCustomersEmail()
+        {
+            var list = _context.Customers.Select(p => new SelectListItem
+            {
+                Text = p.Name,
+                Value = p.Email,
+
+            }).ToList();
+            var allEmails = "";
+            foreach ( var email in list ) 
+            { 
+                if(allEmails != "")
+                {
+                    allEmails = allEmails + ",";
+                }
+                allEmails = allEmails + email.Value.ToString();
+            
+            }
+            list.Insert(0, new SelectListItem
+            {
+                Text = "(Select the Customer...)",
+                Value = allEmails
+            });
+
+            return list;
+        }
+
+
 
     }
 }

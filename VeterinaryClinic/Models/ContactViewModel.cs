@@ -6,18 +6,15 @@ using VeterinaryClinic.Data.Entities;
 
 namespace VeterinaryClinic.Models
 {
-    public class RoomViewModel : Room
+    public class ContactViewModel : Contact
     {
+        [Display(Name = "Customer Name")]
+        public int? CustomerId { get; set; }
+        public IEnumerable<SelectListItem> Customers { get; set; }
 
         [Display(Name = "Vet Name")]
         public int? VetId { get; set; }
         public IEnumerable<SelectListItem> Vets { get; set; }
-            
-        [Display(Name = "Room Type")]
-        public string TypeId { get; set; }
-        public IEnumerable<SelectListItem> Types { get; set; }
-
-        public bool IsEditing { get; set; }
 
     }
 }

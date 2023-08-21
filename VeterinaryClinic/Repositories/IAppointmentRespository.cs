@@ -20,8 +20,6 @@ namespace VeterinaryClinic.Repositories
 
         Task<bool> ConfirmAppointmentAsync(string userName);
 
-        public Task DeleteAppointment(int id);
-
         Task<AppointmentDetailTemp> GetAppointmentDetailTempAsync(int id);
 
         Task EditAppointmentDetailTempAsync(AppointmentViewModel model, string username);

@@ -61,7 +61,12 @@ namespace VeterinaryClinic.Controllers
      
         public IActionResult Create()
         {
-            return View();
+            var model = new VetViewModel
+            {
+                Specialities = _vetRepository.GetComboSpecialities(),
+
+            };
+            return View(model);
         }
 
         // POST: Vets/Create
@@ -71,26 +76,12 @@ namespace VeterinaryClinic.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(VetViewModel model)
         {
-            var email = Request.Form["Email"].ToString();
-            email = model.Name.Replace(" ", "_") + "@cinel.com";
-            var password = Request.Form["Password"].ToString();
-            password = "123456";
-
+            
             if (ModelState.IsValid)
             {
-                Guid imageId = Guid.Empty;
-
-                if (model.ImageFile != null && model.ImageFile.Length > 0)
-                {
-                    imageId = await _blobHelper.UploadBlobAsync(model.ImageFile, "vets");
-
-                }
-                var vet = _converterHelper.ToVet(model, imageId, true);
-                vet.User = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
-                await _vetRepository.CreateAsync(vet);
-                return RedirectToAction(nameof(Index));
+                await _vetRepository.AddSpecialityToVetAsync(model, this.User.Identity.Name);
             }
-            return View(model);
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Vets/Edit/5

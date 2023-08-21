@@ -23,10 +23,8 @@ namespace VeterinaryClinic.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+
+      
 
         
     }

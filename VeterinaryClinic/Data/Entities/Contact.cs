@@ -9,7 +9,7 @@ namespace VeterinaryClinic.Data.Entities
         [Required]
         public string Email { get; set; }
 
-        public string Phone { get; set; }
+        public string Subject { get; set; }
 
         [Required]
         public string Message { get; set; }

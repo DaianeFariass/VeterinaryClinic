@@ -58,13 +58,13 @@ namespace VeterinaryClinic.Repositories
             {
                 Types = new List<SelectListItem>
                 {
-                    new SelectListItem { Text = "Select the room type...", Value = "0" },
-                    new SelectListItem { Text = "Radiology", Value = "1" },
-                    new SelectListItem { Text = "Cardiology", Value = "2" },
-                    new SelectListItem { Text = "Dermatology", Value = "3" },
-                    new SelectListItem { Text = "Ophthalmology", Value = "4" },
-                    new SelectListItem { Text = "Surgery", Value = "5" },
-                    new SelectListItem { Text = "UTI", Value = "6" },
+                    new SelectListItem { Text = "Select the room type...", Value = "" },
+                    new SelectListItem { Text = "Radiology", Value = "Radiology" },
+                    new SelectListItem { Text = "Cardiology", Value = "Cardiology" },
+                    new SelectListItem { Text = "Dermatology", Value = "Dermatology" },
+                    new SelectListItem { Text = "Ophthalmology", Value = "Ophthalmology" },
+                    new SelectListItem { Text = "Surgery", Value = "Surgery" },
+                    new SelectListItem { Text = "UTI", Value = "UTI" },
 
                 }
             };
@@ -81,31 +81,18 @@ namespace VeterinaryClinic.Repositories
 
             }
             var vet = await _context.Vets.FindAsync(model.VetId);
-            if (vet == null)
-            {
-                return;
-            }
-            var roomIndex = await _context.Rooms
-                .Where(p => p.Vet.User == user && p.Vet.Id == vet.Id)
-                .FirstOrDefaultAsync();
-
-
-            if (roomIndex == null)
-            {
-                roomIndex = new RoomViewModel
+       
+                var roomIndex = new RoomViewModel
                 {
                     RoomNumber = model.RoomNumber,
                     Type = model.TypeId.ToString(),
                     Status = model.Status,
-                    Vet = vet
+                    Vet = vet,
+                    User = user
                 };
                 _context.Rooms.Add(roomIndex);
-            }
-            else
-            {
-                _context.Rooms.Update(roomIndex);
-
-            }
+         
+            
             await _context.SaveChangesAsync();
         }
         public async Task<IQueryable<Room>> GetRoomAsync(string userName)
@@ -142,16 +129,11 @@ namespace VeterinaryClinic.Repositories
 
             if (room == null)
             {
-                room = new Room
-                {
-                    RoomNumber= model.RoomNumber,
-                    Type= model.TypeId.ToString(),
-                    Status= model.Status,
-                    Vet = vet,
-                    User= user,
-                            
+                room = await _context.Rooms
+                    .Where(r => r.RoomNumber == model.RoomNumber)
+                    .FirstOrDefaultAsync();
 
-                };
+                room.Vet = vet;
                 _context.Rooms.Update(room);
 
             }

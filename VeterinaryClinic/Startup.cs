@@ -85,6 +85,8 @@ namespace VeterinaryClinic
 
             });
 
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Mgo+DSMBMAY9C3t2V1hiQlRPd11dXmJWd1p/THNYflR1fV9DaUwxOX1dQl9gSXZScUVqWXhbc3RdTmg=");
+
             services.AddControllersWithViews();
         }
 

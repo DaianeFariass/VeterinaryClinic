@@ -223,20 +223,9 @@ namespace VeterinaryClinic.Controllers
                 return RedirectToAction("Index");
 
             }
-            return RedirectToAction("Criate");
-        }
-        public async Task<IActionResult> ConfirmDelete(int? id)
-        {
-            if (id == null)
-            {
-
-                return NotFound();
-
-            }
-            await _appointmentRespository.DeleteAppointment(id.Value);
             return RedirectToAction("Create");
-
         }
+     
 
     }
 }
