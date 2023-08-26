@@ -8,7 +8,7 @@ namespace VeterinaryClinic.Controllers.API
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class CustomersController : Controller
     {
         private readonly ICustomerRepository _customerRepository;

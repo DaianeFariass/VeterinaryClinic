@@ -27,6 +27,5 @@ namespace VeterinaryClinic.Repositories
         public IEnumerable<SelectListItem> GetComboCustomersEmail();
 
 
-
     }
 }

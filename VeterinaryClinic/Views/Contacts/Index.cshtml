@@ -6,10 +6,7 @@
 <h1>Contact</h1>
 
 <form method="post" asp-action="SendMail" autocomplete="off">
- @*   <div class="mb-2">
-        <label asp-for="Email"></label>
-        <select asp-for="Email" asp-items="Model.Vets" class="form-control"></select>
-    </div>*@
+
     <div class="mb-2">
         <label asp-for="Email"></label>
         <select asp-for="Email" asp-items="Model.Customers" class="form-control"></select>

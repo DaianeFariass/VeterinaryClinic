@@ -199,32 +199,49 @@ namespace VeterinaryClinic.Repositories
                 return;
             }
             var vet = await _context.Vets.FindAsync(model.VetId);
-            if (pet == null)
+            if (vet == null)
             {
                 return;
             }
-            var appointmentDetailTemp = await _context.AppointmentDetailsTemp
-                .Where(p => p.Pet.Id == pet.Id && p.Vet.Id == vet.Id)
-                .FirstOrDefaultAsync();
+            var appointmentDetailTemp = await _context.AppointmentDetailsTemp.FindAsync(model.Id);
 
+                appointmentDetailTemp.User = user;
+                appointmentDetailTemp.Pet = pet;
+                appointmentDetailTemp.Vet = vet;
+                appointmentDetailTemp.Date = model.Date;
+                appointmentDetailTemp.Time = model.Time;
+            
+            _context.AppointmentDetailsTemp.Update(appointmentDetailTemp);
 
-            if (appointmentDetailTemp == null)
-            {
-                appointmentDetailTemp = new AppointmentDetailTemp
-                {
-                    User = user,
-                    Pet = pet,
-                    Vet = vet,
-                    Date = model.Date,
-                    Time = model.Time,
-                    
-                };
-                _context.AppointmentDetailsTemp.Update(appointmentDetailTemp);
-
-            }
             await _context.SaveChangesAsync();
 
         }
 
+        public IQueryable GetAppointmentsWithUser()
+        {
+            return _context.Appointments.Include(a => a.User);
+        }
+
+        public IQueryable GetAppointmentsDetails()
+        {
+            return _context.AppointmentDetails
+                .Include(a => a.Pet)
+                .ThenInclude(a => a.Customer)
+                .ThenInclude(a => a.User)
+                .Include(a => a.Vet)
+                .ThenInclude(a => a.User);
+
+
+        }
+
+        public IQueryable GetAppointmentsDetailsTemp()
+        {
+            return _context.AppointmentDetailsTemp
+                .Include(a => a.Pet)
+                .ThenInclude(a => a.Customer)
+                .ThenInclude(a => a.User)
+                .Include(a => a.Vet)
+                .ThenInclude(a => a.User); 
+        }
     }
 }

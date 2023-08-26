@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Vereyon.Web;
 using VeterinaryClinic.Data;
+using VeterinaryClinic.Data.Entities;
 using VeterinaryClinic.Helpers;
 using VeterinaryClinic.Models;
 using VeterinaryClinic.Repositories;
@@ -21,12 +22,16 @@ namespace VeterinaryClinic.Controllers
         private readonly IConverterHelper _converterHelper;
         private readonly IBlobHelper _blobHelper;
         private readonly IFlashMessage _flashMessage;
+        private readonly IVetRepository _vetRepository;
+        private readonly IPetReportRepository _petReportRepository;
 
         public PetsController(IPetRepository petRepository,
             IUserHelper userHelper,
             IConverterHelper converterHelper,
             IBlobHelper blobHelper,
             IFlashMessage flashMessage,
+            IVetRepository vetRepository,
+            IPetReportRepository petReportRepository,
             DataContext context)
         {
             _petRepository = petRepository;
@@ -34,6 +39,8 @@ namespace VeterinaryClinic.Controllers
             _converterHelper = converterHelper;
             _blobHelper = blobHelper;
             _flashMessage = flashMessage;
+            _vetRepository = vetRepository;
+            _petReportRepository = petReportRepository;
             _context = context;
         }
 
@@ -42,6 +49,8 @@ namespace VeterinaryClinic.Controllers
         {
             return View(_petRepository.GetCustomerName());
         }
+
+
 
         // GET: Pets/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -59,6 +68,87 @@ namespace VeterinaryClinic.Controllers
 
             return View(pet);
         }
+        public IActionResult IndexPetReport()
+        {
+            return View(_petReportRepository.GetPetReport());
+        }
+
+        // GET: Pets/CreatePetReport
+        public IActionResult CreatePetReport()
+        {
+            var model = new PetReportViewModel
+            {
+                Pets = _petRepository.GetComboPets(),
+                Vets = _vetRepository.GetComboVets(),
+
+            };
+         
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreatePetReport(PetReportViewModel model)
+        {
+            if(ModelState.IsValid)
+            {
+                await _petReportRepository.AddItemToPetReportAsync(model, this.User.Identity.Name);
+                return RedirectToAction("IndexPetReport");
+            }
+           
+            return View(model);
+        }
+        public async Task<IActionResult> EditPetReport(int? id)
+        {
+            if (id == null)
+            {
+
+                return NotFound();
+
+            }
+            var reportToEdit = await _petReportRepository.GetByIdAsync(id.Value);
+
+            if (reportToEdit == null)
+            {
+                return NotFound();
+
+            }
+            var model = new PetReportViewModel
+            {
+                
+                Pets = _petRepository.GetComboPets(),
+                Vets = _vetRepository.GetComboVets(),
+                TestName = reportToEdit.TestName,
+                Diagnose = reportToEdit.Diagnose,
+                MedicineName = reportToEdit.MedicineName
+
+            };
+
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditPetReport(PetReportViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                await _petReportRepository.EditPetReportAsync(model, this.User.Identity.Name);
+                return RedirectToAction("IndexPetReport");
+            }
+            return View(model);
+
+        }
+        public async Task<IActionResult> DeletePetReport(int? id)
+        {
+            if (id == null)
+            {
+
+                return NotFound();
+
+            }
+            await _petReportRepository.DeletePetReportAsync(id.Value);
+            return RedirectToAction("IndexPetReport");
+
+        }
+
 
         // GET: Pets/Create
 
@@ -120,7 +210,6 @@ namespace VeterinaryClinic.Controllers
             {
                 return new NotFoundViewResult("PetNotFound");
             }
-            //var model = _converterHelper.ToPetViewModel(pet);
 
             var model = new PetViewModel
             {

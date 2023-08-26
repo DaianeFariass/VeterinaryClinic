@@ -82,7 +82,7 @@ namespace VeterinaryClinic.Repositories
             }
             var vet = await _context.Vets.FindAsync(model.VetId);
        
-                var roomIndex = new RoomViewModel
+                var roomIndex = new Room
                 {
                     RoomNumber = model.RoomNumber,
                     Type = model.TypeId.ToString(),
@@ -109,7 +109,7 @@ namespace VeterinaryClinic.Repositories
                   .OrderByDescending(a => a.RoomNumber);
 
         }
-        public async Task EditRoomAsync(RoomViewModel model, string username)
+        public async Task EditRoomAsync(RoomViewModel model, string username, bool isNew)
         {
             var user = await _userHelper.GetUserByEmailAsync(username);
             if (user == null)
@@ -118,25 +118,20 @@ namespace VeterinaryClinic.Repositories
 
             }
             var vet = await _context.Vets.FindAsync(model.VetId);
-            if (vet == null)
-            {
+
+            var room = await _context.Rooms.FindAsync(model.Id);
+            if(room == null) 
+            { 
                 return;
+            
             }
-            var room= await _context.Rooms
-                .Where(r => r.Vet.Id == vet.Id)
-                .FirstOrDefaultAsync();
-
-
-            if (room == null)
-            {
-                room = await _context.Rooms
-                    .Where(r => r.RoomNumber == model.RoomNumber)
-                    .FirstOrDefaultAsync();
-
+                room.Id = isNew ? 0 : model.Id;
+                room.RoomNumber = model.RoomNumber;
                 room.Vet = vet;
+                room.Type= model.TypeId;
+                room.Status = model.Status;
                 _context.Rooms.Update(room);
 
-            }
             await _context.SaveChangesAsync();
 
         }

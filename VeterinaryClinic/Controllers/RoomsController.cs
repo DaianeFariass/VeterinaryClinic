@@ -129,12 +129,8 @@ namespace VeterinaryClinic.Controllers
 
         // GET: Rooms/Edit/5
         public async Task<IActionResult> Edit(int? id)
-        {
-            var model = new RoomViewModel
-            {  
-                Vets = _roomRepository.GetComboVets(),
-                Types = _roomRepository.GetComboTypes()
-            };
+        {   
+                      
             if (id == null)
             {
                 return new NotFoundViewResult("RoomNotFound");
@@ -145,6 +141,14 @@ namespace VeterinaryClinic.Controllers
             {
                 return new NotFoundViewResult("RoomNotFound");
             }
+            var model = new RoomViewModel
+            {
+                RoomNumber = room.RoomNumber,
+                Vets = _roomRepository.GetComboVets(),
+                Types = _roomRepository.GetComboTypes(),
+                Status = room.Status,
+
+            };
             return View(model);
         }
 
@@ -179,7 +183,7 @@ namespace VeterinaryClinic.Controllers
                     }
                     else
                     {
-                        await _roomRepository.EditRoomAsync(model, this.User.Identity.Name);
+                        await _roomRepository.EditRoomAsync(model, this.User.Identity.Name, false);
                         return RedirectToAction("Index");
 
 

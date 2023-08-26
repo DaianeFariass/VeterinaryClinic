@@ -217,8 +217,5 @@ namespace VeterinaryClinic.Repositories
 
             return list;
         }
-
-
-
     }
 }

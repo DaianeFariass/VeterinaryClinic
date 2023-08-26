@@ -19,7 +19,7 @@ namespace VeterinaryClinic.Repositories
 
         public Task<IQueryable<Room>> GetRoomAsync(string userName);
 
-        public Task EditRoomAsync(RoomViewModel model, string username);
+        public Task EditRoomAsync(RoomViewModel model, string username, bool isNew);
 
     }
 }

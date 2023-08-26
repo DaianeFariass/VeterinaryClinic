@@ -23,5 +23,11 @@ namespace VeterinaryClinic.Repositories
         Task<AppointmentDetailTemp> GetAppointmentDetailTempAsync(int id);
 
         Task EditAppointmentDetailTempAsync(AppointmentViewModel model, string username);
+
+        public IQueryable GetAppointmentsWithUser();
+
+        public IQueryable GetAppointmentsDetails();
+
+        public IQueryable GetAppointmentsDetailsTemp();
     }
 }

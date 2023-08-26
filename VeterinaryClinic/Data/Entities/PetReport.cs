@@ -2,7 +2,7 @@
 
 namespace VeterinaryClinic.Data.Entities
 {
-    public class PetReport
+    public class PetReport  : IEntity
     {
         public int Id { get; set; }
 
@@ -16,10 +16,9 @@ namespace VeterinaryClinic.Data.Entities
         [Required]
         public string MedicineName { get; set; }
 
-        public Pet Pet { get; set; }
-
         public Vet Vet { get; set; }
 
-      
+        public Pet Pet { get; set; }
+
     }
 }
