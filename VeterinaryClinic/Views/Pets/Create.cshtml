@@ -3,14 +3,22 @@
 @{
     ViewData["Title"] = "Create";
 }
-
-<h1>Create</h1>
-
-<h4>Pet</h4>
-<hr />
+<!-- Hero Area Start -->
+<div style="height: 210px;" class="slider-area2 slider-height2 d-flex align-items-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="hero-cap text-center pt-50">
+                    <h2>Create Pet</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
 <flash dismissable="true" />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-4 offset-md-4">
         <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -29,29 +37,27 @@
                 <span asp-validation-for="DateOfBirth" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="TypeId" class="control-label"></label>
-                <select asp-for="TypeId" asp-items="Model.Types" class="form-control"></select>
+                <label asp-for="TypeId" style="display: flex; flex-direction: column; " class="control-label"></label>
+                <select asp-for="TypeId" asp-items="Model.Types" style="width: 100%; margin-bottom: 16px;" class="form-control"></select>
                 <span asp-validation-for="TypeId" class="text-danger"></span>
             </div>
-            <div class="form-group"> 
-                <div class="form-group">
-                <label asp-for="Gender" class="control-label"></label> <br />
+            <div class="form-group">
+                <label asp-for="Gender" style="display: flex; flex-direction: column; margin-top: 65px;" class="control-label"></label> <br />
                 <label>
                     <input asp-for="Gender" value="Male" type="radio" /> Male
                 </label>
                 <label>
                     <input asp-for="Gender" value="Female" type="radio" /> Female
-                </label>
-                </div>           
+                </label>         
             </div>
             <div class="form-group">
-                <label asp-for="CustomerId" class="control-label"></label>
+                <label asp-for="CustomerId"  class="control-label"></label>
                 <select asp-for="CustomerId" asp-items="Model.Customers" class="form-control"></select>
                 <span asp-validation-for="CustomerId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i>Create</button>
-                <a asp-action="Index" class="btn btn-success"><i class="fa fa-chevron-left"></i>Back to List</a>
+                <button type="submit" class="button button-contactForm boxed-btn"><i class="fa fa-save"></i>Create</button>
+                <a asp-action="Index" class="button button-contactForm boxed-btn"><i class="fa fa-chevron-left"></i>Back to List</a>
             </div>
         </form>
     </div>

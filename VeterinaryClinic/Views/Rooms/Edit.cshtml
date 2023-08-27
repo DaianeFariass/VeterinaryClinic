@@ -4,13 +4,22 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
-
-<h4>Room</h4>
-<hr />
+<!-- Hero Area Start -->
+<div style="height: 210px;" class="slider-area2 slider-height2 d-flex align-items-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="hero-cap text-center pt-50">
+                    <h2>Edit Pet</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
 <flash dismissable="true" />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-4 offset-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
@@ -20,13 +29,13 @@
                 <span asp-validation-for="RoomNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="TypeId" class="control-label"></label>
-                <select asp-for="TypeId" asp-items="Model.Types" class="form-control"></select>
+                <label asp-for="TypeId" style="display: flex; flex-direction: column;" class="control-label"></label>
+                <select asp-for="TypeId" asp-items="Model.Types" style="width: 100%; margin-bottom: 16px;" class="form-control"></select>
                 <span asp-validation-for="TypeId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <div class="form-group">
-                    <label asp-for="Status" class="control-label"></label> <br />
+                    <label asp-for="Status" style="display: flex; flex-direction: column; margin-top: 65px;" class="control-label"></label> <br />
                     <label>
                         <input asp-for="Status" value="Available" type="radio" /> Available
                     </label>
@@ -41,8 +50,8 @@
                 <span asp-validation-for="VetId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i>Save</button>
-                <a asp-action="Index" class="btn btn-success"><i class="fas fa-list"></i>Back to List</a>
+                <button type="submit" class="button button-contactForm boxed-btn"><i class="fa fa-save"></i>Save</button>
+                <a asp-action="Index" class="button button-contactForm boxed-btn"><i class="fa fa-chevron-left"></i>Back to List</a>
             </div>
         </form>
     </div>

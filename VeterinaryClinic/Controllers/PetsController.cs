@@ -53,6 +53,7 @@ namespace VeterinaryClinic.Controllers
 
 
         // GET: Pets/Details/5
+        [Route("detailspet")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -68,12 +69,15 @@ namespace VeterinaryClinic.Controllers
 
             return View(pet);
         }
+
+        [Route("indexpetreport")]
         public IActionResult IndexPetReport()
         {
             return View(_petReportRepository.GetPetReport());
         }
 
         // GET: Pets/CreatePetReport
+        [Route("createpetreport")]
         public IActionResult CreatePetReport()
         {
             var model = new PetReportViewModel
@@ -87,6 +91,7 @@ namespace VeterinaryClinic.Controllers
         }
 
         [HttpPost]
+        [Route("createpetreport")]
         public async Task<IActionResult> CreatePetReport(PetReportViewModel model)
         {
             if(ModelState.IsValid)
@@ -97,6 +102,7 @@ namespace VeterinaryClinic.Controllers
            
             return View(model);
         }
+        [Route("editpetreport")]
         public async Task<IActionResult> EditPetReport(int? id)
         {
             if (id == null)
@@ -126,6 +132,7 @@ namespace VeterinaryClinic.Controllers
             return View(model);
         }
         [HttpPost]
+        [Route("editpetreport")]
         public async Task<IActionResult> EditPetReport(PetReportViewModel model)
         {
             if (ModelState.IsValid)
@@ -136,6 +143,7 @@ namespace VeterinaryClinic.Controllers
             return View(model);
 
         }
+        [Route("deletepetreport")]
         public async Task<IActionResult> DeletePetReport(int? id)
         {
             if (id == null)
@@ -151,7 +159,7 @@ namespace VeterinaryClinic.Controllers
 
 
         // GET: Pets/Create
-
+        [Route("createpet")]
         public IActionResult Create()
         {
             var model = new PetViewModel
@@ -169,6 +177,7 @@ namespace VeterinaryClinic.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Route("createpet")]
         public async Task<IActionResult> Create(PetViewModel model)
         {
             if (ModelState.IsValid)
@@ -198,7 +207,7 @@ namespace VeterinaryClinic.Controllers
         }
 
         // GET: Pets/Edit/5
-
+        [Route("editpet")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -230,6 +239,7 @@ namespace VeterinaryClinic.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Route("editpet")]
         public async Task<IActionResult> Edit(PetViewModel model)
         {
 
@@ -274,7 +284,7 @@ namespace VeterinaryClinic.Controllers
         }
 
         // GET: Pets/Delete/5
-
+        [Route("deletepet")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -294,6 +304,7 @@ namespace VeterinaryClinic.Controllers
         // POST: Pets/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Route("deletepet")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var pet = await _petRepository.GetByIdAsync(id);

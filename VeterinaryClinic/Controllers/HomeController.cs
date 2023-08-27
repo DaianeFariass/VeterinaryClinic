@@ -23,9 +23,30 @@ namespace VeterinaryClinic.Controllers
             return View();
         }
 
+        [Route("about")]
+        public IActionResult About()
+        {
+            return View();
+        }
 
-      
+        [Route("services")]
+        public IActionResult Services()
+        {
+            return View();
+        }
 
-        
+        [Route("contact")]
+        public IActionResult Contact()
+        {
+            return View();
+        }
+
+
+
+
+
+
+
+
     }
 }

@@ -3,8 +3,19 @@
     ViewData["Title"] = "Register";
 }
 
-<h2>Register</h2>
-
+<!-- Hero Area Start -->
+<div style="height: 210px;" class="slider-area2 slider-height2 d-flex align-items-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="hero-cap text-center pt-50">
+                    <h2>Register New User</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
 <div class="row">
     <div class="col-md-4 offset-md-4">
         <form method="post">
@@ -24,14 +35,14 @@
                 <input asp-for="Username" class="form-control" />
                 <span asp-validation-for="Username" class="text-warning"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group" style="display: flex; flex-direction: column;">
                 <label asp-for="CountryId" class="control-label"></label>
-                <select asp-for="CountryId" asp-items="Model.Countries" class="form-control"></select>
+                <select asp-for="CountryId" asp-items="Model.Countries" style="width: 100%;" class="form-control"></select>
                 <span asp-validation-for="CountryId" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group" style="display: flex; flex-direction: column;">
                 <label asp-for="CityId" class="control-label"></label>
-                <select asp-for="CityId" asp-items="Model.Cities" class="form-control"></select>
+                <select asp-for="CityId" asp-items="Model.Cities" style="width: 100%;" class="form-control"></select>
                 <span asp-validation-for="CityId" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -55,7 +66,7 @@
                 <span asp-validation-for="Confirm" class="text-warning"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Register New User" class="btn btn-primary" />
+                <input style="margin-right: 16px;" type="submit" value="Register New User" class="btn btn-primary" />
             </div>
         </form>
     </div>
@@ -68,8 +79,7 @@
 </div>
 @section Scripts {
     @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script type="text/javascript">
         $(document).ready(function () {
             $("#CountryId").change(function () {
@@ -78,7 +88,7 @@
                     url: '@Url.Action("GetCitiesAsync","Account")',
                     type: 'POST',
                     dataType: 'json',
-                    data: {countryId: $("#CountryId").val()},
+                    data: { countryId: $("#CountryId").val() },
                     success: function (cities) {
                         debugger;
                         $("#CityId").append('<option value="0">(Select a city...)</option>');
@@ -99,6 +109,8 @@
     </script>
 
     }
+
+
 
 
 

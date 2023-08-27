@@ -1,28 +1,37 @@
 ﻿@model IEnumerable<VeterinaryClinic.Data.Entities.Appointment>
-
 @{
     ViewData["Title"] = "Index";
 }
 
+
+<!-- Hero Area Start -->
+<div style="height: 210px;" class="slider-area2 slider-height2 d-flex align-items-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="hero-cap text-center pt-50">
+                    <h2>Appointments</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css" />
 
 <br />
 
 
-<p>
-    <a asp-action="Create" class="btn btn-primary"><i class="fa fa-save"></i>Create New</a>
-   
-</p>
+<div class="container">
 
-<div class="row">
+    <a asp-action="Create" style="margin-bottom: 16px;" class="btn btn-primary"><i class="fa fa-save"></i>Create New</a>
+
     <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title">Appointments</h3>
             </div>
             <div class="panel-body">
-                <table class="table table-hover table-responsive table-striped" id="MyTable">
+                <table style="width: 100%;" class="table table-hover table-responsive table-striped" id="MyTable">
                     <thead>
                         <tr>
                             @if (this.User.IsInRole("Customer") || this.User.IsInRole("Vet"))
@@ -41,6 +50,7 @@
                                 @Html.DisplayNameFor(model => model.Lines)
                             </th>
                             <th></th>
+                            
                         </tr>
                     </thead>
                     <tbody>
@@ -66,9 +76,10 @@
                                 {
                                     <td>
                                         <a asp-action="ConfirmDelete" asp-route-id="@item.Id" id="btnDelete" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                                                                           
+
                                     </td>
                                 }
+                               
                             </tr>
                         }
                     </tbody>
@@ -89,6 +100,11 @@
         });
     </script>
 }
+
+
+
+
+
 
 
 

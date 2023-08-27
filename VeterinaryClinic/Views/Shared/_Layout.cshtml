@@ -28,13 +28,168 @@
     <link rel="stylesheet" href="assets/css/nice-select.css">
     <link rel="stylesheet" href="assets/css/style.css">
 
+
 </head>
 <body>
+   
     <div class="container">
         <main role="main" class="pb-3">
+            <!-- Preloader Start -->
+            <div id="preloader-active">
+                <div class="preloader d-flex align-items-center justify-content-center">
+                    <div class="preloader-inner position-relative">
+                        <div class="preloader-circle"></div>
+                        <div class="preloader-img pere-text">
+                            <img src="assets/img/logo/logo.png" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <header>
+                <!--? Header Start -->
+                <div class="header-area header-transparent">
+                    <div class="main-header header-sticky">
+                        <div class="container-fluid">
+                            <div class="row align-items-center">
+                                <!-- Logo -->
+                                <div class="col-xl-2 col-lg-2 col-md-1">
+                                    <div class="logo">
+                                        <a href="index.html"><img src="assets/img/logo/logo.png" alt=""></a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-10 col-lg-10 col-md-10">
+                                    <div class="menu-main d-flex align-items-center justify-content-end">
+                                        <!-- Main-menu -->
+                                        <div class="main-menu f-right d-none d-lg-block">
+                                            <nav>
+                                                <ul id="navigation">
+                                                    <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+                                                    <li><a asp-controller="Home" asp-action="About">About</a></li>
+                                                    <li><a asp-controller="Home" asp-action="Services">Services</a></li>
+                                                    <li><a asp-controller="Home" asp-action="Contact">Contact</a></li>
+                                                   
+                             
+                                                    
+                                                    @if (this.User.Identity.IsAuthenticated && this.User.IsInRole("Admin"))
+                                                    {
+                                                        <li>
+                                                            <a>Admin</a>
+                                                            <ul class="submenu">
+                                                                <li><a asp-controller="Vets" asp-action="Index">Vets</a></li>
+                                                                <li><a asp-controller="Countries" asp-action="">Countries and cities</a></li>
+
+                                                            </ul>
+                                                        </li>
+                                                    }
+                                                    @if (this.User.Identity.IsAuthenticated && this.User.IsInRole("Vet"))
+                                                    {
+                                                        <li>
+                                                            <a>Vet</a>
+                                                            <ul class="submenu">
+                                                                <li><a asp-controller="Customers" asp-action="Index">Customers</a></li>
+                                                                <li><a asp-controller="Pets" asp-action="Index">Pets</a></li>
+                                                                <li><a asp-controller="Appointments" asp-action="Index">Appointments</a></li>
+                                                                <li><a asp-controller="Appointments" asp-action="Notifications">Notifications</a></li>
+                                                                
+                                                            </ul>
+                                                        </li>
+                                                    }
+                                                    @if (this.User.Identity.IsAuthenticated && this.User.IsInRole("Receptionist"))
+                                                    {
+                                                        <li>
+                                                            <a>Reception</a>
+                                                            <ul class="submenu">
+                                                                <li><a asp-controller="Rooms" asp-action="Index">Rooms</a></li>
+                                                                <li><a asp-controller="Appointments" asp-action="Index">Appointments</a></li>
+                                                            </ul>
+                                                        </li>
+                                                    }
+                                                    @if (this.User.Identity.IsAuthenticated && this.User.IsInRole("Customer"))
+                                                    {
+                                                        <li>
+                                                            <a>Customer</a>
+                                                            <ul class="submenu">
+                                                                <li><a asp-controller="Appointments" asp-action="Index">Appointments</a></li>
+                                                            </ul>
+                                                        </li>
+                                                    }
+                                                    @*<li><a asp-controller="Contacts" asp-action="Index">Contact</a></li>*@
+                                                    @if (this.User.Identity.IsAuthenticated)
+                                                    {
+                                                        <li><a class="nav-link text-dark" asp-area="" asp-controller="Appointments" asp-action="Index">Appointments</a></li>
+                                                        <li><a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="ChangeUser">@this.User.Identity.Name</a></li>
+                                                     
+                                                    }                         
+                                                </ul>                                          
+                                            </nav>
+                                        </div>
+                                        <div class="header-right-btn f-right d-none d-lg-block ml-30">
+                                            @if (this.User.Identity.IsAuthenticated)
+                                            {
+                                                <a asp-controller="Account" asp-action="Logout" class="header-btn">Logout</a>
+
+                                            }
+                                            else
+                                            {
+                                                <a asp-controller="Account" asp-action="Login" class="header-btn">Login</a>
+
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Login -->
+                            <div class="col-12">
+                                <div class="mobile_menu d-block d-lg-none"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    </div>
+
+    <!-- Header End -->
+    </header>
+
+
+             
             @RenderBody()
+
         </main>
     </div>
+
+    <!-- JS here -->
+
+    <script src="./assets/js/vendor/modernizr-3.5.0.min.js"></script>
+    <!-- Jquery, Popper, Bootstrap -->
+    <script src="./assets/js/vendor/jquery-1.12.4.min.js"></script>
+    <script src="./assets/js/popper.min.js"></script>
+    <script src="./assets/js/bootstrap.min.js"></script>
+    <!-- Jquery Mobile Menu -->
+    <script src="./assets/js/jquery.slicknav.min.js"></script>
+
+    <!-- Jquery Slick , Owl-Carousel Plugins -->
+    <script src="./assets/js/owl.carousel.min.js"></script>
+    <script src="./assets/js/slick.min.js"></script>
+    <!-- One Page, Animated-HeadLin -->
+    <script src="./assets/js/wow.min.js"></script>
+    <script src="./assets/js/animated.headline.js"></script>
+    <script src="./assets/js/jquery.magnific-popup.js"></script>
+
+    <!-- Nice-select, sticky -->
+    <script src="./assets/js/jquery.nice-select.min.js"></script>
+    <script src="./assets/js/jquery.sticky.js"></script>
+
+    <!-- contact js -->
+    <script src="./assets/js/contact.js"></script>
+    <script src="./assets/js/jquery.form.js"></script>
+    <script src="./assets/js/jquery.validate.min.js"></script>
+    <script src="./assets/js/mail-script.js"></script>
+    <script src="./assets/js/jquery.ajaxchimp.min.js"></script>
+
+    <!-- Jquery Plugins, main Jquery -->
+    <script src="./assets/js/plugins.js"></script>
+    <script src="./assets/js/main.js"></script>
+
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

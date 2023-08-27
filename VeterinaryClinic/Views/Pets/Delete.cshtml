@@ -4,12 +4,22 @@
     ViewData["Title"] = "Delete";
 }
 
-<h1>Delete</h1>
-
-<h3>Are you sure you want to delete this?</h3>
+<div style="height: 210px;" class="slider-area2 slider-height2 d-flex align-items-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="hero-cap text-center pt-50">
+                    <h2>Delete Pet</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<h3 style="margin-left: 10%;">Are you sure you want to delete this Pet?</h3>
+<br />
 <div>
-    <hr />
-    <div class="row">
+    <div class="container">
         <div class="col-md-8">
             <dl class="row">
                 <dt class="col-sm-3">
@@ -44,7 +54,7 @@
     </div>
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" />
-        <a asp-action="Index" class="btn btn-success"><i class="fas fa-list"></i>Back to List</a>
+        <button type="submit" style="margin-right: 16px; margin-left: 10%;" class="button button-contactForm boxed-btn"><i class="fa fa-trash"></i>Delete</button>
+        <a asp-action="Index" class="button button-contactForm boxed-btn"><i class="fa fa-chevron-left"></i>Back to List</a>
     </form>
 </div>

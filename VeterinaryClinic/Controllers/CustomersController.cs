@@ -38,6 +38,7 @@ namespace VeterinaryClinic.Controllers
         }
 
         // GET: Customers/Details/5
+        [Route("detailscustomer")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -56,6 +57,7 @@ namespace VeterinaryClinic.Controllers
         }
 
         // GET: Customers/Create
+        [Route("createcustomer")]
         public IActionResult Create()
         {
             return View();
@@ -66,6 +68,7 @@ namespace VeterinaryClinic.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Route("createcustomer")]
         public async Task<IActionResult> Create(CustomerViewModel model)
         {
             var email = Request.Form["Email"].ToString();
@@ -93,6 +96,7 @@ namespace VeterinaryClinic.Controllers
 
 
         // GET: Customers/Edit/5
+        [Route("editcustomer")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -115,6 +119,7 @@ namespace VeterinaryClinic.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Route("editcustomer")]
         public async Task<IActionResult> Edit(CustomerViewModel model)
         {
 
@@ -152,6 +157,7 @@ namespace VeterinaryClinic.Controllers
         }
 
         // GET: Customers/Delete/5
+        [Route("deletecustomer")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -171,6 +177,7 @@ namespace VeterinaryClinic.Controllers
         // POST: Customers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Route("deletecustomer")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var customer = await _customerRepository.GetByIdAsync(id);

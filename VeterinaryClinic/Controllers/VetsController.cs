@@ -41,6 +41,7 @@ namespace VeterinaryClinic.Controllers
         }
 
         // GET: Vets/Details/5
+        [Route("detailsvet")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -58,7 +59,7 @@ namespace VeterinaryClinic.Controllers
         }
 
         // GET: Vets/Create
-     
+        [Route("createvet")]
         public IActionResult Create()
         {
             var model = new VetViewModel
@@ -74,6 +75,7 @@ namespace VeterinaryClinic.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Route("createvet")]
         public async Task<IActionResult> Create(VetViewModel model)
         {
             
@@ -85,7 +87,7 @@ namespace VeterinaryClinic.Controllers
         }
 
         // GET: Vets/Edit/5
-      
+        [Route("editvet")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -107,6 +109,7 @@ namespace VeterinaryClinic.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Route("editvet")]
         public async Task<IActionResult> Edit(VetViewModel model)
         {
             
@@ -143,7 +146,7 @@ namespace VeterinaryClinic.Controllers
         }
 
         // GET: Vets/Delete/5
-        
+        [Route("deletevet")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -163,6 +166,7 @@ namespace VeterinaryClinic.Controllers
         // POST: Vets/Delete/5    
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Route("deletevet")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var vet = await _vetRepository.GetByIdAsync(id);

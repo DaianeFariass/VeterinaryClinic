@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations.Internal;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Vereyon.Web;
@@ -20,15 +21,15 @@ namespace VeterinaryClinic.Repositories
         private readonly IUserHelper _userHelper;
 
 
-        public AppointmentRepository(DataContext context, 
-            IUserHelper userHelper) : base(context) 
+        public AppointmentRepository(DataContext context,
+            IUserHelper userHelper) : base(context)
         {
-             _context = context;
-             _userHelper = userHelper;
-            
+            _context = context;
+            _userHelper = userHelper;
+
         }
-       
-      
+
+
         public async Task AddItemToAppointmenteAsync(AppointmentViewModel model, string userName)
         {
             var user = await _userHelper.GetUserByEmailAsync(userName);
@@ -64,29 +65,29 @@ namespace VeterinaryClinic.Repositories
                 };
                 _context.AppointmentDetailsTemp.Add(appointmentDetailTemp);
             }
-            else 
-            { 
+            else
+            {
                 _context.AppointmentDetailsTemp.Update(appointmentDetailTemp);
-            
+
             }
             await _context.SaveChangesAsync();
         }
 
-        public async Task<bool> ConfirmAppointmentAsync(string userName)
+        public async Task<Appointment> ConfirmAppointmentAsync(string userName)
         {
             var user = await _userHelper.GetUserByEmailAsync(userName);
-            if(user == null)
+            if (user == null)
             {
-                return false;
+                throw new NotImplementedException();
             }
             var appointmentTmps = await _context.AppointmentDetailsTemp
                 .Include(p => p.Pet)
                 .Include(v => v.Vet)
                 .Where(a => a.User == user)
                 .ToListAsync();
-            if(appointmentTmps == null || appointmentTmps.Count == 0)
+            if (appointmentTmps == null || appointmentTmps.Count == 0)
             {
-                return false;
+                throw new NotImplementedException();
             }
             var details = appointmentTmps.Select(a => new AppointmentDetail
             {
@@ -96,7 +97,7 @@ namespace VeterinaryClinic.Repositories
                 Time = a.Time
 
             }).ToList();
-           
+
             var appointment = new Appointment
             {
                 Date = DateTime.UtcNow,
@@ -107,30 +108,30 @@ namespace VeterinaryClinic.Repositories
             await CreateAsync(appointment);
             _context.AppointmentDetailsTemp.RemoveRange(appointmentTmps);
             await _context.SaveChangesAsync();
-            return true;
-            
+            return appointment;
+
         }
 
         public async Task DeleteDetailTempAsync(int id)
         {
             var appointmentDetailTemp = await _context.AppointmentDetailsTemp.FindAsync(id);
-            if(appointmentDetailTemp == null) 
+            if (appointmentDetailTemp == null)
             {
                 return;
-            
+
             }
             _context.AppointmentDetailsTemp.Remove(appointmentDetailTemp);
             await _context.SaveChangesAsync();
-            
+
         }
 
         public async Task<IQueryable<Appointment>> GetApointmentAsync(string userName)
         {
             var user = await _userHelper.GetUserByEmailAsync(userName);
-            if (user == null) 
-            { 
+            if (user == null)
+            {
                 return null;
-            
+
             }
             if (await _userHelper.IsUserInRoleAsync(user, "Customer") || (await _userHelper.IsUserInRoleAsync(user, "Vet")))
             {
@@ -166,23 +167,23 @@ namespace VeterinaryClinic.Repositories
         public async Task ModifyAppointmentDetailAsync(int id)
         {
             var appointmentDetailTemp = await _context.AppointmentDetailsTemp.FindAsync(id);
-            if (appointmentDetailTemp == null) 
-            { 
+            if (appointmentDetailTemp == null)
+            {
                 return;
-            
+
             }
-            if(appointmentDetailTemp.Id > 0)
+            if (appointmentDetailTemp.Id > 0)
             {
                 _context.AppointmentDetailsTemp.Update(appointmentDetailTemp);
                 await _context.SaveChangesAsync();
             }
-            
+
         }
-  
+
         public async Task<AppointmentDetailTemp> GetAppointmentDetailTempAsync(int id)
         {
-           return await _context.AppointmentDetailsTemp.FindAsync(id);
-               
+            return await _context.AppointmentDetailsTemp.FindAsync(id);
+
         }
 
         public async Task EditAppointmentDetailTempAsync(AppointmentViewModel model, string username)
@@ -205,12 +206,12 @@ namespace VeterinaryClinic.Repositories
             }
             var appointmentDetailTemp = await _context.AppointmentDetailsTemp.FindAsync(model.Id);
 
-                appointmentDetailTemp.User = user;
-                appointmentDetailTemp.Pet = pet;
-                appointmentDetailTemp.Vet = vet;
-                appointmentDetailTemp.Date = model.Date;
-                appointmentDetailTemp.Time = model.Time;
-            
+            appointmentDetailTemp.User = user;
+            appointmentDetailTemp.Pet = pet;
+            appointmentDetailTemp.Vet = vet;
+            appointmentDetailTemp.Date = model.Date;
+            appointmentDetailTemp.Time = model.Time;
+
             _context.AppointmentDetailsTemp.Update(appointmentDetailTemp);
 
             await _context.SaveChangesAsync();
@@ -241,7 +242,47 @@ namespace VeterinaryClinic.Repositories
                 .ThenInclude(a => a.Customer)
                 .ThenInclude(a => a.User)
                 .Include(a => a.Vet)
-                .ThenInclude(a => a.User); 
+                .ThenInclude(a => a.User);
+        }
+
+        public async Task SendAppointmentNotification(Appointment appointment, string username, NotificationTypes notificationTypes)
+        {
+            var user = await _userHelper.GetUserByEmailAsync(username);
+            if (user == null)
+            {
+                return;
+
+            }
+            var hasCustomerRole = await _userHelper.IsUserInRoleAsync(user, "Customer");
+            var hasReceptionistRole = await _userHelper.IsUserInRoleAsync(user, "Receptionist");
+
+            if (hasCustomerRole == false && hasReceptionistRole == false)
+            {
+                return;
+            }
+        
+
+            var notification = new Notifications
+            {
+                Appointment = appointment,
+                NotificationTypes = notificationTypes,
+                IsRead = false,
+
+            };
+
+            _context.Notifications.Add(notification);
+
+            await _context.SaveChangesAsync();
+
+
+        }
+
+        public IQueryable GetNotificationsAsync()
+        {
+
+            return _context.Notifications
+                .Include(n => n.Appointment);
+                
         }
     }
 }

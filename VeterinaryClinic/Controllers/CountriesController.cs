@@ -26,6 +26,7 @@ namespace VeterinaryClinic.Controllers
         {
             return View(_countryRepository.GetCountriesWithCities());
         }
+        [Route("deletecity")]
         public async Task<IActionResult> DeleteCity(int? id)
         {
             if (id == null)
@@ -42,7 +43,7 @@ namespace VeterinaryClinic.Controllers
             var countryId = await _countryRepository.DeleteCityAsync(city);
             return this.RedirectToAction($"Details", new { id = countryId });
         }
-
+        [Route("editcity")]
         public async Task<IActionResult> EditCity(int? id)
         {
             if (id == null)
@@ -61,6 +62,7 @@ namespace VeterinaryClinic.Controllers
 
 
         [HttpPost]
+        [Route("editcity")]
         public async Task<IActionResult> EditCity(City city)
         {
             if (this.ModelState.IsValid)
@@ -74,7 +76,7 @@ namespace VeterinaryClinic.Controllers
 
             return this.View(city);
         }
-
+        [Route("addcity")]
         public async Task<IActionResult> AddCity(int? id)
         {
             if (id == null)
@@ -93,6 +95,7 @@ namespace VeterinaryClinic.Controllers
         }
 
         [HttpPost]
+        [Route("addcity")]
         public async Task<IActionResult> AddCity(CityViewModel model)
         {
             if (this.ModelState.IsValid)
@@ -103,7 +106,7 @@ namespace VeterinaryClinic.Controllers
 
             return this.View(model);
         }
-
+        [Route("detailscountry")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -119,7 +122,7 @@ namespace VeterinaryClinic.Controllers
 
             return View(country);
         }
-
+        [Route("createcountry")]
         public IActionResult Create()
         {
             return View();
@@ -127,6 +130,7 @@ namespace VeterinaryClinic.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Route("createcountry")]
         public async Task<IActionResult> Create(Country country)
         {
             if (ModelState.IsValid)
@@ -146,7 +150,7 @@ namespace VeterinaryClinic.Controllers
 
             return View(country);
         }
-
+        [Route("editcountry")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -164,6 +168,7 @@ namespace VeterinaryClinic.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Route("editcountry")]
         public async Task<IActionResult> Edit(Country country)
         {
             if (ModelState.IsValid)

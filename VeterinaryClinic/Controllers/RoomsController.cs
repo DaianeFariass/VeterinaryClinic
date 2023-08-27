@@ -40,6 +40,7 @@ namespace VeterinaryClinic.Controllers
         }
 
         // GET: Rooms/Details/5
+        [Route("detailsroom")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -57,6 +58,7 @@ namespace VeterinaryClinic.Controllers
         }
 
         // GET: Rooms/Create
+        [Route("createroom")]
         public IActionResult Create()
         {
             var model = new RoomViewModel
@@ -74,6 +76,7 @@ namespace VeterinaryClinic.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Route("createroom")]
         public async Task<IActionResult> Create(RoomViewModel model)
         {
            
@@ -128,6 +131,7 @@ namespace VeterinaryClinic.Controllers
         }
 
         // GET: Rooms/Edit/5
+        [Route("editroom")]
         public async Task<IActionResult> Edit(int? id)
         {   
                       
@@ -157,6 +161,7 @@ namespace VeterinaryClinic.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Route("editroom")]
         public async Task<IActionResult> Edit(RoomViewModel model)
         {
           
@@ -207,6 +212,7 @@ namespace VeterinaryClinic.Controllers
         }
 
         // GET: Rooms/Delete/5
+        [Route("deleteroom")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -226,6 +232,7 @@ namespace VeterinaryClinic.Controllers
         // POST: Rooms/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Route("deleteroom")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var room = await _roomRepository.GetByIdAsync(id);

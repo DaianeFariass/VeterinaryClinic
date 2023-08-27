@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Vereyon.Web;
+using VeterinaryClinic.Data;
 using VeterinaryClinic.Data.Entities;
 using VeterinaryClinic.Helpers;
 using VeterinaryClinic.Models;
@@ -39,11 +40,13 @@ namespace VeterinaryClinic.Controllers
             var model = await _appointmentRespository.GetApointmentAsync(this.User.Identity.Name);
             return View(model);
         }
+        [Route("create")]
         public async Task<IActionResult> Create()
         {
             var model = await _appointmentRespository.GetDetailsTempsAsync(this.User.Identity.Name);
             return View(model);
         }
+        [Route("addappointment")]
         public IActionResult AddAppointment()
         {
             
@@ -60,6 +63,7 @@ namespace VeterinaryClinic.Controllers
             return View(model);
         }
         [HttpPost]
+        [Route("addappointment")]
         public async Task<IActionResult> AddAppointment(AppointmentViewModel model)
         {
             if(ModelState.IsValid) 
@@ -110,6 +114,7 @@ namespace VeterinaryClinic.Controllers
             
             return View(model);
         }
+        [Route("editappointment")]
         public async Task<IActionResult> EditAppointment(int? id)
         {
             if (id == null)
@@ -136,6 +141,7 @@ namespace VeterinaryClinic.Controllers
             return View(model);
         }
         [HttpPost]
+        [Route("editappointment")]
         public async Task<IActionResult> EditAppointment(AppointmentViewModel model)
         {
             if (ModelState.IsValid)
@@ -217,15 +223,24 @@ namespace VeterinaryClinic.Controllers
         }
         public async Task<IActionResult> ConfirmAppointment()
         {
+           
             var response = await _appointmentRespository.ConfirmAppointmentAsync(this.User.Identity.Name);  
-            if(response)
-            {
+           
+                await _appointmentRespository.SendAppointmentNotification(response, this.User.Identity.Name, NotificationTypes.Create);
                 return RedirectToAction("Index");
 
-            }
-            return RedirectToAction("Create");
+            
+           
         }
-     
+        [Route("notifications")]
+        public IActionResult Notifications()
+        {
+
+            return View();
+        }
+
+
+
 
     }
 }

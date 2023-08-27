@@ -35,7 +35,7 @@ namespace VeterinaryClinic.Controllers
             _countryRepository = countryRepository;
             _configuration = configuration;
         }
-       
+        [Route("login")]
         public ActionResult Login() 
         { 
             if(User.Identity.IsAuthenticated) 
@@ -45,6 +45,7 @@ namespace VeterinaryClinic.Controllers
             return View();      
         }
         [HttpPost]
+        [Route("login")]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (ModelState.IsValid)
@@ -73,6 +74,7 @@ namespace VeterinaryClinic.Controllers
 
         }
         //[Authorize(Roles = "Admin")]
+        [Route("register")]
         public IActionResult Register()
         {
             var model = new RegisterNewUserViewModel
@@ -84,6 +86,7 @@ namespace VeterinaryClinic.Controllers
         }
 
         [HttpPost]
+        [Route("register")]
         public async Task<IActionResult> Register(RegisterNewUserViewModel model)
         {
             if (ModelState.IsValid)
@@ -110,7 +113,8 @@ namespace VeterinaryClinic.Controllers
                         ModelState.AddModelError(string.Empty, "The user couldn't be created.");
                         return View(model);
                     }
-
+                    await _userHelper.AddUserToRoleAsync(user, "Customer");
+                   
                     string myToken = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
                     string tokenLink = Url.Action("ConfirmEmail", "Account", new
                     {
@@ -134,6 +138,7 @@ namespace VeterinaryClinic.Controllers
             return View(model);        
         }
         //[Authorize(Roles = "Admin, Customer, Vet")]
+        [Route("changeuser")]
         public async Task<IActionResult> ChangeUser()
         {
             var user = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
@@ -163,6 +168,7 @@ namespace VeterinaryClinic.Controllers
             return View(model);
         }
         [HttpPost]
+        [Route("changeuser")]
         public async Task<IActionResult> ChangeUser(ChangeUserViewModel model)
         {
             if (ModelState.IsValid)
@@ -195,12 +201,14 @@ namespace VeterinaryClinic.Controllers
             return View(model);
         }
         //[Authorize(Roles = "Admin, Customer, Vet")]
+        [Route("changepassword")]
         public IActionResult ChangePassword()
         {
             return View();
 
         }
         [HttpPost]
+        [Route("changepassword")]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
         {
             if (ModelState.IsValid)
@@ -293,11 +301,15 @@ namespace VeterinaryClinic.Controllers
             return View();
 
         }
+
+        [Route("recoverpassword")]
         public IActionResult RecoverPassword()
         {
             return View();
         }
+
         [HttpPost]
+        [Route("recoverpassword")]
         public async Task<IActionResult> RecoverPassword(RecoverPasswordViewModel model)
         {
             if (this.ModelState.IsValid)
@@ -332,7 +344,7 @@ namespace VeterinaryClinic.Controllers
             return this.View(model);
         }
 
-
+        [Route("resetpassword")]
         public IActionResult ResetPassword(string token)
         {
             return View();
@@ -340,6 +352,7 @@ namespace VeterinaryClinic.Controllers
 
 
         [HttpPost]
+        [Route("resetpassword")]
         public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
         {
             var user = await _userHelper.GetUserByEmailAsync(model.Username);

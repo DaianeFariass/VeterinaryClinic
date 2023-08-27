@@ -2,11 +2,20 @@
 @{
     ViewData["Title"] = "AddCity";
 }
-
-<h4>City</h4>
-<hr />
+<!-- Hero Area Start -->
+<div style="height: 210px;" class="slider-area2 slider-height2 d-flex align-items-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="hero-cap text-center pt-50">
+                    <h2>Add City</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-4 offset-md-4">
         <form asp-action="AddCity">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="CountryId" />
@@ -18,8 +27,8 @@
             </div>
 
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-                <a asp-action="Index" class="btn btn-success">Back to List</a>
+                <input type="submit" value="Create" class="button button-contactForm boxed-btn" />
+                <a asp-action="Index" class="button button-contactForm boxed-btn"><i class="fa fa-chevron-left"></i>Back to List</a>
             </div>
         </form>
     </div>

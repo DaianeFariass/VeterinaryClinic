@@ -3,17 +3,29 @@
     ViewData["Title"] = "Create";
 }
 
+<!-- Hero Area Start -->
+<div style="height: 210px;" class="slider-area2 slider-height2 d-flex align-items-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="hero-cap text-center pt-50">
+                    <h2>Create Appointment</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css" />
 
 <br />
 
-<p>
 
-    <a asp-action="AddAppointment" class="btn btn-success"><i class="fa fa-save"></i>Add Appointment</a>
-    <a asp-action="ConfirmAppointment" id="btnConfirm" class="btn btn-primary"><i class="fa fa-circle-check"></i>Confirm Appointment</a>
-</p>
 
-<div class="row">
+<div class="container">
+    <a asp-action="AddAppointment" style="margin-bottom: 16px;" class="btn btn-success"><i class="fa fa-save"></i>Add Appointment</a>
+    <a asp-action="ConfirmAppointment" style="margin-bottom: 16px;" id="btnConfirm" class="btn btn-primary"><i class="fa fa-circle-check"></i>Confirm Appointment</a>
+   
     <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -79,6 +91,7 @@
                 <p>Do you want to confirm the appointment ?</p>
             </div>
             <div class="modal-footer">
+                
                 <button type="button" class="btn btn-danger" id="btnYesConfirm">Yes</button>
                 <button type="button" class="btn btn-success" id="btnNoConfirm">No</button>
             </div>
