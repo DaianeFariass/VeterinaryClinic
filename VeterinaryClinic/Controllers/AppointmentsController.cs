@@ -52,14 +52,13 @@ namespace VeterinaryClinic.Controllers
             
             var model = new AppointmentViewModel
             {
-
                 Pets = _petRepository.GetComboPets(),
                 Vets = _vetRepository.GetComboVets(),
                 Date = DateTime.Now.Date,
-                Time = DateTime.Now.AddHours(8),
-                
-       
+                Time = DateTime.Now.AddHours(8),     
             };
+            ViewBag.Pets = model.Pets;
+            ViewBag.Vets = model.Vets;
             return View(model);
         }
         [HttpPost]
@@ -80,6 +79,8 @@ namespace VeterinaryClinic.Controllers
                         Time = DateTime.Now.AddHours(8),
 
                     };
+                    ViewBag.Pets = model.Pets;
+                    ViewBag.Vets = model.Vets;
                     return View(model);
                 }
                 var appointments = await _appointmentRespository.GetDetailsTempsAsync(this.User.Identity.Name);
@@ -99,6 +100,8 @@ namespace VeterinaryClinic.Controllers
                         Time = DateTime.Now.AddHours(8),
 
                     };
+                    ViewBag.Pets = model.Pets;
+                    ViewBag.Vets = model.Vets;
                     return View(model);
 
                 }
@@ -137,7 +140,8 @@ namespace VeterinaryClinic.Controllers
                 Date = DateTime.Now.Date,
                 Time = DateTime.Now.AddHours(8),
             };
-
+            ViewBag.Pets = model.Pets;
+            ViewBag.Vets = model.Vets;
             return View(model);
         }
         [HttpPost]
@@ -159,6 +163,8 @@ namespace VeterinaryClinic.Controllers
                             Time = DateTime.Now.AddHours(8),
 
                         };
+                        ViewBag.Pets = model.Pets;
+                        ViewBag.Vets = model.Vets;
                         return View(model);
                     }
                     var appointments = await _appointmentRespository.GetDetailsTempsAsync(this.User.Identity.Name);
@@ -178,6 +184,8 @@ namespace VeterinaryClinic.Controllers
                             Time = DateTime.Now.AddHours(8),
 
                         };
+                        ViewBag.Pets = model.Pets;
+                        ViewBag.Vets = model.Vets;
                         return View(model);
 
                     }

@@ -20,6 +20,14 @@ namespace VeterinaryClinic.Models
         [Display(Name = "Type")]
         public string TypeId { get; set; }
         public IEnumerable<SelectListItem> Types { get; set; }
+
+        public string CustomerWithImage
+        {
+            get
+            {
+                return ImageId + " " + Name;
+            }
+        }
     }
 
 }

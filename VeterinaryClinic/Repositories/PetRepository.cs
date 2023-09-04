@@ -48,8 +48,10 @@ namespace VeterinaryClinic.Repositories
                 Text = "(Select your Pet...)",
                 Value = "0"
             });
-
+            
+           
             return list;
+            
         }
         public IEnumerable<SelectListItem> GetComboCustomers()
         {
@@ -65,7 +67,7 @@ namespace VeterinaryClinic.Repositories
                 Text = "(Select the Customer...)",
                 Value = "0"
             });
-
+            
             return list;
         }
         public IEnumerable<SelectListItem> GetComboTypes()

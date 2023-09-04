@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Vereyon.Web;
@@ -86,7 +88,8 @@ namespace VeterinaryClinic.Controllers
                 Vets = _vetRepository.GetComboVets(),
 
             };
-         
+            ViewBag.Pets = model.Pets;
+            ViewBag.Vets = model.Vets;
             return View(model);
         }
 
@@ -128,7 +131,8 @@ namespace VeterinaryClinic.Controllers
                 MedicineName = reportToEdit.MedicineName
 
             };
-
+            ViewBag.Pets = model.Pets;
+            ViewBag.Vets = model.Vets;
             return View(model);
         }
         [HttpPost]
@@ -162,6 +166,7 @@ namespace VeterinaryClinic.Controllers
         [Route("createpet")]
         public IActionResult Create()
         {
+                   
             var model = new PetViewModel
             {
                 ImageId = Guid.NewGuid(),
@@ -169,6 +174,8 @@ namespace VeterinaryClinic.Controllers
                 Types = _petRepository.GetComboTypes(),
                 Customers = _petRepository.GetComboCustomers(),
             };
+            ViewBag.Types = model.Types;
+            ViewBag.Customers = model.Customers;
             return View(model);
         }
 
@@ -192,6 +199,8 @@ namespace VeterinaryClinic.Controllers
                         Types = _petRepository.GetComboTypes(),
                         Customers = _petRepository.GetComboCustomers(),
                     };
+                    ViewBag.Types = model.Types;
+                    ViewBag.Customers = model.Customers;
                     return View(model);
 
                 }
@@ -230,7 +239,8 @@ namespace VeterinaryClinic.Controllers
                 Gender = pet.Gender,
                 Customers = _petRepository.GetComboCustomers(),
             };
-            
+            ViewBag.Types = model.Types;
+            ViewBag.Customers = model.Customers;
             return View(model);
         }
 
@@ -257,6 +267,8 @@ namespace VeterinaryClinic.Controllers
                             Types = _petRepository.GetComboTypes(),
                             Customers = _petRepository.GetComboCustomers(),
                         };
+                        ViewBag.Types = model.Types;
+                        ViewBag.Customers = model.Customers;
                         return View(model);
 
                     }
@@ -332,6 +344,8 @@ namespace VeterinaryClinic.Controllers
         {
             return View();
         }
+  
+       
 
 
     }

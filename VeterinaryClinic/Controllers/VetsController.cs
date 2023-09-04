@@ -67,6 +67,7 @@ namespace VeterinaryClinic.Controllers
                 Specialities = _vetRepository.GetComboSpecialities(),
 
             };
+            ViewBag.Specialities = model.Specialities;
             return View(model);
         }
 
@@ -100,7 +101,13 @@ namespace VeterinaryClinic.Controllers
             {
                 return new NotFoundViewResult("VetNotFound");
             }
-            var model = _converterHelper.ToVetViewModel(vet);
+            var model = new VetViewModel
+            {
+                Specialities = _vetRepository.GetComboSpecialities(),
+
+            };            
+            ViewBag.Specialities = model.Specialities;
+            model = _converterHelper.ToVetViewModel(vet);
             return View(model);
         }
 
@@ -127,6 +134,7 @@ namespace VeterinaryClinic.Controllers
                     }
                     var vet = _converterHelper.ToVet(model, imageId,false);
                     vet.User = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
+                    vet.Speciality = model.SpecialityId;
                     await _vetRepository.UpdateAsync(vet);
                 }
                 catch (DbUpdateConcurrencyException)

@@ -68,6 +68,8 @@ namespace VeterinaryClinic.Controllers
                 Types = _roomRepository.GetComboTypes(),
                           
             };
+            ViewBag.Vets = model.Vets;
+            ViewBag.Types = model.Types;
             return View(model);
         }
 
@@ -96,6 +98,8 @@ namespace VeterinaryClinic.Controllers
                         Types = _roomRepository.GetComboTypes(),
 
                     };
+                    ViewBag.Vets = model.Vets;
+                    ViewBag.Types = model.Types;
                     return View(model);
 
                 }
@@ -112,6 +116,8 @@ namespace VeterinaryClinic.Controllers
                         Types = _roomRepository.GetComboTypes(),
 
                     };
+                    ViewBag.Vets = model.Vets;
+                    ViewBag.Types = model.Types;
                     return View(model);
 
                 }
@@ -153,6 +159,8 @@ namespace VeterinaryClinic.Controllers
                 Status = room.Status,
 
             };
+            ViewBag.Vets = model.Vets;
+            ViewBag.Types = model.Types;
             return View(model);
         }
 
@@ -183,6 +191,8 @@ namespace VeterinaryClinic.Controllers
                             Types = _roomRepository.GetComboTypes(),
 
                         };
+                        ViewBag.Vets = model.Vets;
+                        ViewBag.Types = model.Types;
                         return View(model);
 
                     }

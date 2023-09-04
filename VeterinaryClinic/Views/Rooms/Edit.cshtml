@@ -29,13 +29,15 @@
                 <span asp-validation-for="RoomNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="TypeId" style="display: flex; flex-direction: column;" class="control-label"></label>
-                <select asp-for="TypeId" asp-items="Model.Types" style="width: 100%; margin-bottom: 16px;" class="form-control"></select>
+                <label asp-for="TypeId" class="control-label"></label>
+                <ejs-combobox id="type" ejs-for="TypeId" dataSource="@ViewBag.Types" placeholder="Choose a Type">
+                    <e-combobox-fields value="Text" Text="Text"></e-combobox-fields>
+                </ejs-combobox>
                 <span asp-validation-for="TypeId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <div class="form-group">
-                    <label asp-for="Status" style="display: flex; flex-direction: column; margin-top: 65px;" class="control-label"></label> <br />
+                    <label asp-for="Status" class="control-label"></label> <br />
                     <label>
                         <input asp-for="Status" value="Available" type="radio" /> Available
                     </label>
@@ -46,7 +48,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="VetId" class="control-label"></label>
-                <select asp-for="VetId" asp-items="Model.Vets" class="form-control" id="comboBox"></select>
+                <ejs-combobox id="vet" ejs-for="VetId" dataSource="@ViewBag.Vets">
+                    <e-combobox-fields value="Value" Text="Text"></e-combobox-fields>
+                </ejs-combobox>
                 <span asp-validation-for="VetId" class="text-danger"></span>
             </div>
             <div class="form-group">
