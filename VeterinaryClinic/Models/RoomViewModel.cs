@@ -17,7 +17,6 @@ namespace VeterinaryClinic.Models
         public string TypeId { get; set; }
         public IEnumerable<SelectListItem> Types { get; set; }
 
-        public bool IsEditing { get; set; }
 
     }
 }

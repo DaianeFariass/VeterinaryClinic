@@ -1,4 +1,4 @@
-﻿@model VeterinaryClinic.Models.AppointmentViewModel
+﻿@model VeterinaryClinic.Models.AppointmentDetailsViewModel
 @{
     ViewData["Title"] = "EditAppointment";
 }
@@ -21,6 +21,7 @@
     <div class="col-md-4 offset-md-4">
         <form asp-action="EditAppointment" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
             <div class="form-group" style="display: flex; flex-direction: column;">
                 <label asp-for="PetId" class="control-label"></label>
                 <ejs-combobox id="pet" ejs-for="PetId" dataSource="@ViewBag.Pets">

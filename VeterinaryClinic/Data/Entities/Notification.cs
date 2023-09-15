@@ -1,6 +1,9 @@
-﻿namespace VeterinaryClinic.Data.Entities
+﻿
+using VeterinaryClinic.Enums;
+
+namespace VeterinaryClinic.Data.Entities
 {
-    public class Notifications : IEntity
+    public class Notification : IEntity
     {
         public int Id { get; set; }
 
@@ -8,6 +11,6 @@
 
         public NotificationTypes NotificationTypes { get; set;}
 
-        public bool IsRead { get; set; }
+       
     }
 }

@@ -12,12 +12,15 @@ namespace VeterinaryClinic.Repositories
     {
         private readonly DataContext _context;
         private readonly IUserHelper _userHelper;
+        private readonly IConverterHelper _converterHelper;
 
         public PetReportRepository(DataContext context,
-            IUserHelper userHelper) : base(context)
+            IUserHelper userHelper,
+            IConverterHelper converterHelper) : base(context)
         {
             _context = context;
             _userHelper = userHelper;
+            _converterHelper = converterHelper;
         }
 
         public async Task AddItemToPetReportAsync(PetReportViewModel model, string userName)
@@ -55,6 +58,8 @@ namespace VeterinaryClinic.Repositories
 
         public async Task EditPetReportAsync(PetReportViewModel model, string username)
         {
+            _converterHelper.ToPetReport(model, false);
+
             var user = await _userHelper.GetUserByEmailAsync(username);
             if (user == null)
             {
@@ -71,16 +76,27 @@ namespace VeterinaryClinic.Repositories
             {
                 return;
             }
-            var petReport = await _context.PetReports.FindAsync(model.Id);
+            var petReport = await _context.PetReports
+                .Where(p => p.Pet.Id == model.PetId && p.Vet.Id == model.VetId && p.Vet.User == user)
+                .FirstOrDefaultAsync();
 
-            petReport.Pet = pet;
-            petReport.Vet = vet;
-            petReport.TestName = model.TestName;
-            petReport.Diagnose = model.Diagnose;
-            petReport.MedicineName = model.MedicineName;
-
-            _context.PetReports.Update(petReport);
-
+            if(petReport == null)
+            {
+                petReport = new PetReportViewModel
+                {
+                    Id = model.Id,
+                    Vet = vet,
+                    VetId = model.VetId,
+                    Pet = pet,
+                    PetId = model.PetId,
+                    TestName = model.TestName,
+                    Diagnose = model.Diagnose,
+                    MedicineName = model.MedicineName,
+                    
+                    
+                };
+                _context.PetReports.Update(petReport);
+            }
             await _context.SaveChangesAsync();
 
         }

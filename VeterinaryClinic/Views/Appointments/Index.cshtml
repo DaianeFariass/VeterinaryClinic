@@ -37,9 +37,15 @@
                             @if (this.User.IsInRole("Customer") || this.User.IsInRole("Vet"))
                             {
                                 <th>
-                                    @Html.DisplayNameFor(model => model.User.FullName)
+                                    @Html.DisplayNameFor(model => model.User)
                                 </th>
                             }
+                             <th>
+                                @Html.DisplayNameFor(model => model.Pet)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Vet)
+                            </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.Date)
                             </th>
@@ -47,8 +53,9 @@
                                 @Html.DisplayNameFor(model => model.Time)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Lines)
+                                @Html.DisplayNameFor(model => model.Status)
                             </th>
+                           
                             <th></th>
                             
                         </tr>
@@ -64,19 +71,27 @@
                                     </th>
                                 }
                                 <td>
+                                    @Html.DisplayFor(modelItem => item.Pet.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Vet.Name)
+                                </td>
+                                <td>
                                     @Html.DisplayFor(modelItem => item.Date)
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Time)
                                 </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Lines)
+                                  <td>
+                                    @Html.DisplayFor(modelItem => item.Status)
                                 </td>
+                              
                                 @if (this.User.IsInRole("Customer") || this.User.IsInRole("Vet"))
                                 {
                                     <td>
-                                        <a asp-action="ConfirmDelete" asp-route-id="@item.Id" id="btnDelete" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><i class="far fa-edit"></i>Edit</a>                
+                                        <a asp-action="ConcludeAppointment" asp-route-id="@item.Id" class="btn btn-success"><i class="fas fa-save"></i>Conclude</a>
+                                        <a asp-action="CancelAppointment" asp-route-id="@item.Id" id="btnDelete" class="btn btn-danger"><i class="fas fa-trash"></i>Cancel</a>
                                     </td>
                                 }
                                

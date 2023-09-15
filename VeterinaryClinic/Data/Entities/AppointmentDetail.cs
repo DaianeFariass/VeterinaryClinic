@@ -8,10 +8,10 @@ namespace VeterinaryClinic.Data.Entities
     {
         public int Id { get; set; }
 
-        [Required]
+    
         public Pet Pet { get; set; }
 
-        [Required]
+    
         public Vet Vet { get; set; }
 
         [Required]

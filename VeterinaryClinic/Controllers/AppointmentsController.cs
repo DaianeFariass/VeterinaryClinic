@@ -6,9 +6,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Vereyon.Web;
-using VeterinaryClinic.Data;
 using VeterinaryClinic.Data.Entities;
+using VeterinaryClinic.Enums;
 using VeterinaryClinic.Helpers;
+using VeterinaryClinic.Migrations;
 using VeterinaryClinic.Models;
 using VeterinaryClinic.Repositories;
 
@@ -37,7 +38,7 @@ namespace VeterinaryClinic.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var model = await _appointmentRespository.GetApointmentAsync(this.User.Identity.Name);
+            var model = await _appointmentRespository.GetAppointmentAsync(this.User.Identity.Name);
             return View(model);
         }
         [Route("create")]
@@ -50,7 +51,7 @@ namespace VeterinaryClinic.Controllers
         public IActionResult AddAppointment()
         {
             
-            var model = new AppointmentViewModel
+            var model = new AppointmentDetailsViewModel
             {
                 Pets = _petRepository.GetComboPets(),
                 Vets = _vetRepository.GetComboVets(),
@@ -63,7 +64,7 @@ namespace VeterinaryClinic.Controllers
         }
         [HttpPost]
         [Route("addappointment")]
-        public async Task<IActionResult> AddAppointment(AppointmentViewModel model)
+        public async Task<IActionResult> AddAppointment(AppointmentDetailsViewModel model)
         {
             if(ModelState.IsValid) 
             {
@@ -71,7 +72,7 @@ namespace VeterinaryClinic.Controllers
                 if (model.Date.Date < DateTime.Now.Date)
                 {
                     _flashMessage.Warning("Date Invalid!");
-                     model = new AppointmentViewModel
+                     model = new AppointmentDetailsViewModel
                     {
                         Pets = _petRepository.GetComboPets(),
                         Vets = _vetRepository.GetComboVets(),
@@ -92,7 +93,7 @@ namespace VeterinaryClinic.Controllers
                 if (appointmentDetailtemp) 
                 {
                     _flashMessage.Warning("The vet in this date and time is unvailable");
-                    model = new AppointmentViewModel
+                    model = new AppointmentDetailsViewModel
                     {
                         Pets = _petRepository.GetComboPets(),
                         Vets = _vetRepository.GetComboVets(),
@@ -123,21 +124,22 @@ namespace VeterinaryClinic.Controllers
             if (id == null)
             {
 
-                return NotFound();
+                return new NotFoundViewResult("AppointmentNotFound");
 
             }
             var appointmentToEdit = await _appointmentRespository.GetAppointmentDetailTempAsync(id.Value);
 
             if(appointmentToEdit == null) 
             {
-                return NotFound();
-            
+                return new NotFoundViewResult("AppointmentNotFound");
+
             }
-            var model = new AppointmentViewModel
+            var model = new AppointmentDetailsViewModel
             {
+                Id = appointmentToEdit.Id,
                 Pets = _petRepository.GetComboPets(),
                 Vets = _vetRepository.GetComboVets(),
-                Date = DateTime.Now.Date,
+                Date = appointmentToEdit.Date,
                 Time = DateTime.Now.AddHours(8),
             };
             ViewBag.Pets = model.Pets;
@@ -145,8 +147,9 @@ namespace VeterinaryClinic.Controllers
             return View(model);
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [Route("editappointment")]
-        public async Task<IActionResult> EditAppointment(AppointmentViewModel model)
+        public async Task<IActionResult> EditAppointment(AppointmentDetailsViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -155,7 +158,7 @@ namespace VeterinaryClinic.Controllers
                     if (model.Date.Date < DateTime.Now.Date)
                     {
                         _flashMessage.Warning("Date Invalid!");
-                        model = new AppointmentViewModel
+                        model = new AppointmentDetailsViewModel
                         {
                             Pets = _petRepository.GetComboPets(),
                             Vets = _vetRepository.GetComboVets(),
@@ -167,16 +170,16 @@ namespace VeterinaryClinic.Controllers
                         ViewBag.Vets = model.Vets;
                         return View(model);
                     }
-                    var appointments = await _appointmentRespository.GetDetailsTempsAsync(this.User.Identity.Name);
-                    bool appointmentDetailtemp = appointments.Any(a =>
+                    var appointmentDetails = await _appointmentRespository.GetDetailsTempsAsync(this.User.Identity.Name);
+                    bool appointmentDetailtemp = appointmentDetails.Any(a =>
                     a.Date == model.Date &&
                     a.Time == model.Time &&
-                    a.Vet.Id == model.VetId);
+                    a.Vet.Id == model.VetId);              
 
                     if (appointmentDetailtemp)
                     {
                         _flashMessage.Warning("The vet in this date and time is unvailable");
-                        model = new AppointmentViewModel
+                        model = new AppointmentDetailsViewModel
                         {
                             Pets = _petRepository.GetComboPets(),
                             Vets = _vetRepository.GetComboVets(),
@@ -189,15 +192,31 @@ namespace VeterinaryClinic.Controllers
                         return View(model);
 
                     }
-                    else
+
+                    var appointment = await _appointmentRespository.GetAppointmentAsync(this.User.Identity.Name);
+                    bool appointmentDetailsTemp = appointment.Any(a =>
+                    a.Date == model.Date &&
+                    a.Time == model.Time &&
+                    a.Vet.Id == model.VetId);
+
+                    if (appointmentDetailsTemp)
                     {
-                        
-                        await _appointmentRespository.EditAppointmentDetailTempAsync(model, this.User.Identity.Name);
-                      
+                        _flashMessage.Warning("The vet in this date and time is unvailable");
+                        model = new AppointmentDetailsViewModel
+                        {
+                            Pets = _petRepository.GetComboPets(),
+                            Vets = _vetRepository.GetComboVets(),
+                            Date = DateTime.Now.Date,
+                            Time = DateTime.Now.AddHours(8),
+
+                        };
+                        ViewBag.Pets = model.Pets;
+                        ViewBag.Vets = model.Vets;
+                        return View(model);
 
                     }
 
-                    
+                    await _appointmentRespository.EditAppointmentDetailTempAsync(model, this.User.Identity.Name);
 
                 }
                 catch (DbUpdateConcurrencyException)
@@ -240,10 +259,132 @@ namespace VeterinaryClinic.Controllers
             
            
         }
+        [Route("edit")]
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+
+                return NotFound();
+
+            }
+            var appointmentToEdit = await _appointmentRespository.GetAppointmentByIdAsync(id.Value);
+
+            if (appointmentToEdit == null)
+            {
+                return NotFound();
+
+            }
+            var model = new AppointmentViewModel
+            { 
+                Id = appointmentToEdit.Id,
+                Pets = _petRepository.GetComboPets(),
+                Vets = _vetRepository.GetComboVets(),
+                Date = appointmentToEdit.Date,
+                Time = appointmentToEdit.Time,
+            
+            };
+          
+            ViewBag.Pets = model.Pets;
+            ViewBag.Vets = model.Vets;
+            return View(model);
+        }
+        [HttpPost]
+        [Route("edit")]
+        public async Task<IActionResult> Edit(AppointmentViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    if (model.Date.Date < DateTime.Now.Date)
+                    {
+                        _flashMessage.Warning("Date Invalid!");
+                        model = new AppointmentViewModel
+                        {
+                            Pets = _petRepository.GetComboPets(),
+                            Vets = _vetRepository.GetComboVets(),
+                            Date = DateTime.Now.Date,
+                            Time = DateTime.Now.AddHours(8),
+
+                        };
+                        ViewBag.Pets = model.Pets;
+                        ViewBag.Vets = model.Vets;
+                        return View(model);
+                    }
+                    var appointments = await _appointmentRespository.GetAppointmentAsync(this.User.Identity.Name);
+                    bool appointment = appointments.Any(a =>
+                    a.Date == model.Date &&
+                    a.Time == model.Time &&
+                    a.Vet.Id == model.VetId);
+
+                    if (appointment)
+                    {
+                        _flashMessage.Warning("The vet in this date and time is unvailable");
+                        model = new AppointmentViewModel
+                        {
+                            Pets = _petRepository.GetComboPets(),
+                            Vets = _vetRepository.GetComboVets(),
+                            Date = DateTime.Now.Date,
+                            Time = DateTime.Now.AddHours(8),
+
+                        };
+                        ViewBag.Pets = model.Pets;
+                        ViewBag.Vets = model.Vets;
+                        return View(model);
+
+                    }
+                    else
+                    {
+
+                        var response = _appointmentRespository.EditAppointmentAsync(model, this.User.Identity.Name);
+                        await _appointmentRespository.SendAppointmentNotification(model, this.User.Identity.Name, NotificationTypes.Edit);
+
+                    }
+
+
+
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+
+                    if (!await _appointmentRespository.ExistAsync(model.PetId))
+                    {
+                        return new NotFoundViewResult("AppointmentNotFound");
+                    }
+                    else
+                    {
+                        throw;
+                    }
+
+                }
+                return RedirectToAction("Index");
+            }
+
+            return View(model);
+        }
+        public async Task<IActionResult> CancelAppointment(int id)
+        {
+            var response = await _appointmentRespository.CancelAppointmentAsync(id);
+            await _appointmentRespository.SendAppointmentNotification(response, this.User.Identity.Name, NotificationTypes.Cancel);
+            return RedirectToAction("Index");
+
+        }
+        public async Task<IActionResult> ConcludeAppointment(int id)
+        {
+            var response = await _appointmentRespository.ConcludeAppointmentAsync(id);
+            await _appointmentRespository.SendAppointmentNotification(response, this.User.Identity.Name, NotificationTypes.Conclude);
+            return RedirectToAction("Index");
+
+        }
         [Route("notifications")]
         public IActionResult Notifications()
         {
-
+            var model = _appointmentRespository.GetNotificationsAsync();
+            return View(model);
+        }
+        public IActionResult AppointmentNotFound()
+        {
             return View();
         }
 

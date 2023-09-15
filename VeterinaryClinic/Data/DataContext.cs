@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System.Linq;
 using VeterinaryClinic.Data.Entities;
 
@@ -19,10 +20,10 @@ namespace VeterinaryClinic.Data
         public DbSet<Room> Rooms { get; set; }
         public DbSet<PetReport> PetReports { get; set; }
         public DbSet<Contact> Contacts { get; set; }
-        public DbSet<Notifications> Notifications { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
-
+          
 
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)

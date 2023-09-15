@@ -156,7 +156,7 @@ namespace VeterinaryClinic.Repositories
                 imageId = await _blobHelper.UploadBlobAsync(model.ImageFile, "pets");
 
             }
-            var pet = _converterHelper.ToPet(model, imageId, false);
+             _converterHelper.ToPet(model, imageId, false);
 
             var user = await _userHelper.GetUserByEmailAsync(userName);
             if (user == null)

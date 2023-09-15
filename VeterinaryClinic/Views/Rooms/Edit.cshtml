@@ -74,14 +74,6 @@
         });
     </script>
     <script>
-        // Obtém a referência para o elemento do input
-        var roomNumberInput = document.getElementById("roomNumberInput");
-        // Habilita o campo quando o formulário não estiver no modo de edição
-        if (!@(Model.IsEditing.ToString().ToLower())) {
-            roomNumberInput.readOnly = false;
-        }
-    </script>
-    <script>
     var comboBox = document.getElementById("comboBox");
 
     // Função que será executada quando o valor da combobox mudar

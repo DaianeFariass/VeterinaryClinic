@@ -73,8 +73,8 @@ namespace VeterinaryClinic.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-        //[Authorize(Roles = "Admin")]
-        [Route("register")]
+
+        //[Route("Register")]
         public IActionResult Register()
         {
             var model = new RegisterNewUserViewModel
@@ -86,7 +86,7 @@ namespace VeterinaryClinic.Controllers
         }
 
         [HttpPost]
-        [Route("register")]
+        //[Route("Register")]
         public async Task<IActionResult> Register(RegisterNewUserViewModel model)
         {
             if (ModelState.IsValid)
@@ -137,8 +137,7 @@ namespace VeterinaryClinic.Controllers
             }
             return View(model);        
         }
-        //[Authorize(Roles = "Admin, Customer, Vet")]
-        [Route("changeuser")]
+       
         public async Task<IActionResult> ChangeUser()
         {
             var user = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
@@ -168,7 +167,7 @@ namespace VeterinaryClinic.Controllers
             return View(model);
         }
         [HttpPost]
-        [Route("changeuser")]
+      
         public async Task<IActionResult> ChangeUser(ChangeUserViewModel model)
         {
             if (ModelState.IsValid)

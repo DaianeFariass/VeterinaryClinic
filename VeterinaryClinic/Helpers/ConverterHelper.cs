@@ -106,6 +106,7 @@ namespace VeterinaryClinic.Helpers
                 RoomNumber = model.RoomNumber,
                 Type = model.Type,
                 Vet = model.Vet,
+                Status= model.Status,
 
             };
 
@@ -119,39 +120,95 @@ namespace VeterinaryClinic.Helpers
                 RoomNumber = room.RoomNumber,
                 Type = room.Type,
                 Vet = room.Vet,
-                //Vets = _roomRepository.GetComboVets(),
-                //Types = _roomRepository.GetComboTypes(),
+                VetId = room.Vet.Id,
+                Status = room.Status,
+                
+          
             };
 
         }
-        public AppointmentDetailTemp ToAppointmentDetailTemp(AppointmentViewModel model)
+        public AppointmentDetailTemp ToAppointmentDetailTemp(AppointmentDetailsViewModel model, bool isNew)
         {
             return new AppointmentDetailTemp
             {
-                //Id = model.Id,
-                //User = model.User,
-                //Vet = model.Vet,
-                //Pet = model.Pet,
+                Id = isNew ? 0 : model.Id,
+                User = model.User,
+                Vet = model.Vet,
+                Pet = model.Pet,
                 Date = model.Date,
                 Time = model.Time,
 
             };
 
         }
-        public AppointmentViewModel ToAppointmentViewModel(AppointmentDetailTemp appointment)
+        public AppointmentDetailsViewModel ToAppointmentDetailsViewModel(AppointmentDetailTemp appointment)
         {
-            return new AppointmentViewModel
+            return new AppointmentDetailsViewModel
             {
+                User = appointment.User,
+                Pet = appointment.Pet,
+                Vet = appointment.Vet,
                 PetId = appointment.Pet.Id,
                 VetId = appointment.Vet.Id,
                 Date = appointment.Date,
                 Time = appointment.Time,
-                //Pets = appointment.Pets,
-                //Vets = appointment.Vets,
-                //Times = appointment.Times,
+
+            };
+        }
+        public Appointment ToAppointment(AppointmentViewModel model, bool isNew)
+        {
+            return new Appointment
+            {
+                Id = isNew ? 0 : model.Id,
+                User = model.User,
+                Vet = model.Vet,
+                Pet = model.Pet,
+                Date = model.Date,
+                Time = model.Time,
+
+            };
+
+        }
+
+        public AppointmentViewModel ToAppointmentViewModel(Appointment appointment)
+        {
+            return new AppointmentViewModel
+            {
+                User = appointment.User,
+                Pet = appointment.Pet,
+                Vet = appointment.Vet,
+                PetId = appointment.Pet.Id,
+                VetId = appointment.Vet.Id,
+                Date = appointment.Date,
+                Time = appointment.Time,
 
             };
         }
 
+        public PetReport ToPetReport(PetReportViewModel model, bool isNew)
+        {
+            return new PetReport
+            {
+                Id = isNew ? 0 : model.Id,
+                Vet = model.Vet,
+                Pet = model.Pet,
+                TestName = model.TestName,
+                Diagnose = model.Diagnose,
+                MedicineName = model.MedicineName
+            };
+        }
+
+        public PetReportViewModel ToPetReportViewModel(PetReport petReport)
+        {
+            return new PetReportViewModel
+            {
+                
+                Vet = petReport.Vet,
+                Pet = petReport.Pet,
+                TestName = petReport.TestName,
+                Diagnose = petReport.Diagnose,
+                MedicineName = petReport.MedicineName
+            };
+        }
     }
 }

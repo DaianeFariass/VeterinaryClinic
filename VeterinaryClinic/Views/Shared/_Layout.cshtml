@@ -80,6 +80,8 @@
                                                             <ul class="submenu">
                                                                 <li><a asp-controller="Vets" asp-action="Index">Vets</a></li>
                                                                 <li><a asp-controller="Countries" asp-action="">Countries and cities</a></li>
+                                                                <li><a asp-controller="Account" asp-action="RegisterRole">Register New Role</a></li>
+                                                                <li><a asp-controller="Contacts" asp-action="Index">Intern Contact Form</a></li>
 
                                                             </ul>
                                                         </li>
@@ -91,8 +93,8 @@
                                                             <ul class="submenu">
                                                                 <li><a asp-controller="Customers" asp-action="Index">Customers</a></li>
                                                                 <li><a asp-controller="Pets" asp-action="Index">Pets</a></li>
-                                                                <li><a asp-controller="Appointments" asp-action="Index">Appointments</a></li>
                                                                 <li><a asp-controller="Appointments" asp-action="Notifications">Notifications</a></li>
+                                                                <li><a asp-controller="Contacts" asp-action="Index">Intern Contact Form</a></li>
                                                                 
                                                             </ul>
                                                         </li>
@@ -103,25 +105,20 @@
                                                             <a>Reception</a>
                                                             <ul class="submenu">
                                                                 <li><a asp-controller="Rooms" asp-action="Index">Rooms</a></li>
-                                                                <li><a asp-controller="Appointments" asp-action="Index">Appointments</a></li>
+                                                                <li><a asp-controller="Appointments" asp-action="Notifications">Notifications</a></li>
+                                                                <li><a asp-controller="Contacts" asp-action="Index">Intern Contact Form</a></li>
+    
                                                             </ul>
                                                         </li>
                                                     }
-                                                    @if (this.User.Identity.IsAuthenticated && this.User.IsInRole("Customer"))
-                                                    {
-                                                        <li>
-                                                            <a>Customer</a>
-                                                            <ul class="submenu">
-                                                                <li><a asp-controller="Appointments" asp-action="Index">Appointments</a></li>
-                                                            </ul>
-                                                        </li>
-                                                    }
-                                                    @*<li><a asp-controller="Contacts" asp-action="Index">Contact</a></li>*@
+                                                
+                                                   
                                                     @if (this.User.Identity.IsAuthenticated)
                                                     {
+                                                        
                                                         <li><a class="nav-link text-dark" asp-area="" asp-controller="Appointments" asp-action="Index">Appointments</a></li>
                                                         <li><a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="ChangeUser">@this.User.Identity.Name</a></li>
-                                                     
+                                                        
                                                     }                         
                                                 </ul>                                          
                                             </nav>

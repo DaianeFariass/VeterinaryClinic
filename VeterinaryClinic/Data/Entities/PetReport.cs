@@ -20,5 +20,7 @@ namespace VeterinaryClinic.Data.Entities
 
         public Pet Pet { get; set; }
 
+      
+
     }
 }

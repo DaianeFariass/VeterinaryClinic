@@ -91,7 +91,7 @@ namespace VeterinaryClinic.Controllers
 
                 if (room)
                 {
-                    _flashMessage.Warning("The room is unvailable");
+                    _flashMessage.Warning("This room is already created!");
                     model = new RoomViewModel
                     {
                         Vets = _roomRepository.GetComboVets(),
@@ -153,6 +153,7 @@ namespace VeterinaryClinic.Controllers
             }
             var model = new RoomViewModel
             {
+                Id = room.Id,
                 RoomNumber = room.RoomNumber,
                 Vets = _roomRepository.GetComboVets(),
                 Types = _roomRepository.GetComboTypes(),
@@ -172,13 +173,13 @@ namespace VeterinaryClinic.Controllers
         [Route("editroom")]
         public async Task<IActionResult> Edit(RoomViewModel model)
         {
-          
+
             if (ModelState.IsValid)
             {
                 try
                 {
                     var rooms = await _roomRepository.GetRoomAsync(this.User.Identity.Name);
-               
+
                     bool vet = rooms.Any(r =>
                     r.Vet.Id == model.VetId);
 
@@ -198,7 +199,7 @@ namespace VeterinaryClinic.Controllers
                     }
                     else
                     {
-                        await _roomRepository.EditRoomAsync(model, this.User.Identity.Name, false);
+                        await _roomRepository.EditRoomAsync(model, this.User.Identity.Name);
                         return RedirectToAction("Index");
 
 

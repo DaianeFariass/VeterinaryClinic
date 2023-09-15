@@ -50,7 +50,8 @@ namespace VeterinaryClinic.Data
 
                 await _context.SaveChangesAsync();
             }
-            
+
+
 
 
             var userAdmin = await _userHelper.GetUserByEmailAsync("daiane.farias@cinel.pt");

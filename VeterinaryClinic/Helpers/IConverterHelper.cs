@@ -23,9 +23,17 @@ namespace VeterinaryClinic.Helpers
 
         RoomViewModel ToRoomViewModel(Room room);
 
-        AppointmentDetailTemp ToAppointmentDetailTemp(AppointmentViewModel model);
+        Appointment ToAppointment(AppointmentViewModel model, bool isNew);
 
-        AppointmentViewModel ToAppointmentViewModel(AppointmentDetailTemp appointment);
+        AppointmentViewModel ToAppointmentViewModel(Appointment appointment);
+
+        AppointmentDetailTemp ToAppointmentDetailTemp(AppointmentDetailsViewModel model, bool isNew);
+
+        AppointmentDetailsViewModel ToAppointmentDetailsViewModel(AppointmentDetailTemp appointment);
+
+        PetReport ToPetReport(PetReportViewModel model, bool isNew);
+
+        PetReportViewModel ToPetReportViewModel(PetReport petReport);
 
     }
 }

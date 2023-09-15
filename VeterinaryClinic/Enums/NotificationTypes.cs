@@ -1,11 +1,12 @@
-﻿namespace VeterinaryClinic.Data
+﻿namespace VeterinaryClinic.Enums
 {
     public enum NotificationTypes
     {
 
         Create,
         Edit,
-        Delete,
-        
+        Cancel,
+        Conclude,
+
     }
 }
