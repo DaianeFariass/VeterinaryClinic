@@ -75,28 +75,21 @@ namespace VeterinaryClinic.Repositories
             if (vet == null)
             {
                 return;
-            }
-            var petReport = await _context.PetReports
-                .Where(p => p.Pet.Id == model.PetId && p.Vet.Id == model.VetId && p.Vet.User == user)
-                .FirstOrDefaultAsync();
-
-            if(petReport == null)
+            }          
+            var petReport = new PetReportViewModel
             {
-                petReport = new PetReportViewModel
-                {
-                    Id = model.Id,
-                    Vet = vet,
-                    VetId = model.VetId,
-                    Pet = pet,
-                    PetId = model.PetId,
-                    TestName = model.TestName,
-                    Diagnose = model.Diagnose,
-                    MedicineName = model.MedicineName,
-                    
-                    
-                };
-                _context.PetReports.Update(petReport);
-            }
+                Id = model.Id,
+                Vet = vet,
+                VetId = model.VetId,
+                Pet = pet,
+                PetId = model.PetId,
+                TestName = model.TestName,
+                Diagnose = model.Diagnose,
+                MedicineName = model.MedicineName,
+
+
+            };
+            _context.PetReports.Update(petReport);
             await _context.SaveChangesAsync();
 
         }

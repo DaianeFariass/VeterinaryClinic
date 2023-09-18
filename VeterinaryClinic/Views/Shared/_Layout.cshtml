@@ -70,8 +70,21 @@
                                                     <li><a asp-controller="Home" asp-action="About">About</a></li>
                                                     <li><a asp-controller="Home" asp-action="Services">Services</a></li>
                                                     <li><a asp-controller="Home" asp-action="Contact">Contact</a></li>
-                                                   
-                             
+
+                                                    @if (this.User.Identity.IsAuthenticated && this.User.IsInRole("Director"))
+                                                    {
+                                                        <li>
+                                                            <a>Director</a>
+                                                            <ul class="submenu">
+                                                                <li><a asp-controller="Customers" asp-action="Index">Customers</a></li>
+                                                                <li><a asp-controller="Pets" asp-action="Index">Pets</a></li>
+                                                                <li><a asp-controller="Vets" asp-action="Index">Vets</a></li>
+                                                                <li><a asp-controller="Employees" asp-action="Index">Employees</a></li>
+                                                                <li><a asp-controller="Contacts" asp-action="Index">Intern Contact Form</a></li>
+
+                                                            </ul>
+                                                        </li>
+                                                    }
                                                     
                                                     @if (this.User.Identity.IsAuthenticated && this.User.IsInRole("Admin"))
                                                     {
@@ -79,6 +92,7 @@
                                                             <a>Admin</a>
                                                             <ul class="submenu">
                                                                 <li><a asp-controller="Vets" asp-action="Index">Vets</a></li>
+                                                                <li><a asp-controller="Employees" asp-action="Index">Employees</a></li>
                                                                 <li><a asp-controller="Countries" asp-action="">Countries and cities</a></li>
                                                                 <li><a asp-controller="Account" asp-action="RegisterRole">Register New Role</a></li>
                                                                 <li><a asp-controller="Contacts" asp-action="Index">Intern Contact Form</a></li>
@@ -86,6 +100,7 @@
                                                             </ul>
                                                         </li>
                                                     }
+                                                  
                                                     @if (this.User.Identity.IsAuthenticated && this.User.IsInRole("Vet"))
                                                     {
                                                         <li>
@@ -99,10 +114,24 @@
                                                             </ul>
                                                         </li>
                                                     }
+                                                    @if (this.User.Identity.IsAuthenticated && this.User.IsInRole("Assistant"))
+                                                    {
+                                                        <li>
+                                                            <a>Assistant</a>
+                                                            <ul class="submenu">
+                                                 
+                                                                <li><a asp-controller="Pets" asp-action="Index">Pets</a></li>
+                                                                <li><a asp-controller="Appointments" asp-action="Notifications">Notifications</a></li>
+                                                                <li><a asp-controller="Contacts" asp-action="Index">Intern Contact Form</a></li>
+
+                                                            </ul>
+                                                        </li>
+                                                    }
+                                                
                                                     @if (this.User.Identity.IsAuthenticated && this.User.IsInRole("Receptionist"))
                                                     {
                                                         <li>
-                                                            <a>Reception</a>
+                                                            <a>Receptionist</a>
                                                             <ul class="submenu">
                                                                 <li><a asp-controller="Rooms" asp-action="Index">Rooms</a></li>
                                                                 <li><a asp-controller="Appointments" asp-action="Notifications">Notifications</a></li>
@@ -111,7 +140,7 @@
                                                             </ul>
                                                         </li>
                                                     }
-                                                
+                                       
                                                    
                                                     @if (this.User.Identity.IsAuthenticated)
                                                     {

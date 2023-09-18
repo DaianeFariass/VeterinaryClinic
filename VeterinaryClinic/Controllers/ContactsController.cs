@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Razor.Language.Intermediate;
 using System.Linq;
+using Vereyon.Web;
 using VeterinaryClinic.Data.Entities;
 using VeterinaryClinic.Helpers;
 using VeterinaryClinic.Models;
@@ -13,14 +14,17 @@ namespace VeterinaryClinic.Controllers
         private readonly IPetRepository _petRepository;
         private readonly IVetRepository _vetRepository;
         private readonly IMailHelper _mailHelper;
+        private readonly IFlashMessage _flashMessage;
 
         public ContactsController(IPetRepository petRepository,
             IVetRepository vetRepository,
-            IMailHelper mailHelper) 
+            IMailHelper mailHelper,
+            IFlashMessage flashMessage) 
         {
             _petRepository = petRepository;
             _vetRepository = vetRepository;
             _mailHelper = mailHelper;
+            _flashMessage = flashMessage;
         } 
         public IActionResult Index()
         {
@@ -41,8 +45,9 @@ namespace VeterinaryClinic.Controllers
             if (response.IsSuccess)
             {
                
-                ViewBag.Message = "The email was sent successfully!!!";
-               
+                _flashMessage.Confirmation("The email was sent successfully!!!");
+                return RedirectToAction("Index");
+
             }
 
             return RedirectToAction("Index");

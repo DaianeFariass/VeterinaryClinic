@@ -37,6 +37,38 @@ namespace VeterinaryClinic.Helpers
 
             };
         }
+        public Employee ToEmployee(EmployeeViewModel model, Guid imageId, bool isNew)
+        {
+            return new Employee
+            {
+                Id = isNew ? 0 : model.Id,
+                ImageId = imageId,
+                Name = model.Name,
+                Address = model.Address,
+                Phone = model.Phone,
+                Email = model.Email,
+                Role= model.Role,
+                User = model.User,
+
+            };
+        }
+
+        public EmployeeViewModel ToEmployeeViewModel(Employee employee)
+        {
+            return new EmployeeViewModel
+            {
+                Id = employee.Id,
+                ImageId = employee.ImageId,
+                Name = employee.Name,
+                Address = employee.Address,
+                Phone = employee.Phone,
+                Email = employee.Email,
+                Role = employee.Role,
+                User = employee.User,
+
+            };
+
+        }
         public Pet ToPet(PetViewModel model, Guid imageId, bool isNew)
         {
             return new Pet

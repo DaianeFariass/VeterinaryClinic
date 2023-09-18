@@ -12,6 +12,7 @@ namespace VeterinaryClinic.Data
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Pet> Pets { get; set; }
         public DbSet<Vet> Vets { get; set; }
+        public DbSet<Employee> Employees { get; set; }
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<AppointmentDetail> AppointmentDetails { get; set; }
         public DbSet<AppointmentDetailTemp> AppointmentDetailsTemp { get; set; }
@@ -35,6 +36,7 @@ namespace VeterinaryClinic.Data
 
             base.OnModelCreating(modelBuilder);
         }
+        public DbSet<VeterinaryClinic.Data.Entities.Employee> Employee { get; set; }
 
         //-------------Habilitar a regra de apagar em cascata(Cascade Delete Rule)-------------
 

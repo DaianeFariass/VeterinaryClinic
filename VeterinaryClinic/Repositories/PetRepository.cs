@@ -169,28 +169,19 @@ namespace VeterinaryClinic.Repositories
             {
                 return;
             }
-            var petIndex = await _context.Pets
-                .Where(p => p.Customer.User == user && p.Customer.Id == customer.Id)
-                .FirstOrDefaultAsync();
-
-
-            if (petIndex == null)
+            var petIndex = new PetViewModel
             {
-                petIndex = new PetViewModel
-                {
-                    ImageId = imageId,
-                    Id = model.Id,
-                    Name = model.Name,
-                    DateOfBirth = model.DateOfBirth,
-                    Type = model.TypeId.ToString(),
-                    TypeId = model.TypeId,
-                    Gender = model.Gender,
-                    Customer = customer,
-                    CustomerId = customer.Id,
-                };
-                _context.Pets.Update(petIndex);
-
-            }
+                ImageId = imageId,
+                Id = model.Id,
+                Name = model.Name,
+                DateOfBirth = model.DateOfBirth,
+                Type = model.TypeId.ToString(),
+                TypeId = model.TypeId,
+                Gender = model.Gender,
+                Customer = customer,
+                CustomerId = customer.Id,
+            };
+            _context.Pets.Update(petIndex);
             await _context.SaveChangesAsync();
         }
         public IEnumerable<SelectListItem> GetComboCustomersEmail()
@@ -213,7 +204,7 @@ namespace VeterinaryClinic.Repositories
             }
             list.Insert(0, new SelectListItem
             {
-                Text = "(Select the Customer...)",
+                Text = "All Emails",
                 Value = allEmails
             });
 

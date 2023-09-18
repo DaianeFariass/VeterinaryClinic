@@ -162,7 +162,7 @@ namespace VeterinaryClinic.Controllers
                 return new NotFoundViewResult("VetNotFound");
             }
 
-            var vet = await _vetRepository?.GetByIdAsync(id.Value);
+            var vet = await _vetRepository.GetByIdAsync(id.Value);
             if (vet == null)
             {
                 return new NotFoundViewResult("VetNotFound");

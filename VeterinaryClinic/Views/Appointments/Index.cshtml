@@ -34,7 +34,7 @@
                 <table style="width: 100%;" class="table table-hover table-responsive table-striped" id="MyTable">
                     <thead>
                         <tr>
-                            @if (this.User.IsInRole("Customer") || this.User.IsInRole("Vet"))
+                            @if (this.User.IsInRole("Receptionist") || this.User.IsInRole("Vet"))
                             {
                                 <th>
                                     @Html.DisplayNameFor(model => model.User)
@@ -64,7 +64,7 @@
                         @foreach (var item in Model)
                         {
                             <tr>
-                                @if (this.User.IsInRole("Customer") || this.User.IsInRole("Vet"))
+                                @if (this.User.IsInRole("Receptionist") || this.User.IsInRole("Vet"))
                                 {
                                     <th>
                                         @Html.DisplayFor(modelItem => item.User.FullName)
@@ -85,8 +85,8 @@
                                   <td>
                                     @Html.DisplayFor(modelItem => item.Status)
                                 </td>
-                              
-                                @if (this.User.IsInRole("Customer") || this.User.IsInRole("Vet"))
+
+                                @if (this.User.IsInRole("Receptionist") || this.User.IsInRole("Vet"))
                                 {
                                     <td>
                                         <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><i class="far fa-edit"></i>Edit</a>                

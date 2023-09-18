@@ -9,7 +9,7 @@
         <div class="row">
             <div class="col-xl-12">
                 <div class="hero-cap text-center pt-50">
-                    <h2>Register New User</h2>
+                    <h2>Register New Role</h2>
                 </div>
             </div>
         </div>
@@ -56,6 +56,11 @@
                     <input asp-for="PhoneNumber" class="form-control" />
                     <span asp-validation-for="PhoneNumber" class="text-warning"></span>
                 </div>
+                <div class="form-group" style="display: flex; flex-direction: column;">
+                    <label asp-for="RoleId" class="control-label"></label>
+                    <select asp-for="RoleId" asp-items="Model.Roles" style="width: 100%;" class="form-control"></select>
+                    <span asp-validation-for="RoleId" class="text-danger"></span>
+                </div>
                 <div class="form-group">
                     <label asp-for="Password">Password</label>
                     <input asp-for="Password" type="password" class="form-control" />
@@ -83,18 +88,20 @@
 
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 
     <script type="text/javascript">
         $(document).ready(function () {
             $("#CountryId").change(function () {
-             
+
                 $("#CityId").empty();
                 $.ajax({
                     url: '@Url.Action("GetCitiesAsync","Account")',
                     type: 'POST',
                     dataType: 'json',
-                    data: { countryId: $("#CountryId").val()},
+                    data: { countryId: $("#CountryId").val() },
                     success: function (cities) {
                         debugger;
                         $("#CityId").append('<option value="0">(Select a city...)</option>');
@@ -113,7 +120,11 @@
             })
         });
     </script>
-   
+
 }
+
+
+
+
 
 

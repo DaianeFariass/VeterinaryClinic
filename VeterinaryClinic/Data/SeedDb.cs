@@ -25,15 +25,17 @@ namespace VeterinaryClinic.Data
         {
             await _context.Database.MigrateAsync();
 
-            await _userHelper.CheckRoleAsync("Admin");
+            await _userHelper.CheckRoleAsync("Director");
 
-            await _userHelper.CheckRoleAsync("Customer");
+            await _userHelper.CheckRoleAsync("Admin");       
 
             await _userHelper.CheckRoleAsync("Vet");
 
-            await _userHelper.CheckRoleAsync("Anonymous");
+            await _userHelper.CheckRoleAsync("Assistant");
 
             await _userHelper.CheckRoleAsync("Receptionist");
+
+            await _userHelper.CheckRoleAsync("Customer");
 
             if (!_context.Countries.Any())
             {
@@ -50,11 +52,35 @@ namespace VeterinaryClinic.Data
 
                 await _context.SaveChangesAsync();
             }
+            var userDirector = await _userHelper.GetUserByEmailAsync("thomassousa@petcare.pt");
 
+            if (userDirector == null)
+            {
+                userDirector = new User
+                {
+                    FirstName = "Thomas",
+                    LastName = "Sousa",
+                    Email = "thomassousa@petcare.pt",
+                    UserName = "thomassousa@petcare.pt",
+                    PhoneNumber = GenerateRandomNumbers(9),
+                    Address = GenerateRandomAddress(),
+                    CityId = _context.Countries.FirstOrDefault().Cities.FirstOrDefault().Id,
+                    City = _context.Countries.FirstOrDefault().Cities.FirstOrDefault(),
+                };
 
+                var result = await _userHelper.AddUserAsync(userDirector, "123456");
 
+                if (result != IdentityResult.Success)
+                {
+                    throw new InvalidOperationException("Could not create the user in seeder");
+                }
+                await _userHelper.AddUserToRoleAsync(userDirector, "Director");
+                var token = await _userHelper.GenerateEmailConfirmationTokenAsync(userDirector);
+                await _userHelper.ConfirmEmailAsync(userDirector, token);
 
-            var userAdmin = await _userHelper.GetUserByEmailAsync("daiane.farias@cinel.pt");
+            }
+
+            var userAdmin = await _userHelper.GetUserByEmailAsync("daianefarias@petcare.pt");
 
             if (userAdmin == null)
             {
@@ -62,8 +88,8 @@ namespace VeterinaryClinic.Data
                 {
                     FirstName = "Daiane",
                     LastName = "Farias",
-                    Email = "daiane.farias@cinel.pt",
-                    UserName = "daiane.farias@cinel.pt",
+                    Email = "daianefarias@petcare.pt",
+                    UserName = "daianefarias@petcare.pt",
                     PhoneNumber = GenerateRandomNumbers(9),
                     Address = GenerateRandomAddress(),
                     CityId = _context.Countries.FirstOrDefault().Cities.FirstOrDefault().Id,
@@ -81,33 +107,7 @@ namespace VeterinaryClinic.Data
                 await _userHelper.ConfirmEmailAsync(userAdmin, token);
 
             }
-            var userCustomer = await _userHelper.GetUserByEmailAsync("reinaldo.pires@cinel.pt");
-
-            if (userCustomer == null)
-            {
-                userCustomer = new User
-                {
-                    FirstName = "Reinaldo",
-                    LastName = "Pires",
-                    UserName = "reinaldo.pires@cinel.pt",
-                    Email = "reinaldo.pires@cinel.pt",
-                    PhoneNumber = GenerateRandomNumbers(9),
-                    Address = GenerateRandomAddress(),
-                    CityId = _context.Countries.FirstOrDefault().Cities.FirstOrDefault().Id,
-                    City = _context.Countries.FirstOrDefault().Cities.FirstOrDefault(),
-                };
-                var result = await _userHelper.AddUserAsync(userCustomer, "123456");
-
-                if (result != IdentityResult.Success)
-                {
-                    throw new InvalidOperationException("Could not create the user in seeder");
-                }
-                await _userHelper.AddUserToRoleAsync(userCustomer, "Customer");
-                var token = await _userHelper.GenerateEmailConfirmationTokenAsync(userCustomer);
-                await _userHelper.ConfirmEmailAsync(userCustomer, token);
-
-            }
-            var userVet = await _userHelper.GetUserByEmailAsync("oliviaborba@cinel.pt");
+            var userVet = await _userHelper.GetUserByEmailAsync("oliviaborba@petcare.pt");
 
             if (userVet == null)
             {
@@ -115,8 +115,8 @@ namespace VeterinaryClinic.Data
                 {
                     FirstName = "Olivia",
                     LastName = "Borba",
-                    UserName = "oliviaborba@cinel.pt",
-                    Email = "oliviaborba@cinel.pt",
+                    UserName = "oliviaborba@petcare.pt",
+                    Email = "oliviaborba@petcare.pt",
                     PhoneNumber = GenerateRandomNumbers(9),
                     Address = GenerateRandomAddress(),
                     CityId = _context.Countries.FirstOrDefault().Cities.FirstOrDefault().Id,
@@ -133,7 +133,33 @@ namespace VeterinaryClinic.Data
                 await _userHelper.ConfirmEmailAsync(userVet, token);
 
             }
-            var userReceptionist = await _userHelper.GetUserByEmailAsync("romeu.alves@cinel.pt");
+            var userAssistant = await _userHelper.GetUserByEmailAsync("ceciliaoliveira@petcare.pt");
+
+            if (userAssistant == null)
+            {
+                userAssistant = new User
+                {
+                    FirstName = "cecilia",
+                    LastName = "oliveira",
+                    UserName = "ceciliaoliveira@petcare.pt",
+                    Email = "ceciliaoliveira@petcare.pt",
+                    PhoneNumber = GenerateRandomNumbers(9),
+                    Address = GenerateRandomAddress(),
+                    CityId = _context.Countries.FirstOrDefault().Cities.FirstOrDefault().Id,
+                    City = _context.Countries.FirstOrDefault().Cities.FirstOrDefault(),
+                };
+                var result = await _userHelper.AddUserAsync(userAssistant, "123456");
+
+                if (result != IdentityResult.Success)
+                {
+                    throw new InvalidOperationException("Could not create the user in seeder");
+                }
+                await _userHelper.AddUserToRoleAsync(userAssistant, "Assistant");
+                var token = await _userHelper.GenerateEmailConfirmationTokenAsync(userAssistant);
+                await _userHelper.ConfirmEmailAsync(userAssistant, token);
+
+            }
+            var userReceptionist = await _userHelper.GetUserByEmailAsync("romeualves@petcare.pt");
 
             if (userReceptionist == null)
             {
@@ -141,8 +167,8 @@ namespace VeterinaryClinic.Data
                 {
                     FirstName = "Romeu",
                     LastName = "Alves",
-                    UserName = "romeu.alves@cinel.pt",
-                    Email = "romeu.alves@cinel.pt",
+                    UserName = "romeualves@petcare.pt",
+                    Email = "romeualves@petcare.pt",
                     PhoneNumber = GenerateRandomNumbers(9),
                     Address = GenerateRandomAddress(),
                     CityId = _context.Countries.FirstOrDefault().Cities.FirstOrDefault().Id,
@@ -160,29 +186,73 @@ namespace VeterinaryClinic.Data
 
             }
 
-            var isInRole = await _userHelper.IsUserInRoleAsync(userAdmin, "Admin");
-            var isInRoleCustomer = await _userHelper.IsUserInRoleAsync(userCustomer, "Customer");
-            var isInRoleVet = await _userHelper.IsUserInRoleAsync(userVet, "Vet");
-            var isInRoleReceptionist = await _userHelper.IsUserInRoleAsync(userReceptionist, "Receptionist");
+            var userCustomer = await _userHelper.GetUserByEmailAsync("reinaldopires@petcare.pt");
 
-            if (!isInRole)
+            if (userCustomer == null)
+            {
+                userCustomer = new User
+                {
+                    FirstName = "Reinaldo",
+                    LastName = "Pires",
+                    UserName = "reinaldopires@petcare.pt",
+                    Email = "reinaldopires@petcare.pt",
+                    PhoneNumber = GenerateRandomNumbers(9),
+                    Address = GenerateRandomAddress(),
+                    CityId = _context.Countries.FirstOrDefault().Cities.FirstOrDefault().Id,
+                    City = _context.Countries.FirstOrDefault().Cities.FirstOrDefault(),
+                };
+                var result = await _userHelper.AddUserAsync(userCustomer, "123456");
+
+                if (result != IdentityResult.Success)
+                {
+                    throw new InvalidOperationException("Could not create the user in seeder");
+                }
+                await _userHelper.AddUserToRoleAsync(userCustomer, "Customer");
+                var token = await _userHelper.GenerateEmailConfirmationTokenAsync(userCustomer);
+                await _userHelper.ConfirmEmailAsync(userCustomer, token);
+
+            }
+            
+           
+           
+            
+            var isInRoleDirector = await _userHelper.IsUserInRoleAsync(userDirector, "Director");
+            var isInRoleAdmin = await _userHelper.IsUserInRoleAsync(userAdmin, "Admin");    
+            var isInRoleVet = await _userHelper.IsUserInRoleAsync(userVet, "Vet");
+            var isInRoleAssistant = await _userHelper.IsUserInRoleAsync(userAssistant, "Assistant");
+            var isInRoleReceptionist = await _userHelper.IsUserInRoleAsync(userReceptionist, "Receptionist");
+            var isInRoleCustomer = await _userHelper.IsUserInRoleAsync(userCustomer, "Customer");
+           
+
+            if (!isInRoleDirector)
+            {
+                await _userHelper.AddUserToRoleAsync(userDirector, "Director");
+
+            }
+            if (!isInRoleAdmin)
             {
                 await _userHelper.AddUserToRoleAsync(userAdmin, "Admin");
 
             }
-            if (!isInRoleCustomer)
-            {
-                await _userHelper.AddUserToRoleAsync(userCustomer, "Customer");
 
-            }
             if (!isInRoleVet)
             {
                 await _userHelper.AddUserToRoleAsync(userVet, "Vet");
 
             }
+            if (!isInRoleAssistant)
+            {
+                await _userHelper.AddUserToRoleAsync(userAssistant, "Assistant");
+
+            }
             if (!isInRoleReceptionist)
             {
                 await _userHelper.AddUserToRoleAsync(userReceptionist, "Receptionist");
+
+            }
+            if (!isInRoleCustomer)
+            {
+                await _userHelper.AddUserToRoleAsync(userCustomer, "Customer");
 
             }
 
@@ -226,7 +296,17 @@ namespace VeterinaryClinic.Data
 
                 await _context.SaveChangesAsync();
             }
+           
+            if (!_context.Employees.Any())
+            {
+                AddEmployee("Sandra Vieira", userAssistant);
+                AddEmployee("Aline Moraes", userAssistant);
+                AddEmployee("Suzana Martins", userAssistant);
+                AddEmployee("Nuno Ramos", userAssistant);
+                AddEmployee("Luis Silva", userAssistant);
 
+                await _context.SaveChangesAsync();
+            }
         }
         private void AddCustomer(string name, User user)
         {
@@ -280,6 +360,21 @@ namespace VeterinaryClinic.Data
             });
      
         }
+       
+        private void AddEmployee(string name, User user)
+        {
+            _context.Employees.Add(new Employee
+            {
+                Name = name,
+                Address = GenerateRandomAddress(),
+                Phone = GenerateRandomNumbers(9),
+                Email = name.Replace(" ", "_") + "@petcare.com",
+                Role = GenerateRandomRole(),
+                User = user,
+
+            });
+
+        }
         private string GenerateRandomNumbers(int value)
         {
             string phoneNumber = "";
@@ -320,8 +415,15 @@ namespace VeterinaryClinic.Data
 
             return specialistName;
         }
-     
-     
+        private string GenerateRandomRole()
+        {
+            string[] names = { "Director ", "Admin", "Vet", "Assistant", "Receptionist" };
+            string roleName = names[_random.Next(names.Length)];
+
+            return roleName;
+        }
+
+
 
     }
 }

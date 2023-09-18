@@ -11,6 +11,10 @@ namespace VeterinaryClinic.Helpers
 
         CustomerViewModel ToCustomerViewModel(Customer customer);
 
+        Employee ToEmployee(EmployeeViewModel model, Guid imageId, bool isNew);
+
+        EmployeeViewModel ToEmployeeViewModel(Employee employee);
+
         Pet ToPet(PetViewModel model, Guid imageId, bool isNew);
 
         PetViewModel ToPetViewModel(Pet pet);

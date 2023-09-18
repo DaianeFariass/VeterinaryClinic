@@ -250,14 +250,10 @@ namespace VeterinaryClinic.Controllers
         }
         public async Task<IActionResult> ConfirmAppointment()
         {
-           
-            var response = await _appointmentRespository.ConfirmAppointmentAsync(this.User.Identity.Name);  
-           
-                await _appointmentRespository.SendAppointmentNotification(response, this.User.Identity.Name, NotificationTypes.Create);
-                return RedirectToAction("Index");
 
-            
-           
+            await _appointmentRespository.ConfirmAppointmentAsync(this.User.Identity.Name);
+            return RedirectToAction("Index");
+
         }
         [Route("edit")]
         public async Task<IActionResult> Edit(int? id)
@@ -337,8 +333,8 @@ namespace VeterinaryClinic.Controllers
                     else
                     {
 
-                        var response = _appointmentRespository.EditAppointmentAsync(model, this.User.Identity.Name);
-                        await _appointmentRespository.SendAppointmentNotification(model, this.User.Identity.Name, NotificationTypes.Edit);
+                        await _appointmentRespository.EditAppointmentAsync(model, this.User.Identity.Name);
+                      
 
                     }
 

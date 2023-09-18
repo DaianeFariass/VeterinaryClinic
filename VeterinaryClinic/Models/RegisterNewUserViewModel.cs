@@ -44,5 +44,9 @@ namespace VeterinaryClinic.Models
         [Required]
         [Compare("Password")]
         public string Confirm { get; set; }
+
+        [Display(Name = "Role")]     
+        public string RoleId { get; set; }
+        public IEnumerable<SelectListItem> Roles { get; set; }
     }
 }
