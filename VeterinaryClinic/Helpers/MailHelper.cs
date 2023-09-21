@@ -22,8 +22,17 @@ namespace VeterinaryClinic.Helpers
             var smtp = _configuration["Mail:Smtp"];
             var port = _configuration["Mail:Port"];
             var password = _configuration["Mail:Password"];
+            
+            if(to == null) 
+            {
+                return new Response
+                {
+                    IsSuccess = false
+                };
+            }
 
             var emails = to.Split(",");
+           
             foreach( var mail in emails )
             {
                 var message = new MimeMessage();

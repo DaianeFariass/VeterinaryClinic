@@ -23,6 +23,7 @@ namespace VeterinaryClinic.Controllers
         private readonly IAppointmentRespository _appointmentRespository;
         private readonly IPetRepository _petRepository;
         private readonly IVetRepository _vetRepository;
+        private readonly INotificationRepository _notificationRepository;
         private readonly IFlashMessage _flashMessage;
         private readonly IConverterHelper _converter;
         private readonly IMailHelper _mailHelper;
@@ -31,6 +32,7 @@ namespace VeterinaryClinic.Controllers
         public AppointmentsController(IAppointmentRespository appointmentRespository,
             IPetRepository petRepository,
             IVetRepository vetRepository,
+            INotificationRepository notificationRepository,
             IFlashMessage flashMessage,
             IConverterHelper converter,
             IMailHelper mailHelper,
@@ -39,6 +41,7 @@ namespace VeterinaryClinic.Controllers
             _appointmentRespository = appointmentRespository;
             _petRepository = petRepository;
             _vetRepository = vetRepository;
+            _notificationRepository = notificationRepository;
             _flashMessage = flashMessage;
             _converter = converter;
             _mailHelper = mailHelper;
@@ -466,17 +469,13 @@ namespace VeterinaryClinic.Controllers
             return RedirectToAction("Index");
         }
 
-        [Route("notifications")]
-        public IActionResult Notifications()
-        {
-            var model = _appointmentRespository.GetNotificationsAsync();
-            return View(model);
-        }
+        
         [Route("appointmentnotfound")]
         public IActionResult AppointmentNotFound()
         {
             return View();
         }
+       
 
 
 

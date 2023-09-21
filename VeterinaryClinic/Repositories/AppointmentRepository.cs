@@ -308,21 +308,7 @@ namespace VeterinaryClinic.Repositories
 
 
         }
-
-        public IQueryable GetNotificationsAsync()
-        {
-
-            return _context.Notifications
-                .Include(n => n.Appointment)
-                .ThenInclude(n => n.Pet)
-                .ThenInclude(n => n.Customer)
-                .Include(n => n.Appointment)
-                .ThenInclude(n => n.Vet)
-                .Include(n => n.Appointment)
-                .ThenInclude(n => n.User);
-
-
-        }
+  
 
         public async Task<Appointment> CancelAppointmentAsync(int id)
         {

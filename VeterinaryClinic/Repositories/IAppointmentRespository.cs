@@ -40,8 +40,6 @@ namespace VeterinaryClinic.Repositories
 
         Task<IQueryable<AppointmentDetailTemp>> GetDetailsTempsAsync(string userName);
 
-        public IQueryable GetNotificationsAsync();
-
         Task ModifyAppointmentDetailAsync(int id);
 
         Task SendAppointmentNotification(Appointment appointment, string username, NotificationTypes notificationTypes);

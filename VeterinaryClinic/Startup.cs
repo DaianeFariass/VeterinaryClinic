@@ -80,6 +80,7 @@ namespace VeterinaryClinic
             services.AddScoped<ICountryRepository, CountryRepository>();
             services.AddScoped<IPetReportRepository, PetReportRepository>();
             services.AddScoped<IBillRepository, BillRepository>();
+            services.AddScoped<INotificationRepository, NotificationRepository>();
 
             services.ConfigureApplicationCookie(options =>
             {

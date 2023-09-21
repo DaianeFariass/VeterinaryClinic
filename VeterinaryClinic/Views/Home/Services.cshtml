@@ -37,7 +37,9 @@
                         </div>
                         <div class="services-cap">
                             <h5><a href="#">Pet Boarding</a></h5>
-                            <p>consectetur adipiscing elit, serfd dgo eiusmod tempor incididunt ut ore et dolore magna aliqua.</p>
+                            <p>
+                                Need to go away? No Worries, we will look after your pet!
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -48,7 +50,7 @@
                         </div>
                         <div class="services-cap">
                             <h5><a href="#">Pet Treatment</a></h5>
-                            <p>consectetur adipiscing elit, serfd dgo eiusmod tempor incididunt ut ore et dolore magna aliqua.</p>
+                            <p>Our Pet Care section provides a wealth of health and behavior information to help pet parents provide the best possible care for their furry friends.</p>
                         </div>
                     </div>
                 </div>
@@ -59,40 +61,7 @@
                         </div>
                         <div class="services-cap">
                             <h5><a href="#">Vaccinations</a></h5>
-                            <p>consectetur adipiscing elit, serfd dgo eiusmod tempor incididunt ut ore et dolore magna aliqua.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class=" col-lg-4 col-md-6 col-sm-6">
-                    <div class="single-services text-center mb-30">
-                        <div class="services-ion">
-                            <span class="flaticon-animals"></span>
-                        </div>
-                        <div class="services-cap">
-                            <h5><a href="#">Pet Treatment</a></h5>
-                            <p>consectetur adipiscing elit, serfd dgo eiusmod tempor incididunt ut ore et dolore magna aliqua.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class=" col-lg-4 col-md-6 col-sm-6">
-                    <div class="single-services text-center mb-30">
-                        <div class="services-ion">
-                            <span class="flaticon-animals-1"></span>
-                        </div>
-                        <div class="services-cap">
-                            <h5><a href="#">Vaccinations</a></h5>
-                            <p>consectetur adipiscing elit, serfd dgo eiusmod tempor incididunt ut ore et dolore magna aliqua.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class=" col-lg-4 col-md-6 col-sm-6">
-                    <div class="single-services text-center mb-30">
-                        <div class="services-ion">
-                            <span class="flaticon-animal-kingdom"></span>
-                        </div>
-                        <div class="services-cap">
-                            <h5><a href="#">Pet Boarding</a></h5>
-                            <p>consectetur adipiscing elit, serfd dgo eiusmod tempor incididunt ut ore et dolore magna aliqua.</p>
+                            <p>If the number of vaccinated pets decreases, our four-legged friends could be at risk from an outbreak of infectious diseases - some of which can be transmitted to humans. Keep your pets safe by keeping them up to date with their vaccinations.</p>
                         </div>
                     </div>
                 </div>
@@ -111,7 +80,7 @@
                             <p>Because we know that even the best technology is only as good as the people behind it. 24/7 tech support.</p>
                         </div>
                         <div class="contact_btn d-flex align-items-center justify-content-center">
-                            <a href="contact.html" class="btn white-btn">Contact Us</a>
+                            <a class="btn white-btn" asp-controller="Home" asp-action="Contact">Contact Us!</a>
                             <p>Or<a href="#"> +880 4664 216</a></p>
                         </div>
                     </div>
@@ -135,7 +104,7 @@
                             </div>
                             <div class="footer-tittle">
                                 <div class="footer-pera">
-                                    <p>Lorem ipsum dolor sit amet, adipiscing elit, sed do eiusmod tempor elit. </p>
+                                    <p>We are the result of our history. A cohesive, multidisciplinary, dedicated and committed team that includes mature and young people who work together for the greater good: Saving lives! </p>
                                 </div>
                             </div>
                             <!-- social -->
@@ -153,11 +122,10 @@
                         <div class="footer-tittle">
                             <h4>Company</h4>
                             <ul>
-                                <li><a href="index.html">Home</a></li>
-                                <li><a href="about.html">About Us</a></li>
-                                <li><a href="single-blog.html">Services</a></li>
-                                <li><a href="#">Cases</a></li>
-                                <li><a href="contact.html">  Contact Us</a></li>
+                                <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+                                <li><a asp-controller="Home" asp-action="About">About</a></li>
+                                <li><a asp-controller="Home" asp-action="Services">Services</a></li>
+                                <li><a asp-controller="Home" asp-action="Contact">Contact</a></li>
                             </ul>
                         </div>
                     </div>
@@ -167,11 +135,10 @@
                         <div class="footer-tittle">
                             <h4>Services</h4>
                             <ul>
-                                <li><a href="#">Commercial Cleaning</a></li>
-                                <li><a href="#">Office Cleaning</a></li>
-                                <li><a href="#">Building Cleaning</a></li>
-                                <li><a href="#">Floor Cleaning</a></li>
-                                <li><a href="#">Apartment Cleaning</a></li>
+                                <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+                                <li><a asp-controller="Home" asp-action="About">About</a></li>
+                                <li><a asp-controller="Home" asp-action="Services">Services</a></li>
+                                <li><a asp-controller="Home" asp-action="Contact">Contact</a></li>
                             </ul>
                         </div>
                     </div>
@@ -182,8 +149,8 @@
                             <h4>Get in Touch</h4>
                             <ul>
                                 <li><a href="#">152-515-6565</a></li>
-                                <li><a href="#"> Demomail@gmail.com</a></li>
-                                <li><a href="#">New Orleans, USA</a></li>
+                                <li><a href="#"> geral@petcare.com</a></li>
+                                <li><a href="#">Setúbal, PT</a></li>
                             </ul>
                         </div>
                     </div>
@@ -200,7 +167,7 @@
                         <div class="footer-copy-right text-center">
                             <p>
                                 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                                Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                                Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved |<i class="fa fa-heart" aria-hidden="true"></i> <a target="_blank">Pet Care Veterinary Clinic</a>
                                 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                             </p>
                         </div>
@@ -215,4 +182,37 @@
 <div id="back-top">
     <a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
 </div>
+
+<!-- JS here -->
+
+<script src="./assets/js/vendor/modernizr-3.5.0.min.js"></script>
+<!-- Jquery, Popper, Bootstrap -->
+<script src="./assets/js/vendor/jquery-1.12.4.min.js"></script>
+<script src="./assets/js/popper.min.js"></script>
+<script src="./assets/js/bootstrap.min.js"></script>
+<!-- Jquery Mobile Menu -->
+<script src="./assets/js/jquery.slicknav.min.js"></script>
+
+<!-- Jquery Slick , Owl-Carousel Plugins -->
+<script src="./assets/js/owl.carousel.min.js"></script>
+<script src="./assets/js/slick.min.js"></script>
+<!-- One Page, Animated-HeadLin -->
+<script src="./assets/js/wow.min.js"></script>
+<script src="./assets/js/animated.headline.js"></script>
+<script src="./assets/js/jquery.magnific-popup.js"></script>
+
+<!-- Nice-select, sticky -->
+<script src="./assets/js/jquery.nice-select.min.js"></script>
+<script src="./assets/js/jquery.sticky.js"></script>
+
+<!-- contact js -->
+<script src="./assets/js/contact.js"></script>
+<script src="./assets/js/jquery.form.js"></script>
+<script src="./assets/js/jquery.validate.min.js"></script>
+<script src="./assets/js/mail-script.js"></script>
+<script src="./assets/js/jquery.ajaxchimp.min.js"></script>
+
+<!-- Jquery Plugins, main Jquery -->
+<script src="./assets/js/plugins.js"></script>
+<script src="./assets/js/main.js"></script>
 

@@ -1,8 +1,9 @@
 ﻿@model IEnumerable<VeterinaryClinic.Data.Entities.Notification>
 
 @{
-    ViewData["Title"] = "Notifications";
+    ViewData["Title"] = "Index";
 }
+
 <!-- Hero Area Start -->
 <div style="height: 210px;" class="slider-area2 slider-height2 d-flex align-items-center">
     <div class="container">
@@ -52,7 +53,7 @@
                             <th>
                                 @Html.DisplayNameFor(model => model.NotificationTypes)
                             </th>
-                            
+
                             <th></th>
                         </tr>
                     </thead>
@@ -60,11 +61,11 @@
                         @foreach (var item in Model)
                         {
                             <tr>
-                             
-                               <td>
+
+                                <td>
                                     @Html.DisplayFor(modelItem => item.Appointment.User.FullName)
                                 </td>
-                                   <td>
+                                <td>
                                     @Html.DisplayFor(modelItem => item.Appointment.Pet.Customer.Name)
                                 </td>
                                 <td>
@@ -83,8 +84,8 @@
                                     @Html.DisplayFor(modelItem => item.NotificationTypes)
                                 </td>
                                 <td>
-                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><i class="fas fa-list"></i></a>
-                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+
+                                    <a asp-action="DeleteNotification" asp-route-id="@item.Id" class="btn btn-danger"><i class="fas fa-trash"></i></a>
                                 </td>
                             </tr>
                         }
@@ -104,3 +105,4 @@
         });
     </script>
 }
+

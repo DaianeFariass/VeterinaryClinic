@@ -15,7 +15,7 @@
                             <div class="hero__caption">
                                 <span data-animation="fadeInUp" data-delay=".3s">We help to groom your pet</span>
                                 <h1 data-animation="fadeInUp" data-delay=".3s">We Care Your Pets.</h1>
-                                <p data-animation="fadeInUp" data-delay=".6s">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna sectetur adipisci.</p>
+                                <p data-animation="fadeInUp" data-delay=".6s">We are the result of our history. A cohesive, multidisciplinary, dedicated and committed team that includes mature and young people who work together for the greater good: Saving lives! We believe in a relationship based on trust...</p>
                                 <a asp-controller="Home" class="hero-btn" data-animation="fadeInLeft" data-delay=".3s" asp-action="Contact">Contact Now<i class="ti-arrow-right"></i></a>
                             </div>
                         </div>
@@ -49,7 +49,9 @@
                         </div>
                         <div class="services-cap">
                             <h5><a href="#">Pet Boarding</a></h5>
-                            <p>consectetur adipiscing elit, serfd dgo eiusmod tempor incididunt ut ore et dolore magna aliqua.</p>
+                            <p>
+                                Need to go away? No Worries, we will look after your pet!
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -60,7 +62,7 @@
                         </div>
                         <div class="services-cap">
                             <h5><a href="#">Pet Treatment</a></h5>
-                            <p>consectetur adipiscing elit, serfd dgo eiusmod tempor incididunt ut ore et dolore magna aliqua.</p>
+                            <p>Our Pet Care section provides a wealth of health and behavior information to help pet parents provide the best possible care for their furry friends.</p>
                         </div>
                     </div>
                 </div>
@@ -71,7 +73,7 @@
                         </div>
                         <div class="services-cap">
                             <h5><a href="#">Vaccinations</a></h5>
-                            <p>consectetur adipiscing elit, serfd dgo eiusmod tempor incididunt ut ore et dolore magna aliqua.</p>
+                            <p>If the number of vaccinated pets decreases, our four-legged friends could be at risk from an outbreak of infectious diseases - some of which can be transmitted to humans. Keep your pets safe by keeping them up to date with their vaccinations.</p>
                         </div>
                     </div>
                 </div>
@@ -112,9 +114,9 @@
                     <h2>We are commited for<br> better service</h2>
                 </div>
                 <div class="about-more">
-                    <p class="pera-top">Mollit anim laborum duis adseu dolor iuyn voluptcate velit ess <br>cillum dolore egru lofrre dsu.</p>
-                    <p class="mb-65 pera-bottom">Mollit anim laborum.Dvcuis aute serunt  iruxvfg dhjkolohr indd re voluptate velit esscillumlore eu quife nrulla parihatur. Excghcepteur sfwsignjnt occa cupidatat non aute iruxvfg dhjinulpadeserunt moll.</p>
-                    <a href="#" class="btn">Read More</a>
+                    <p class="pera-top">Preventive medicine aims to avoid the onset of disease. Prevention is always more effective than treatment. Although it is often... <br>Contact Us!.</p>
+                    <p class="mb-65 pera-bottom">We offer a reference service in Internal Medicine that extends from diagnosis to treatment....</p>
+                    <a class="btn" asp-controller="Home" asp-action="About">Read more</a>
                 </div>
             </div>
         </div>
@@ -169,13 +171,14 @@
                             <div class="row ">
                                 <div class="col-xl-12">
                                     <div class="section-tittle section-tittle2 mb-70">
-                                        <h2>World's Leading Law Consultency Agency !</h2>
+                                        <h2>World's Leading Veterinary Clinic !</h2>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <!--End Section Tittle  -->
-                        <form id="contact-form" action="#" method="POST">
+                        <form id="contact-form" asp-controller="Home" asp-action="SendMailHome" autocomplete="off" method="post" id="contactForm" novalidate="novalidate">
+                            <flash dismissable="true" />
                             <div class="row">
                                 <div class="col-lg-6 col-md-6">
                                     <div class="form-box user-icon mb-30">
@@ -190,11 +193,9 @@
                                 <div class="col-lg-6 col-md-6 mb-30">
                                     <div class="select-itms">
                                         <select name="select" id="select2">
-                                            <option value="">Health Law</option>
-                                            <option value="">saiful islam</option>
-                                            <option value="">Arafath Miya</option>
-                                            <option value="">Shakil Miya</option>
-                                            <option value="">Tamim Sharker</option>
+                                            <option value="">Reception</option>
+                                            <option value="">Vet</option>
+                                            <option value="">Support</option>
                                         </select>
                                     </div>
                                 </div>
@@ -247,7 +248,7 @@
                             <img src="assets/img/gallery/team1.png" alt="">
                         </div>
                         <div class="team-caption">
-                            <span>Mike Janathon</span>
+                            <span>Reinaldo Pires</span>
                             <h3><a href="#">Doctor</a></h3>
                         </div>
                     </div>
@@ -258,7 +259,7 @@
                             <img src="assets/img/gallery/team2.png" alt="">
                         </div>
                         <div class="team-caption">
-                            <span>Mike J Smith</span>
+                            <span>Davi Dias</span>
                             <h3><a href="#">Doctor</a></h3>
                         </div>
                     </div>
@@ -269,7 +270,7 @@
                             <img src="assets/img/gallery/team3.png" alt="">
                         </div>
                         <div class="team-caption">
-                            <span>Pule W Smith</span>
+                            <span>Olivia Farias</span>
                             <h3><a href="#">Doctor</a></h3>
                         </div>
                     </div>
@@ -292,12 +293,12 @@
                                 <div class="testimonial-founder">
                                     <div class="founder-img mb-40">
                                         <img src="assets/img/gallery/testi-logo.png" alt="">
-                                        <span>Margaret Lawson</span>
+                                        <span>Rafael Santos</span>
                                         <p>Creative Director</p>
                                     </div>
                                 </div>
                                 <div class="testimonial-top-cap">
-                                    <p>“I am at an age where I just want to be fit and healthy our bodies are our responsibility! So start caring for your body and it will care for you. Eat clean it will care for you and workout hard.”</p>
+                                    <p>“Society has organised itself with a view to adopting a growing number of initiatives that reveal social concerns. A company's social responsibility is not restricted solely to the fulfilment of its...”</p>
                                 </div>
                             </div>
                         </div>
@@ -308,12 +309,12 @@
                                 <div class="testimonial-founder">
                                     <div class="founder-img mb-40">
                                         <img src="assets/img/gallery/testi-logo.png" alt="">
-                                        <span>Margaret Lawson</span>
+                                        <span>Rafael Santos</span>
                                         <p>Creative Director</p>
                                     </div>
                                 </div>
                                 <div class="testimonial-top-cap">
-                                    <p>“I am at an age where I just want to be fit and healthy our bodies are our responsibility! So start caring for your body and it will care for you. Eat clean it will care for you and workout hard.”</p>
+                                    <p>“Excellent professionals, always ready to answer all our questions, always willing to help and with an enormous love for animals... just look at Mêlée's happiness every time we go there! Keep up the good work”</p>
                                 </div>
                             </div>
                         </div>
@@ -324,12 +325,12 @@
                                 <div class="testimonial-founder">
                                     <div class="founder-img mb-40">
                                         <img src="assets/img/gallery/testi-logo.png" alt="">
-                                        <span>Margaret Lawson</span>
+                                        <span>Rafael Santos</span>
                                         <p>Creative Director</p>
                                     </div>
                                 </div>
                                 <div class="testimonial-top-cap">
-                                    <p>“I am at an age where I just want to be fit and healthy our bodies are our responsibility! So start caring for your body and it will care for you. Eat clean it will care for you and workout hard.”</p>
+                                    <p>“it's with a big smile that I recommend the clinic! Aia... loves it! It's a little treat from people she loves very much and can't do without! You don't even have to show her the way, she knows where the door is!”</p>
                                 </div>
                             </div>
                         </div>
@@ -359,11 +360,12 @@
                         </div>
                         <div class="blogs-cap">
                             <div class="date-info">
-                                <span>Pet food</span>
+                                <span>The fastest growing area of veterinary medicine</span>
                                 <p>Nov 30, 2020</p>
                             </div>
-                            <h4>Amazing Places To Visit In Summer</h4>
-                            <a href="blog_details.html" class="read-more1">Read more</a>
+                            <h4>According to an article in Forbes, there are some promising areas in veterinary medicine for the coming years. Among them is environmental surveillance. In this area, the professional works to promote preventive actions to protect the environmental world and avoid risks that could harm human health.</h4>
+                            <a  class="read-more1" asp-controller="Home" asp-action="Services">Read more</a>
+                           
                         </div>
                     </div>
                 </div>
@@ -374,11 +376,11 @@
                         </div>
                         <div class="blogs-cap">
                             <div class="date-info">
-                                <span>Pet food</span>
+                                <span>New rabies vaccine formula</span>
                                 <p>Nov 30, 2020</p>
                             </div>
-                            <h4>Developing Creativithout Losing Visual</h4>
-                            <a href="blog_details.html" class="read-more1">Read more</a>
+                            <h4>The formula of the new vaccine is an "exclusive Merial innovation, which makes use of the latest vaccine technology, producing a strong and long-lasting immune response without the need for an adjuvant", thus limiting the occurrence of inflammation at the injection site.</h4>
+                            <a  class="read-more1" asp-controller="Home" asp-action="Services">Read more</a>
                         </div>
                     </div>
                 </div>
@@ -389,11 +391,11 @@
                         </div>
                         <div class="blogs-cap">
                             <div class="date-info">
-                                <span>Pet food</span>
+                                <span>Treatment for cat bones</span>
                                 <p>Nov 30, 2020</p>
                             </div>
-                            <h4>Winter Photography Tips from Glenn</h4>
-                            <a href="blog_details.html" class="read-more1">Read more</a>
+                            <h4>Incomplete fractures in young, healthy cats can be treated with external splints or casts. Other injuries are treated with bone plates, screws, orthopedic wires, or pins. Bone grafts may be used to help healing. Antibiotics are given to keep open fractures from becoming infected.</h4>
+                            <a  class="read-more1" asp-controller="Home" asp-action="Services">Read more</a>
                         </div>
                     </div>
                 </div>
@@ -412,7 +414,7 @@
                             <p>Because we know that even the best technology is only as good as the people behind it. 24/7 tech support.</p>
                         </div>
                         <div class="contact_btn d-flex align-items-center justify-content-center">
-                            <a href="contact.html" class="btn white-btn">Contact Us</a>
+                            <a class="btn white-btn" asp-controller="Home" asp-action="Contact">Contact Us!</a>
                             <p>Or<a href="#"> +880 4664 216</a></p>
                         </div>
                     </div>
@@ -436,7 +438,7 @@
                             </div>
                             <div class="footer-tittle">
                                 <div class="footer-pera">
-                                    <p>Lorem ipsum dolor sit amet, adipiscing elit, sed do eiusmod tempor elit. </p>
+                                    <p>We are the result of our history. A cohesive, multidisciplinary, dedicated and committed team that includes mature and young people who work together for the greater good: Saving lives! </p>
                                 </div>
                             </div>
                             <!-- social -->
@@ -454,11 +456,10 @@
                         <div class="footer-tittle">
                             <h4>Company</h4>
                             <ul>
-                                <li><a href="index.html">Home</a></li>
-                                <li><a href="about.html">About Us</a></li>
-                                <li><a href="single-blog.html">Services</a></li>
-                                <li><a href="#">Cases</a></li>
-                                <li><a href="contact.html">  Contact Us</a></li>
+                                <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+                                <li><a asp-controller="Home" asp-action="About">About</a></li>
+                                <li><a asp-controller="Home" asp-action="Services">Services</a></li>
+                                <li><a asp-controller="Home" asp-action="Contact">Contact</a></li>
                             </ul>
                         </div>
                     </div>
@@ -468,11 +469,10 @@
                         <div class="footer-tittle">
                             <h4>Services</h4>
                             <ul>
-                                <li><a href="#">Commercial Cleaning</a></li>
-                                <li><a href="#">Office Cleaning</a></li>
-                                <li><a href="#">Building Cleaning</a></li>
-                                <li><a href="#">Floor Cleaning</a></li>
-                                <li><a href="#">Apartment Cleaning</a></li>
+                                <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+                                <li><a asp-controller="Home" asp-action="About">About</a></li>
+                                <li><a asp-controller="Home" asp-action="Services">Services</a></li>
+                                <li><a asp-controller="Home" asp-action="Contact">Contact</a></li>
                             </ul>
                         </div>
                     </div>
@@ -483,7 +483,7 @@
                             <h4>Get in Touch</h4>
                             <ul>
                                 <li><a href="#">152-515-6565</a></li>
-                                <li><a href="#"> provetclinic@gmail.com</a></li>
+                                <li><a href="#"> geral@petcare.com</a></li>
                                 <li><a href="#">Setúbal, PT</a></li>
                             </ul>
                         </div>
@@ -501,7 +501,7 @@
                         <div class="footer-copy-right text-center">
                             <p>
                                 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                                Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved |<i class="fa fa-heart" aria-hidden="true"></i> <a target="_blank">ProVet Veterinary Clinic</a>
+                                Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved |<i class="fa fa-heart" aria-hidden="true"></i> <a target="_blank">Pet Care Veterinary Clinic</a>
                                 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                             </p>
                         </div>
