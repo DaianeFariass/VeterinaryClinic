@@ -252,6 +252,31 @@ namespace VeterinaryClinic.Migrations
                     b.ToTable("AppointmentDetailsTemp");
                 });
 
+            modelBuilder.Entity("VeterinaryClinic.Data.Entities.Bill", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("AppointmentId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Cost")
+                        .HasColumnType("float");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppointmentId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Bills");
+                });
+
             modelBuilder.Entity("VeterinaryClinic.Data.Entities.City", b =>
                 {
                     b.Property<int>("Id")
@@ -757,6 +782,21 @@ namespace VeterinaryClinic.Migrations
                     b.Navigation("User");
 
                     b.Navigation("Vet");
+                });
+
+            modelBuilder.Entity("VeterinaryClinic.Data.Entities.Bill", b =>
+                {
+                    b.HasOne("VeterinaryClinic.Data.Entities.Appointment", "Appointment")
+                        .WithMany()
+                        .HasForeignKey("AppointmentId");
+
+                    b.HasOne("VeterinaryClinic.Data.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Appointment");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("VeterinaryClinic.Data.Entities.City", b =>

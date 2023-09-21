@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Razor.Language.Intermediate;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Vereyon.Web;
+using VeterinaryClinic.Data;
 using VeterinaryClinic.Data.Entities;
 using VeterinaryClinic.Enums;
 using VeterinaryClinic.Helpers;
@@ -23,18 +25,24 @@ namespace VeterinaryClinic.Controllers
         private readonly IVetRepository _vetRepository;
         private readonly IFlashMessage _flashMessage;
         private readonly IConverterHelper _converter;
+        private readonly IMailHelper _mailHelper;
+        private readonly DataContext _context;
 
         public AppointmentsController(IAppointmentRespository appointmentRespository,
             IPetRepository petRepository,
             IVetRepository vetRepository,
             IFlashMessage flashMessage,
-            IConverterHelper converter)
+            IConverterHelper converter,
+            IMailHelper mailHelper,
+            DataContext context)
         {
             _appointmentRespository = appointmentRespository;
             _petRepository = petRepository;
             _vetRepository = vetRepository;
             _flashMessage = flashMessage;
             _converter = converter;
+            _mailHelper = mailHelper;
+            _context = context;
         }
         public async Task<IActionResult> Index()
         {
@@ -50,13 +58,13 @@ namespace VeterinaryClinic.Controllers
         [Route("addappointment")]
         public IActionResult AddAppointment()
         {
-            
+
             var model = new AppointmentDetailsViewModel
             {
                 Pets = _petRepository.GetComboPets(),
                 Vets = _vetRepository.GetComboVets(),
                 Date = DateTime.Now.Date,
-                Time = DateTime.Now.AddHours(8),     
+                Time = DateTime.Now.AddHours(8),
             };
             ViewBag.Pets = model.Pets;
             ViewBag.Vets = model.Vets;
@@ -66,13 +74,13 @@ namespace VeterinaryClinic.Controllers
         [Route("addappointment")]
         public async Task<IActionResult> AddAppointment(AppointmentDetailsViewModel model)
         {
-            if(ModelState.IsValid) 
+            if (ModelState.IsValid)
             {
-                
+
                 if (model.Date.Date < DateTime.Now.Date)
                 {
                     _flashMessage.Warning("Date Invalid!");
-                     model = new AppointmentDetailsViewModel
+                    model = new AppointmentDetailsViewModel
                     {
                         Pets = _petRepository.GetComboPets(),
                         Vets = _vetRepository.GetComboVets(),
@@ -90,7 +98,7 @@ namespace VeterinaryClinic.Controllers
                 a.Time == model.Time &&
                 a.Vet.Id == model.VetId);
 
-                if (appointmentDetailtemp) 
+                if (appointmentDetailtemp)
                 {
                     _flashMessage.Warning("The vet in this date and time is unvailable");
                     model = new AppointmentDetailsViewModel
@@ -112,10 +120,10 @@ namespace VeterinaryClinic.Controllers
                     return RedirectToAction("Create");
 
                 }
-              
-               
+
+
             }
-            
+
             return View(model);
         }
         [Route("editappointment")]
@@ -129,7 +137,7 @@ namespace VeterinaryClinic.Controllers
             }
             var appointmentToEdit = await _appointmentRespository.GetAppointmentDetailTempAsync(id.Value);
 
-            if(appointmentToEdit == null) 
+            if (appointmentToEdit == null)
             {
                 return new NotFoundViewResult("AppointmentNotFound");
 
@@ -174,7 +182,7 @@ namespace VeterinaryClinic.Controllers
                     bool appointmentDetailtemp = appointmentDetails.Any(a =>
                     a.Date == model.Date &&
                     a.Time == model.Time &&
-                    a.Vet.Id == model.VetId);              
+                    a.Vet.Id == model.VetId);
 
                     if (appointmentDetailtemp)
                     {
@@ -239,11 +247,11 @@ namespace VeterinaryClinic.Controllers
         }
         public async Task<IActionResult> DeleteAppointment(int? id)
         {
-            if(id == null) 
-            { 
-            
-                return NotFound();
-            
+            if (id == null)
+            {
+
+                return new NotFoundViewResult("AppointmentNotFound");
+
             }
             await _appointmentRespository.DeleteDetailTempAsync(id.Value);
             return RedirectToAction("Create");
@@ -251,7 +259,21 @@ namespace VeterinaryClinic.Controllers
         public async Task<IActionResult> ConfirmAppointment()
         {
 
-            await _appointmentRespository.ConfirmAppointmentAsync(this.User.Identity.Name);
+            var response = await _appointmentRespository.ConfirmAppointmentAsync(this.User.Identity.Name);
+            if (response != null)
+            {
+                _mailHelper.SendEmail(response.Pet.Customer.Email,
+                 "Appointment Confirmed", $"<h1>Pet Care</h1>" +
+             $"Dear {response.Pet.Customer.Name}, " +
+                   $"Follow Your Appointment Details</br></br>" +
+                   $"Pet:  {response.Pet.Name}</br>" +
+                   $"Vet:  {response.Vet.Name}</br>" +
+                   $"Date: {response.Date}</br>" +
+                   $"Time: {response.Time}</br>" +
+                   $"Status: {response.Status}</br>");
+
+            }
+
             return RedirectToAction("Index");
 
         }
@@ -261,26 +283,26 @@ namespace VeterinaryClinic.Controllers
             if (id == null)
             {
 
-                return NotFound();
+                return new NotFoundViewResult("AppointmentNotFound");
 
             }
             var appointmentToEdit = await _appointmentRespository.GetAppointmentByIdAsync(id.Value);
 
             if (appointmentToEdit == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("AppointmentNotFound");
 
             }
             var model = new AppointmentViewModel
-            { 
+            {
                 Id = appointmentToEdit.Id,
                 Pets = _petRepository.GetComboPets(),
                 Vets = _vetRepository.GetComboVets(),
                 Date = appointmentToEdit.Date,
                 Time = appointmentToEdit.Time,
-            
+
             };
-          
+
             ViewBag.Pets = model.Pets;
             ViewBag.Vets = model.Vets;
             return View(model);
@@ -333,8 +355,20 @@ namespace VeterinaryClinic.Controllers
                     else
                     {
 
-                        await _appointmentRespository.EditAppointmentAsync(model, this.User.Identity.Name);
-                      
+                        var response = await _appointmentRespository.EditAppointmentAsync(model, this.User.Identity.Name);
+                        if (response != null)
+                        {
+                            _mailHelper.SendEmail(response.Pet.Customer.Email,
+                             "Appointment Modified", $"<h1>Pet Care</h1>" +
+                         $"Dear {response.Pet.Customer.Name}, " +
+                               $"Your appointment was modified! Follow the new details...</br></br>" +
+                               $"Pet:  {response.Pet.Name}</br>" +
+                               $"Vet:  {response.Vet.Name}</br>" +
+                               $"Date: {response.Date.Date}</br>" +
+                               $"Time: {response.Time}</br>" +
+                               $"Status: {response.Status}</br>");
+
+                        }
 
                     }
 
@@ -362,23 +396,83 @@ namespace VeterinaryClinic.Controllers
         public async Task<IActionResult> CancelAppointment(int id)
         {
             var response = await _appointmentRespository.CancelAppointmentAsync(id);
-            await _appointmentRespository.SendAppointmentNotification(response, this.User.Identity.Name, NotificationTypes.Cancel);
+            if (response != null)
+            {
+                _mailHelper.SendEmail(response.Pet.Customer.Email,
+                 "Appointment Cancelled", $"<h1>Pet Care</h1>" +
+             $"Dear {response.Pet.Customer.Name}, " +
+                   $"Your appointment was cancelled! Follow the details...</br></br>" +
+                   $"Pet:  {response.Pet.Name}</br>" +
+                   $"Vet:  {response.Vet.Name}</br>" +
+                   $"Date: {response.Date.Date}</br>" +
+                   $"Time: {response.Time}</br>" +
+                   $"Status: {response.Status}</br>");
+
+            }
+
             return RedirectToAction("Index");
 
         }
-        public async Task<IActionResult> ConcludeAppointment(int id)
+
+        [Route("concludeappointment")]
+        public async Task<IActionResult> ConcludeAppointment(int? id)
         {
-            var response = await _appointmentRespository.ConcludeAppointmentAsync(id);
-            await _appointmentRespository.SendAppointmentNotification(response, this.User.Identity.Name, NotificationTypes.Conclude);
-            return RedirectToAction("Index");
+            if (id == null)
+            {
+
+                return new NotFoundViewResult("AppointmentNotFound");
+
+            }
+            var appointment = await _appointmentRespository.GetAppointmentByIdAsync(id.Value);
+
+            if (appointment == null)
+            {
+                return new NotFoundViewResult("AppointmentNotFound");
+
+            }
+            var model = new BillViewModel
+            {
+                Appointments = _appointmentRespository.GetComboAppointments()
+
+            };
+
+            ViewBag.Appointments = model.Appointments;
+
+            return View(model);
 
         }
+
+        [HttpPost]
+        [Route("concludeappointment")]
+        public async Task<IActionResult> ConcludeAppointment(BillViewModel model)
+        {
+            var response = await _appointmentRespository.ConcludeAppointmentAsync(model);
+            if (response != null)
+            {
+                _mailHelper.SendEmail(response.Pet.Customer.Email,
+                 "Appointment Concluded...", $"<h1>Pet Care</h1>" +
+             $"Dear {response.Pet.Customer.Name}, " +
+                   $"Your appointment was concluded ! Please Follow your Bill...</br></br>" +
+                   $"Pet:  {response.Pet.Name}</br>" +
+                   $"Vet:  {response.Vet.Name}</br>" +
+                   $"Date: {response.Date.Date}</br>" +
+                   $"Time: {response.Time}</br>" +
+                   $"Status: {response.Status}</br>");
+
+            }
+
+
+
+            return RedirectToAction("Index");
+        }
+
         [Route("notifications")]
         public IActionResult Notifications()
         {
             var model = _appointmentRespository.GetNotificationsAsync();
             return View(model);
         }
+        [Route("appointmentnotfound")]
         public IActionResult AppointmentNotFound()
         {
             return View();

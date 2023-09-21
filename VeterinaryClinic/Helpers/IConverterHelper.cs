@@ -39,5 +39,9 @@ namespace VeterinaryClinic.Helpers
 
         PetReportViewModel ToPetReportViewModel(PetReport petReport);
 
+        Bill ToBill(BillViewModel model, bool isNew);
+
+        BillViewModel ToBillViewModel(Bill bill);
+
     }
 }

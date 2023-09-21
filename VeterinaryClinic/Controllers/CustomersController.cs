@@ -203,6 +203,7 @@ namespace VeterinaryClinic.Controllers
 
             }
         }
+        [Route("customernotfound")]
         public IActionResult CustomerNotFound()
         {
             return View();

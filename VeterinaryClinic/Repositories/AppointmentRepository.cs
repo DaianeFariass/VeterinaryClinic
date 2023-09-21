@@ -1,5 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Razor.Language.Intermediate;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using VeterinaryClinic.Data;
@@ -15,15 +18,18 @@ namespace VeterinaryClinic.Repositories
         private readonly DataContext _context;
         private readonly IUserHelper _userHelper;
         private readonly IConverterHelper _converterHelper;
+        private readonly IMailHelper _mailHelper;
 
         public AppointmentRepository(
             DataContext context,
             IUserHelper userHelper,
-            IConverterHelper converterHelper) : base(context)
+            IConverterHelper converterHelper,
+            IMailHelper mailHelper) : base(context)
         {
             _context = context;
             _userHelper = userHelper;
             _converterHelper = converterHelper;
+            _mailHelper = mailHelper;
         }
 
 
@@ -79,6 +85,7 @@ namespace VeterinaryClinic.Repositories
             }
             var appointmentTmps = await _context.AppointmentDetailsTemp
                 .Include(p => p.Pet)
+                .ThenInclude(p => p.Customer)
                 .Include(v => v.Vet)
                 .Where(a => a.User == user)
                 .ToListAsync();
@@ -97,6 +104,7 @@ namespace VeterinaryClinic.Repositories
             var appointment = new Appointment();
             foreach (AppointmentDetail appointmentDetail in details)
             {
+               
                 appointment = new Appointment
                 {
                     User = user,
@@ -105,11 +113,12 @@ namespace VeterinaryClinic.Repositories
                     Date = appointmentDetail.Date,
                     Time = appointmentDetail.Time,
                     Status = StatusAppointment.Confirmed,
+                    
 
                 };
+             
                 await CreateAsync(appointment);
-                await SendAppointmentNotification(appointment, user.UserName, NotificationTypes.Create);
-
+                await SendAppointmentNotification(appointment, user.UserName, NotificationTypes.Create);                
             }
 
             _context.AppointmentDetailsTemp.RemoveRange(appointmentTmps);
@@ -317,58 +326,92 @@ namespace VeterinaryClinic.Repositories
 
         public async Task<Appointment> CancelAppointmentAsync(int id)
         {
+            
             var appointment = await _context.Appointments.FindAsync(id);
             if (appointment == null)
             {
                 return null;
 
             }
-            else
+            var customers = _context.Appointments
+            .Include(a => a.Pet)
+            .ThenInclude(a => a.Customer)
+            .Include(a => a.Vet)
+            .Include(a => a.User)
+            .ToList();
+            var details = customers.Select(a => new AppointmentViewModel
             {
-                appointment.Status = StatusAppointment.Cancelled;
-                _context.Appointments.Update(appointment);
-                await _context.SaveChangesAsync();
-            }
+                Pet = appointment.Pet,
+                Vet= appointment.Vet,
+                User= appointment.User,
+
+            });    
+
+            appointment.Status = StatusAppointment.Cancelled;
+            _context.Appointments.Update(appointment);
+            await SendAppointmentNotification(appointment, appointment.User.UserName , NotificationTypes.Cancel);
+            await _context.SaveChangesAsync();
             return appointment;
         }
 
-        public async Task<Appointment> ConcludeAppointmentAsync(int id)
+        public async Task<Appointment> ConcludeAppointmentAsync(BillViewModel model)
         {
-            var appointment = await _context.Appointments.FindAsync(id);
+            var appointment = await _context.Appointments.FindAsync(model.Id);
             if (appointment == null)
             {
                 return null;
 
             }
-            else
+            var appointments = _context.Appointments
+           .Include(a => a.Pet)
+           .ThenInclude(a => a.Customer)
+           .Include(a => a.Vet)
+           .Include(a => a.User)
+           .ToList();
+            var details = appointments.Select(a => new BillViewModel
             {
-                appointment.Status = StatusAppointment.Concluded;
-                _context.Appointments.Update(appointment);
-                await _context.SaveChangesAsync();
+               
+                User = appointment.User,
 
-            }
+            });
+            appointment.Status = StatusAppointment.Concluded;
+            await SendAppointmentBill(appointment, appointment.User.UserName);
+            await SendAppointmentNotification(appointment, appointment.User.UserName, NotificationTypes.Conclude);
+            _context.Appointments.Update(appointment);
+            await _context.SaveChangesAsync();
+
             return appointment;
         }
 
-        public async Task EditAppointmentAsync(AppointmentViewModel model, string username)
+        public async Task<Appointment> EditAppointmentAsync(AppointmentViewModel model, string username)
         {
             _converterHelper.ToAppointment(model, false);
 
             var user = await _userHelper.GetUserByEmailAsync(username);
             if (user == null)
             {
-                return;
+                throw new NotImplementedException();
 
-            }
+            }          
             var pet = await _context.Pets.FindAsync(model.PetId);
             if (pet == null)
             {
-                return;
+                throw new NotImplementedException();
             }
+            var customers = _context.Pets
+             .Include(p => p.Customer)
+             .Where(p => p.Customer.User == user)
+             .ToList();
+            var details = customers.Select(a => new AppointmentViewModel
+            {
+                Pet = pet,
+
+            });
+
             var vet = await _context.Vets.FindAsync(model.VetId);
             if (vet == null)
             {
-                return;
+                throw new NotImplementedException();
             }
             var appointment = new AppointmentViewModel
             {
@@ -382,8 +425,59 @@ namespace VeterinaryClinic.Repositories
                 Time = model.Time,
             };
             _context.Appointments.Update(appointment);
-            await SendAppointmentNotification(appointment, user.FullName, NotificationTypes.Edit);
+            await SendAppointmentNotification(appointment, user.UserName, NotificationTypes.Edit);
             await _context.SaveChangesAsync();
+            return appointment;
+
+        }
+        public async Task  SendAppointmentBill(Appointment appointment, string username)
+        {
+            var user = await _userHelper.GetUserByEmailAsync(username);
+            if (user == null)
+            {
+                return;
+
+            }
+            var hasCustomerRole = await _userHelper.IsUserInRoleAsync(user, "Customer");
+            var hasVetRole = await _userHelper.IsUserInRoleAsync(user, "Vet");
+            var hasReceptionistRole = await _userHelper.IsUserInRoleAsync(user, "Receptionist");
+
+
+            if (hasCustomerRole == false && hasReceptionistRole == false && hasVetRole == false)
+            {
+                return;
+            }
+
+            var bill = new Bill
+            {
+                Appointment = appointment,
+                User = user,
+                Cost = 60
+            };
+
+            _context.Bills.Add(bill);
+
+            await _context.SaveChangesAsync();
+
+
+        }
+     
+        public IEnumerable<SelectListItem> GetComboAppointments()
+        {
+            var list = _context.Appointments.Select(p => new SelectListItem
+            {
+                Text = p.Pet.Customer.Name,
+                Value = p.Id.ToString(),
+
+            }).ToList();
+
+            list.Insert(0, new SelectListItem
+            {
+                Text = "(Select the Customer...)",
+                Value = "0"
+            });
+
+           return list;
 
         }
     }

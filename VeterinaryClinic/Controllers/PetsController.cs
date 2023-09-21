@@ -340,6 +340,7 @@ namespace VeterinaryClinic.Controllers
             }
 
         }
+        [Route("petnotfound")]
         public IActionResult PetNotFound()
         {
             return View();

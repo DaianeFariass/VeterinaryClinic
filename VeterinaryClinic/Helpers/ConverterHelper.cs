@@ -47,7 +47,7 @@ namespace VeterinaryClinic.Helpers
                 Address = model.Address,
                 Phone = model.Phone,
                 Email = model.Email,
-                Role= model.Role,
+                Role = model.Role,
                 User = model.User,
 
             };
@@ -138,7 +138,7 @@ namespace VeterinaryClinic.Helpers
                 RoomNumber = model.RoomNumber,
                 Type = model.Type,
                 Vet = model.Vet,
-                Status= model.Status,
+                Status = model.Status,
 
             };
 
@@ -154,8 +154,8 @@ namespace VeterinaryClinic.Helpers
                 Vet = room.Vet,
                 VetId = room.Vet.Id,
                 Status = room.Status,
-                
-          
+
+
             };
 
         }
@@ -234,7 +234,7 @@ namespace VeterinaryClinic.Helpers
         {
             return new PetReportViewModel
             {
-                
+
                 Vet = petReport.Vet,
                 Pet = petReport.Pet,
                 TestName = petReport.TestName,
@@ -242,5 +242,28 @@ namespace VeterinaryClinic.Helpers
                 MedicineName = petReport.MedicineName
             };
         }
+        public Bill ToBill(BillViewModel model, bool isNew)
+        {
+            return new Bill
+            {
+                Id = isNew ? 0 : model.Id,
+                Appointment = model.Appointment,
+                Cost = model.Cost,
+                User = model.User,
+            };
+        }
+
+        public BillViewModel ToBillViewModel(Bill bill)
+        {
+            return new BillViewModel
+            {
+                Id = bill.Id,
+                Appointment = bill.Appointment,
+                Cost = bill.Cost,
+                User = bill.User,
+            };
+
+        }
+            
     }
 }

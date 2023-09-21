@@ -195,6 +195,7 @@ namespace VeterinaryClinic.Controllers
            
             return View("Error");
         }
+        [Route("employeenotfound")]
         public IActionResult EmployeeNotFound()
         {
             return View();

@@ -22,6 +22,7 @@ namespace VeterinaryClinic.Data
         public DbSet<PetReport> PetReports { get; set; }
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<Notification> Notifications { get; set; }
+        public DbSet<Bill> Bills { get; set; }
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
           

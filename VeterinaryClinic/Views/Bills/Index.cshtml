@@ -1,0 +1,98 @@
+﻿@model IEnumerable<VeterinaryClinic.Data.Entities.Bill>
+
+@{
+    ViewData["Title"] = "Bills";
+}
+<!-- Hero Area Start -->
+<div style="height: 210px;" class="slider-area2 slider-height2 d-flex align-items-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="hero-cap text-center pt-50">
+                    <h2>Bills</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css" />
+
+<br />
+
+<div class="container">
+
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+            </div>
+            <div class="panel-body">
+                <table class="table table-hover table-responsive table-striped" id="MyTable">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Appointment.Pet.Customer)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Appointment.Pet)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Appointment.Vet.Name)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Appointment.Date)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Appointment.Time)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Cost)
+                            </th>
+
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Appointment.Pet.Customer.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Appointment.Pet.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Appointment.Vet.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Appointment.Date)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Appointment.Time)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Cost)
+                                </td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-info"><i class="fas fa-list"></i>Edit</a>
+                                    <a asp-action="PrintBill" asp-route-id="@item.Id" class="btn btn-info"><i class="fas fa-print">Print</i></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#MyTable').DataTable();
+        });
+    </script>
+}

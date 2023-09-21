@@ -264,7 +264,7 @@ namespace VeterinaryClinic.Controllers
             }
            
         }
-
+        [Route("roomnotfound")]
         public IActionResult RoomNotFound()
         {
             return View();

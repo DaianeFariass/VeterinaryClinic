@@ -79,6 +79,7 @@ namespace VeterinaryClinic
             services.AddScoped<IAppointmentRespository, AppointmentRepository>();
             services.AddScoped<ICountryRepository, CountryRepository>();
             services.AddScoped<IPetReportRepository, PetReportRepository>();
+            services.AddScoped<IBillRepository, BillRepository>();
 
             services.ConfigureApplicationCookie(options =>
             {
@@ -117,12 +118,17 @@ namespace VeterinaryClinic
 
             app.UseAuthorization();
 
+            //env = app.Environment;
+            Rotativa.AspNetCore.RotativaConfiguration.Setup(env.WebRootPath, "../Rotativa/Windows");
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+       
         }
     }
 }

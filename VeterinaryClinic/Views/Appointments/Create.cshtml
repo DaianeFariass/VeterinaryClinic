@@ -25,7 +25,7 @@
 <div class="container">
     <a asp-action="AddAppointment" style="margin-bottom: 16px;" class="btn btn-success"><i class="fa fa-save"></i>Add Appointment</a>
     <a asp-action="ConfirmAppointment" style="margin-bottom: 16px;" id="btnConfirm" class="btn btn-primary"><i class="fa fa-circle-check"></i>Confirm Appointment</a>
-   
+
     <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -89,9 +89,11 @@
             </div>
             <div class="modal-body">
                 <p>Do you want to confirm the appointment ?</p>
+               @* <b>Please insert your email:</b>
+                <input type="email" value="email" id="Email" />*@
             </div>
             <div class="modal-footer">
-                
+
                 <button type="button" class="btn btn-danger" id="btnYesConfirm">Yes</button>
                 <button type="button" class="btn btn-success" id="btnNoConfirm">No</button>
             </div>
@@ -136,7 +138,7 @@
                 return false;
             });
             $("#btnYesConfirm").click(function () {
-                window.location.href = "/Appointments/ConfirmAppointment";
+                window.location.href = "/Appointments/ConfirmAppointment";              
             });
             $("a[id*=btnDeleteItem]").click(function () {
                 debugger;
