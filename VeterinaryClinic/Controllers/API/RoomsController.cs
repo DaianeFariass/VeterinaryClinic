@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using VeterinaryClinic.Repositories;
 
@@ -13,7 +12,7 @@ namespace VeterinaryClinic.Controllers.API
 
         public RoomsController(IRoomRepository roomRepository)
         {
-           _roomRepository = roomRepository;
+            _roomRepository = roomRepository;
         }
         public IActionResult GetRooms()
         {

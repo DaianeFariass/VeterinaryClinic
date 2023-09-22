@@ -1,7 +1,6 @@
 ﻿using System;
 using VeterinaryClinic.Data.Entities;
 using VeterinaryClinic.Models;
-using VeterinaryClinic.Repositories;
 
 namespace VeterinaryClinic.Helpers
 {

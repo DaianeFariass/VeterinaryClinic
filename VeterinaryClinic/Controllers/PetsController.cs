@@ -1,14 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Vereyon.Web;
 using VeterinaryClinic.Data;
-using VeterinaryClinic.Data.Entities;
 using VeterinaryClinic.Helpers;
 using VeterinaryClinic.Models;
 using VeterinaryClinic.Repositories;
@@ -97,12 +93,12 @@ namespace VeterinaryClinic.Controllers
         [Route("createpetreport")]
         public async Task<IActionResult> CreatePetReport(PetReportViewModel model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 await _petReportRepository.AddItemToPetReportAsync(model, this.User.Identity.Name);
                 return RedirectToAction("IndexPetReport");
             }
-           
+
             return View(model);
         }
         [Route("editpetreport")]
@@ -123,7 +119,7 @@ namespace VeterinaryClinic.Controllers
             }
             var model = new PetReportViewModel
             {
-                
+
                 Pets = _petRepository.GetComboPets(),
                 Vets = _vetRepository.GetComboVets(),
                 TestName = reportToEdit.TestName,
@@ -166,7 +162,7 @@ namespace VeterinaryClinic.Controllers
         [Route("createpet")]
         public IActionResult Create()
         {
-                   
+
             var model = new PetViewModel
             {
                 ImageId = Guid.NewGuid(),
@@ -233,7 +229,7 @@ namespace VeterinaryClinic.Controllers
             {
                 Id = pet.Id,
                 ImageId = pet.ImageId,
-                Name= pet.Name,
+                Name = pet.Name,
                 DateOfBirth = DateTime.Now.Date,
                 Types = _petRepository.GetComboTypes(),
                 Gender = pet.Gender,
@@ -276,8 +272,8 @@ namespace VeterinaryClinic.Controllers
                     {
                         await _petRepository.EditCustomerToPetAsync(model, this.User.Identity.Name);
 
-                    }       
-              
+                    }
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -345,8 +341,8 @@ namespace VeterinaryClinic.Controllers
         {
             return View();
         }
-  
-       
+
+
 
 
     }

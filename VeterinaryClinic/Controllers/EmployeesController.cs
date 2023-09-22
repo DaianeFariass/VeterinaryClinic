@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using VeterinaryClinic.Data;
-using VeterinaryClinic.Data.Entities;
 using VeterinaryClinic.Helpers;
 using VeterinaryClinic.Models;
 using VeterinaryClinic.Repositories;
 
 namespace VeterinaryClinic.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class EmployeesController : Controller
     {
         private readonly DataContext _context;
@@ -27,9 +26,9 @@ namespace VeterinaryClinic.Controllers
             IBlobHelper blobHelper)
         {
             _employeeRepository = employeeRepository;
-            _userHelper = userHelper;       
-            _converterHelper= converterHelper;
-            _blobHelper= blobHelper;
+            _userHelper = userHelper;
+            _converterHelper = converterHelper;
+            _blobHelper = blobHelper;
         }
 
         // GET: Employees
@@ -79,7 +78,7 @@ namespace VeterinaryClinic.Controllers
             if (ModelState.IsValid)
             {
                 await _employeeRepository.AddRoleToEmployeeAsync(model, this.User.Identity.Name);
-             
+
             }
             return RedirectToAction(nameof(Index));
         }
@@ -145,7 +144,7 @@ namespace VeterinaryClinic.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-         
+
             }
             return View(model);
         }
@@ -186,13 +185,13 @@ namespace VeterinaryClinic.Controllers
                 if (ex.InnerException != null && ex.InnerException.Message.Contains("DELETE"))
                 {
                     ViewBag.ErrorTitle = $"{employee.Name} probably in been used!!!";
-                    ViewBag.ErrorMessage = $"{employee.Name} can not be deleted!!!</br></br>"; 
-                      
+                    ViewBag.ErrorMessage = $"{employee.Name} can not be deleted!!!</br></br>";
+
 
                 }
-               
+
             }
-           
+
             return View("Error");
         }
         [Route("employeenotfound")]

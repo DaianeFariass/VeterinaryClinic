@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Razor.Language.Intermediate;
-using System.Linq;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Vereyon.Web;
 using VeterinaryClinic.Data;
-using VeterinaryClinic.Data.Entities;
 using VeterinaryClinic.Helpers;
 using VeterinaryClinic.Models;
 using VeterinaryClinic.Repositories;
@@ -22,14 +20,15 @@ namespace VeterinaryClinic.Controllers
             IVetRepository vetRepository,
             IMailHelper mailHelper,
             IFlashMessage flashMessage,
-            DataContext context) 
+            DataContext context)
         {
             _petRepository = petRepository;
             _vetRepository = vetRepository;
             _mailHelper = mailHelper;
             _flashMessage = flashMessage;
             _context = context;
-        } 
+        }
+        [Authorize(Roles = "Director, Admin, Vet, Assistant, Receptionist")]
         public IActionResult Index()
         {
             var model = new ContactViewModel
@@ -42,6 +41,7 @@ namespace VeterinaryClinic.Controllers
             return View(model);
         }
         [HttpPost]
+        [Authorize(Roles = "Director, Admin, Vet, Assistant, Receptionist")]
         public IActionResult SendMail(ContactViewModel model)
         {
             Response response = _mailHelper.SendEmail(model.Email, model.Subject, model.Message);
@@ -49,7 +49,7 @@ namespace VeterinaryClinic.Controllers
             _context.SaveChangesAsync();
             if (response.IsSuccess)
             {
-               
+
                 _flashMessage.Confirmation("The email was sent successfully!!!");
                 return RedirectToAction("Index");
 
@@ -59,7 +59,7 @@ namespace VeterinaryClinic.Controllers
 
 
         }
-       
+
 
 
     }

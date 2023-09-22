@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using VeterinaryClinic.Data.Entities;
 
 namespace VeterinaryClinic.Repositories
@@ -9,8 +7,8 @@ namespace VeterinaryClinic.Repositories
     {
         public IQueryable GetAllWithUsers();
 
-      
+
     }
 
- 
+
 }

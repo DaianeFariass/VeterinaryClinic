@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Razor.Language.Intermediate;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -32,7 +31,12 @@ namespace VeterinaryClinic.Repositories
             _mailHelper = mailHelper;
         }
 
-
+        /// <summary>
+        /// Método para criar um  appointmentDetailTemp.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="userName"></param>
+        /// <returns>AppointmentDetailTemp</returns>
         public async Task AddItemToAppointmenteAsync(AppointmentDetailsViewModel model, string userName)
         {
             var user = await _userHelper.GetUserByEmailAsync(userName);
@@ -75,7 +79,12 @@ namespace VeterinaryClinic.Repositories
             }
             await _context.SaveChangesAsync();
         }
-
+        /// <summary>
+        /// Método que confirma o appointment passando da tabela appointmentDetailTemp para appointmentDetais e Appointments.
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns>AppointmentDetail, Appointment</returns>
+        /// <exception cref="NotImplementedException"></exception>
         public async Task<Appointment> ConfirmAppointmentAsync(string userName)
         {
             var user = await _userHelper.GetUserByEmailAsync(userName);
@@ -104,7 +113,7 @@ namespace VeterinaryClinic.Repositories
             var appointment = new Appointment();
             foreach (AppointmentDetail appointmentDetail in details)
             {
-               
+
                 appointment = new Appointment
                 {
                     User = user,
@@ -113,12 +122,12 @@ namespace VeterinaryClinic.Repositories
                     Date = appointmentDetail.Date,
                     Time = appointmentDetail.Time,
                     Status = StatusAppointment.Confirmed,
-                    
+
 
                 };
-             
+
                 await CreateAsync(appointment);
-                await SendAppointmentNotification(appointment, user.UserName, NotificationTypes.Create);                
+                await SendAppointmentNotification(appointment, user.UserName, NotificationTypes.Create);
             }
 
             _context.AppointmentDetailsTemp.RemoveRange(appointmentTmps);
@@ -126,7 +135,11 @@ namespace VeterinaryClinic.Repositories
             return appointment;
 
         }
-
+        /// <summary>
+        /// Método que deleta o appointmentDetailTemp.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Delete</returns>
         public async Task DeleteDetailTempAsync(int id)
         {
             var appointmentDetailTemp = await _context.AppointmentDetailsTemp.FindAsync(id);
@@ -139,7 +152,11 @@ namespace VeterinaryClinic.Repositories
             await _context.SaveChangesAsync();
 
         }
-
+        /// <summary>
+        /// Método que retorna um appointment através do user.
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns>Appointment</returns>
         public async Task<IQueryable<Appointment>> GetAppointmentAsync(string userName)
         {
             var user = await _userHelper.GetUserByEmailAsync(userName);
@@ -169,12 +186,20 @@ namespace VeterinaryClinic.Repositories
                 .OrderBy(a => a.Pet.Name);
 
         }
+        /// <summary>
+        /// Método que retorna um appointment por id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Appointment</returns>
         public async Task<Appointment> GetAppointmentByIdAsync(int id)
         {
             return await _context.Appointments.FindAsync(id);
         }
-
-
+        /// <summary>
+        /// Método que retorna um appointmentDetailTemp pelo user.
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns>AppointmentDetailTemp</returns>
         public async Task<IQueryable<AppointmentDetailTemp>> GetDetailsTempsAsync(string userName)
         {
             var user = await _userHelper.GetUserByEmailAsync(userName);
@@ -190,7 +215,11 @@ namespace VeterinaryClinic.Repositories
                 .OrderByDescending(a => a.Pet.Name);
 
         }
-
+        /// <summary>
+        /// Método que modifica o appointmentDetailTemp.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Update</returns>
         public async Task ModifyAppointmentDetailAsync(int id)
         {
             var appointmentDetailTemp = await _context.AppointmentDetailsTemp.FindAsync(id);
@@ -206,13 +235,22 @@ namespace VeterinaryClinic.Repositories
             }
 
         }
-
+        /// <summary>
+        /// Método que retorna o appointmentDetailTemp por id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>AppointmentDetailTemp</returns>
         public async Task<AppointmentDetailTemp> GetAppointmentDetailTempAsync(int id)
         {
             return await _context.AppointmentDetailsTemp.FindAsync(id);
 
         }
-
+        /// <summary>
+        /// Método para editar o AppointmentDetailTemp.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="username"></param>
+        /// <returns>Edit</returns>
         public async Task EditAppointmentDetailTempAsync(AppointmentDetailsViewModel model, string username)
         {
             _converterHelper.ToAppointmentDetailTemp(model, false);
@@ -248,12 +286,18 @@ namespace VeterinaryClinic.Repositories
 
             await _context.SaveChangesAsync();
         }
-
+        /// <summary>
+        /// Método que retorna o appointment através do user.
+        /// </summary>
+        /// <returns>appointment</returns>
         public IQueryable GetAppointmentsWithUser()
         {
             return _context.Appointments.Include(a => a.User);
         }
-
+        /// <summary>
+        /// Método que retorna AppointmentDetails.
+        /// </summary>
+        /// <returns>AppointmentsDetails</returns>
         public IQueryable GetAppointmentsDetails()
         {
             return _context.AppointmentDetails
@@ -308,11 +352,11 @@ namespace VeterinaryClinic.Repositories
 
 
         }
-  
+
 
         public async Task<Appointment> CancelAppointmentAsync(int id)
         {
-            
+
             var appointment = await _context.Appointments.FindAsync(id);
             if (appointment == null)
             {
@@ -328,14 +372,14 @@ namespace VeterinaryClinic.Repositories
             var details = customers.Select(a => new AppointmentViewModel
             {
                 Pet = appointment.Pet,
-                Vet= appointment.Vet,
-                User= appointment.User,
+                Vet = appointment.Vet,
+                User = appointment.User,
 
-            });    
+            });
 
             appointment.Status = StatusAppointment.Cancelled;
             _context.Appointments.Update(appointment);
-            await SendAppointmentNotification(appointment, appointment.User.UserName , NotificationTypes.Cancel);
+            await SendAppointmentNotification(appointment, appointment.User.UserName, NotificationTypes.Cancel);
             await _context.SaveChangesAsync();
             return appointment;
         }
@@ -356,7 +400,7 @@ namespace VeterinaryClinic.Repositories
            .ToList();
             var details = appointments.Select(a => new BillViewModel
             {
-               
+
                 User = appointment.User,
 
             });
@@ -378,7 +422,7 @@ namespace VeterinaryClinic.Repositories
             {
                 throw new NotImplementedException();
 
-            }          
+            }
             var pet = await _context.Pets.FindAsync(model.PetId);
             if (pet == null)
             {
@@ -416,7 +460,7 @@ namespace VeterinaryClinic.Repositories
             return appointment;
 
         }
-        public async Task  SendAppointmentBill(Appointment appointment, string username)
+        public async Task SendAppointmentBill(Appointment appointment, string username)
         {
             var user = await _userHelper.GetUserByEmailAsync(username);
             if (user == null)
@@ -447,7 +491,7 @@ namespace VeterinaryClinic.Repositories
 
 
         }
-     
+
         public IEnumerable<SelectListItem> GetComboAppointments()
         {
             var list = _context.Appointments.Select(p => new SelectListItem
@@ -463,7 +507,7 @@ namespace VeterinaryClinic.Repositories
                 Value = "0"
             });
 
-           return list;
+            return list;
 
         }
     }

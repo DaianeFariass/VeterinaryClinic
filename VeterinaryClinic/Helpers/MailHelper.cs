@@ -12,9 +12,15 @@ namespace VeterinaryClinic.Helpers
         public MailHelper(IConfiguration configuration)
         {
             _configuration = configuration;
-         
-        }
 
+        }
+        /// <summary>
+        /// Método para o envio de emails.
+        /// </summary>
+        /// <param name="to"></param>
+        /// <param name="subject"></param>
+        /// <param name="body"></param>
+        /// <returns>Email</returns>
         public Response SendEmail(string to, string subject, string body)
         {
             var nameFrom = _configuration["Mail:NameFrom"];
@@ -22,8 +28,8 @@ namespace VeterinaryClinic.Helpers
             var smtp = _configuration["Mail:Smtp"];
             var port = _configuration["Mail:Port"];
             var password = _configuration["Mail:Password"];
-            
-            if(to == null) 
+
+            if (to == null)
             {
                 return new Response
                 {
@@ -32,8 +38,8 @@ namespace VeterinaryClinic.Helpers
             }
 
             var emails = to.Split(",");
-           
-            foreach( var mail in emails )
+
+            foreach (var mail in emails)
             {
                 var message = new MimeMessage();
                 message.From.Add(new MailboxAddress(nameFrom, from));
@@ -69,7 +75,7 @@ namespace VeterinaryClinic.Helpers
                 }
 
             }
-                     
+
 
             return new Response
             {

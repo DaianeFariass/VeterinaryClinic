@@ -71,9 +71,9 @@ namespace VeterinaryClinic
             services.AddScoped<IBlobHelper, BlobHelper>();
             services.AddScoped<IMailHelper, MailHelper>();
 
-            services.AddScoped<ICustomerRepository,CustomerRepository>();
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
             services.AddScoped<IPetRepository, PetRepository>();
-            services.AddScoped<IVetRepository,VetRepository>();
+            services.AddScoped<IVetRepository, VetRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<IRoomRepository, RoomRepository>();
             services.AddScoped<IAppointmentRespository, AppointmentRepository>();
@@ -119,8 +119,8 @@ namespace VeterinaryClinic
 
             app.UseAuthorization();
 
-            //env = app.Environment;
-            Rotativa.AspNetCore.RotativaConfiguration.Setup(env.WebRootPath, "../Rotativa/Windows");
+            
+            //Rotativa.AspNetCore.RotativaConfiguration.Setup(env.WebRootPath, "../Rotativa/Windows");
 
             app.UseEndpoints(endpoints =>
             {
@@ -129,7 +129,7 @@ namespace VeterinaryClinic
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
 
-       
+
         }
     }
 }

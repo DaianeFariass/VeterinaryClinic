@@ -11,7 +11,7 @@ namespace VeterinaryClinic.Repositories
     {
         public IQueryable GetAllWithUsers();
 
-        IEnumerable<SelectListItem> GetComboEmployess();
+        IEnumerable<SelectListItem> GetComboEmployees();
 
         IEnumerable<SelectListItem> GetComboRoles();
 

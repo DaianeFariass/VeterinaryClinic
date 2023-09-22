@@ -4,14 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using VeterinaryClinic.Data.Entities;
 using VeterinaryClinic.Enums;
-using VeterinaryClinic.Migrations;
 using VeterinaryClinic.Models;
 
 namespace VeterinaryClinic.Repositories
 {
     public interface IAppointmentRespository : IGenericRepository<Appointment>
     {
-     
+
         Task AddItemToAppointmenteAsync(AppointmentDetailsViewModel model, string userName);
 
         Task<Appointment> ConfirmAppointmentAsync(string userName);
@@ -36,7 +35,7 @@ namespace VeterinaryClinic.Repositories
 
         public IQueryable GetAppointmentsDetailsTemp();
 
-        Task<AppointmentDetailTemp> GetAppointmentDetailTempAsync(int id);  
+        Task<AppointmentDetailTemp> GetAppointmentDetailTempAsync(int id);
 
         Task<IQueryable<AppointmentDetailTemp>> GetDetailsTempsAsync(string userName);
 

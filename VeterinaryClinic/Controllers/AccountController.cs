@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Syncfusion.EJ2.Spreadsheet;
 using System;
 using System.Data;
 using System.IdentityModel.Tokens.Jwt;
@@ -39,13 +40,13 @@ namespace VeterinaryClinic.Controllers
             _configuration = configuration;
         }
         [Route("login")]
-        public ActionResult Login() 
-        { 
-            if(User.Identity.IsAuthenticated) 
-            { 
-                return RedirectToAction("Index", "Home");         
+        public ActionResult Login()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
             }
-            return View();      
+            return View();
         }
         [HttpPost]
         [Route("login")]
@@ -69,7 +70,7 @@ namespace VeterinaryClinic.Controllers
             this.ModelState.AddModelError(string.Empty, "Failed to login");
             return View(model);
         }
-      
+
         public async Task<IActionResult> Logout()
         {
             await _userHelper.LogoutAsync();
@@ -117,7 +118,7 @@ namespace VeterinaryClinic.Controllers
                         return View(model);
                     }
                     await _userHelper.AddUserToRoleAsync(user, "Customer");
-                   
+
                     string myToken = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
                     string tokenLink = Url.Action("ConfirmEmail", "Account", new
                     {
@@ -136,11 +137,12 @@ namespace VeterinaryClinic.Controllers
                     }
 
                     ModelState.AddModelError(string.Empty, "The user couldn't be logged.");
-                }   
+                }
             }
-            return View(model);        
+            return View(model);
         }
         //[Route("registerRole")]
+        [Authorize(Roles = "Admin")]
         public IActionResult RegisterRole()
         {
             var model = new RegisterNewUserViewModel
@@ -155,6 +157,7 @@ namespace VeterinaryClinic.Controllers
 
         [HttpPost]
         //[Route("registerRole")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> RegisterRole(RegisterNewUserViewModel model)
         {
             if (ModelState.IsValid)
@@ -174,7 +177,7 @@ namespace VeterinaryClinic.Controllers
                         CityId = model.CityId,
                         City = city
                     };
-                  
+
                     var result = await _userHelper.AddUserAsync(user, model.Password);
                     if (result != IdentityResult.Success)
                     {
@@ -254,7 +257,7 @@ namespace VeterinaryClinic.Controllers
             return View(model);
         }
         [HttpPost]
-      
+
         public async Task<IActionResult> ChangeUser(ChangeUserViewModel model)
         {
             if (ModelState.IsValid)
@@ -286,7 +289,7 @@ namespace VeterinaryClinic.Controllers
 
             return View(model);
         }
-        //[Authorize(Roles = "Admin, Customer, Vet")]
+        
         [Route("changepassword")]
         public IActionResult ChangePassword()
         {

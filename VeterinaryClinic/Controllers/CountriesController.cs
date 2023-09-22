@@ -1,18 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Threading.Tasks;
+using Vereyon.Web;
 using VeterinaryClinic.Data.Entities;
 using VeterinaryClinic.Models;
 using VeterinaryClinic.Repositories;
-using Microsoft.AspNetCore.Authorization;
-using System.Data;
-using Vereyon.Web;
 
 namespace VeterinaryClinic.Controllers
 {
     [Authorize(Roles = "Admin")]
     public class CountriesController : Controller
-    {       
+    {
         private readonly ICountryRepository _countryRepository;
         private readonly IFlashMessage _flashMessage;
 

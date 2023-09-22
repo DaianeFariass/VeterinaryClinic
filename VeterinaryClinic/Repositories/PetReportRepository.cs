@@ -22,7 +22,12 @@ namespace VeterinaryClinic.Repositories
             _userHelper = userHelper;
             _converterHelper = converterHelper;
         }
-
+        /// <summary>
+        /// Método para criar um pet report.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="userName"></param>
+        /// <returns>Pet Report</returns>
         public async Task AddItemToPetReportAsync(PetReportViewModel model, string userName)
         {
             var user = await _userHelper.GetUserByEmailAsync(userName);
@@ -55,7 +60,12 @@ namespace VeterinaryClinic.Repositories
 
             await _context.SaveChangesAsync();
         }
-
+        /// <summary>
+        /// Método para editar o pet report.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="username"></param>
+        /// <returns>Pet Report</returns>
         public async Task EditPetReportAsync(PetReportViewModel model, string username)
         {
             _converterHelper.ToPetReport(model, false);
@@ -75,7 +85,7 @@ namespace VeterinaryClinic.Repositories
             if (vet == null)
             {
                 return;
-            }          
+            }
             var petReport = new PetReportViewModel
             {
                 Id = model.Id,
@@ -93,6 +103,11 @@ namespace VeterinaryClinic.Repositories
             await _context.SaveChangesAsync();
 
         }
+        /// <summary>
+        /// Método para Deletar um pet report.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Deleta Pet Report</returns>
         public async Task DeletePetReportAsync(int id)
         {
             var petReport = await _context.PetReports.FindAsync(id);
@@ -105,7 +120,10 @@ namespace VeterinaryClinic.Repositories
             await _context.SaveChangesAsync();
 
         }
-
+        /// <summary>
+        /// Método que retorna todos o pet reports.
+        /// </summary>
+        /// <returns>Pet Reports</returns>
         public IQueryable GetPetReport()
         {
             return _context.PetReports

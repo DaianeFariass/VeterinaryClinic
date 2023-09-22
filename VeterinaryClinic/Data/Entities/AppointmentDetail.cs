@@ -1,6 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Xml.Linq;
-using System;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace VeterinaryClinic.Data.Entities
 {
@@ -8,10 +7,10 @@ namespace VeterinaryClinic.Data.Entities
     {
         public int Id { get; set; }
 
-    
+
         public Pet Pet { get; set; }
 
-    
+
         public Vet Vet { get; set; }
 
         [Required]
@@ -24,7 +23,7 @@ namespace VeterinaryClinic.Data.Entities
         [DisplayFormat(DataFormatString = "{0:HH:mm}", ApplyFormatInEditMode = false)]
         public DateTime Time { get; set; }
 
-       
+
 
     }
 }

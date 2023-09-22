@@ -6,7 +6,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using VeterinaryClinic.Data.Entities;
 using VeterinaryClinic.Helpers;
-using VeterinaryClinic.Migrations;
 
 namespace VeterinaryClinic.Data
 {
@@ -17,8 +16,8 @@ namespace VeterinaryClinic.Data
         private Random _random;
         public SeedDb(DataContext context, IUserHelper userHelper)
         {
-            _context= context;
-            _userHelper= userHelper;
+            _context = context;
+            _userHelper = userHelper;
             _random = new Random();
         }
         public async Task SeedAsync()
@@ -27,7 +26,7 @@ namespace VeterinaryClinic.Data
 
             await _userHelper.CheckRoleAsync("Director");
 
-            await _userHelper.CheckRoleAsync("Admin");       
+            await _userHelper.CheckRoleAsync("Admin");
 
             await _userHelper.CheckRoleAsync("Vet");
 
@@ -212,17 +211,17 @@ namespace VeterinaryClinic.Data
                 await _userHelper.ConfirmEmailAsync(userCustomer, token);
 
             }
-            
-           
-           
-            
+
+
+
+
             var isInRoleDirector = await _userHelper.IsUserInRoleAsync(userDirector, "Director");
-            var isInRoleAdmin = await _userHelper.IsUserInRoleAsync(userAdmin, "Admin");    
+            var isInRoleAdmin = await _userHelper.IsUserInRoleAsync(userAdmin, "Admin");
             var isInRoleVet = await _userHelper.IsUserInRoleAsync(userVet, "Vet");
             var isInRoleAssistant = await _userHelper.IsUserInRoleAsync(userAssistant, "Assistant");
             var isInRoleReceptionist = await _userHelper.IsUserInRoleAsync(userReceptionist, "Receptionist");
             var isInRoleCustomer = await _userHelper.IsUserInRoleAsync(userCustomer, "Customer");
-           
+
 
             if (!isInRoleDirector)
             {
@@ -278,7 +277,7 @@ namespace VeterinaryClinic.Data
 
                 await _context.SaveChangesAsync();
             }
-          
+
             if (!_context.Vets.Any())
             {
                 AddVet("Carlos Nobrega", userVet);
@@ -292,11 +291,11 @@ namespace VeterinaryClinic.Data
             var vet = _context.Vets.FirstOrDefault();
             if (!_context.Rooms.Any())
             {
-                AddRoom(vet, userReceptionist);  
+                AddRoom(vet, userReceptionist);
 
                 await _context.SaveChangesAsync();
             }
-           
+
             if (!_context.Employees.Any())
             {
                 AddEmployee("Sandra Vieira", userAssistant);
@@ -324,17 +323,17 @@ namespace VeterinaryClinic.Data
 
         private void AddPet(string name, Customer customer)
         {
-            _context.Pets.Add(new Pet 
-            {            
+            _context.Pets.Add(new Pet
+            {
                 Name = name,
-                DateOfBirth= DateTime.Now,
+                DateOfBirth = DateTime.Now,
                 Type = GenerateRandomType(),
                 Gender = GenerateRandomGender(),
-                Customer = customer,           
-            
+                Customer = customer,
+
             });
         }
-        private void AddVet(string name, User user) 
+        private void AddVet(string name, User user)
         {
             _context.Vets.Add(new Vet
             {
@@ -343,9 +342,9 @@ namespace VeterinaryClinic.Data
                 Phone = GenerateRandomNumbers(9),
                 Email = name.Replace(" ", "_") + "@cinel.com",
                 Speciality = GenerateRandomSpecialist(),
-                User= user,
-            });       
-        
+                User = user,
+            });
+
         }
         private void AddRoom(Vet vet, User user)
         {
@@ -358,9 +357,9 @@ namespace VeterinaryClinic.Data
                 User = user
 
             });
-     
+
         }
-       
+
         private void AddEmployee(string name, User user)
         {
             _context.Employees.Add(new Employee
@@ -396,12 +395,12 @@ namespace VeterinaryClinic.Data
         }
         private string GenerateRandomType()
         {
-            string[] types = { "Dog", "Cat", "Hamster", "Guinea Pig", "Rabbit", "Chinchilla","Lizard"};
+            string[] types = { "Dog", "Cat", "Hamster", "Guinea Pig", "Rabbit", "Chinchilla", "Lizard" };
             string petType = types[_random.Next(types.Length)];
 
-            return petType; 
+            return petType;
         }
-        private string GenerateRandomGender() 
+        private string GenerateRandomGender()
         {
             string[] genders = { "Female", "Male" };
             string petGender = genders[_random.Next(genders.Length)];

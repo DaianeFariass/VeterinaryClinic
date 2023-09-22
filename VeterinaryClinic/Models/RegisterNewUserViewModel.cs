@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Xml.Linq;
 
 namespace VeterinaryClinic.Models
 {
@@ -45,7 +44,7 @@ namespace VeterinaryClinic.Models
         [Compare("Password")]
         public string Confirm { get; set; }
 
-        [Display(Name = "Role")]     
+        [Display(Name = "Role")]
         public string RoleId { get; set; }
         public IEnumerable<SelectListItem> Roles { get; set; }
     }

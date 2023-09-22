@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using VeterinaryClinic.Data;
@@ -15,12 +14,12 @@ namespace VeterinaryClinic.Repositories
         {
             _context = context;
         }
-        public IQueryable<T> GetAll() 
-        { 
+        public IQueryable<T> GetAll()
+        {
             return _context.Set<T>().AsNoTracking();
-        
+
         }
-        public async Task<T>GetByIdAsync(int id)
+        public async Task<T> GetByIdAsync(int id)
         {
             return await _context.Set<T>()
                 .AsNoTracking()
@@ -30,7 +29,7 @@ namespace VeterinaryClinic.Repositories
         {
             await _context.Set<T>().AddAsync(entity);
             await SaveAllAsync();
-        }  
+        }
 
         public async Task UpdateAsync(T entity)
         {

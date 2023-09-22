@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Globalization;
 
 namespace VeterinaryClinic.Data.Entities
 {
@@ -10,7 +9,7 @@ namespace VeterinaryClinic.Data.Entities
         [Required]
         [Display(Name = "Room")]
         public string RoomNumber { get; set; }
-   
+
         public string Type { get; set; }
 
         public string Status { get; set; }

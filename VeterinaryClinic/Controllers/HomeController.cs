@@ -1,11 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using Vereyon.Web;
 using VeterinaryClinic.Data;
 using VeterinaryClinic.Helpers;
@@ -50,7 +44,7 @@ namespace VeterinaryClinic.Controllers
         [Route("contact")]
         public IActionResult Contact()
         {
-           
+
             return View();
 
         }
@@ -65,7 +59,7 @@ namespace VeterinaryClinic.Controllers
             {
 
                 _flashMessage.Confirmation("The email was sent successfully!!!");
-               
+
 
             }
 

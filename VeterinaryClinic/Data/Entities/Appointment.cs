@@ -1,9 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Xml.Linq;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using VeterinaryClinic.Enums;
 
 namespace VeterinaryClinic.Data.Entities
@@ -12,15 +8,15 @@ namespace VeterinaryClinic.Data.Entities
     {
         public int Id { get; set; }
 
-  
+
         [Display(Name = "User Name")]
         public User User { get; set; }
 
-      
+
         [Display(Name = "Pet Name")]
         public Pet Pet { get; set; }
 
-      
+
         [Display(Name = "Vet Name")]
         public Vet Vet { get; set; }
 
@@ -34,7 +30,7 @@ namespace VeterinaryClinic.Data.Entities
         [DisplayFormat(DataFormatString = "{0:HH:mm}", ApplyFormatInEditMode = false)]
         public DateTime Time { get; set; }
 
-       
+
         [Display(Name = "Appointment Status")]
         public StatusAppointment Status { get; set; }
 

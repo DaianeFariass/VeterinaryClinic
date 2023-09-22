@@ -12,7 +12,11 @@ namespace VeterinaryClinic.Repositories
         public BillRepository(DataContext context) : base(context)
         {
             _context = context;
-        } 
+        }
+        /// <summary>
+        /// Método que retorna bills.
+        /// </summary>
+        /// <returns>Bills</returns>
         public IQueryable GetBills()
         {
             return _context.Bills
@@ -25,6 +29,6 @@ namespace VeterinaryClinic.Repositories
 
         }
 
-       
+
     }
 }

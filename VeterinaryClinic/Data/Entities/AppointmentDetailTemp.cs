@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace VeterinaryClinic.Data.Entities
@@ -9,13 +7,13 @@ namespace VeterinaryClinic.Data.Entities
     {
         public int Id { get; set; }
 
-     
+
         public User User { get; set; }
 
-  
+
         public Pet Pet { get; set; }
 
-      
+
         public Vet Vet { get; set; }
 
         [Required]

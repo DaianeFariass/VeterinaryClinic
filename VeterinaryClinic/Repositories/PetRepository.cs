@@ -18,7 +18,7 @@ namespace VeterinaryClinic.Repositories
         private readonly IConverterHelper _converterHelper;
         private readonly IBlobHelper _blobHelper;
 
-        public PetRepository(DataContext context, 
+        public PetRepository(DataContext context,
             IUserHelper userHelper,
             IConverterHelper converterHelper,
             IBlobHelper blobHelper) : base(context)
@@ -28,12 +28,18 @@ namespace VeterinaryClinic.Repositories
             _converterHelper = converterHelper;
             _blobHelper = blobHelper;
         }
-
+        /// <summary>
+        /// Método que etorna todos os pets com os customers.
+        /// </summary>
+        /// <returns>Pets</returns>
         public IQueryable GetAllWithCustomers()
         {
             return _context.Pets.Include(p => p.Customer);
         }
-
+        /// <summary>
+        /// Método que preenche a combo com pets.
+        /// </summary>
+        /// <returns>Pets</returns>
         public IEnumerable<SelectListItem> GetComboPets()
         {
             var list = _context.Pets.Select(p => new SelectListItem
@@ -48,11 +54,15 @@ namespace VeterinaryClinic.Repositories
                 Text = "(Select your Pet...)",
                 Value = "0"
             });
-            
-           
+
+
             return list;
-            
+
         }
+        /// <summary>
+        /// Método que preenche a combo com os customers.
+        /// </summary>
+        /// <returns>Customers</returns>
         public IEnumerable<SelectListItem> GetComboCustomers()
         {
             var list = _context.Customers.Select(c => new SelectListItem
@@ -67,9 +77,13 @@ namespace VeterinaryClinic.Repositories
                 Text = "(Select the Customer...)",
                 Value = "0"
             });
-            
+
             return list;
         }
+        /// <summary>
+        /// Método que preenche a combo types.
+        /// </summary>
+        /// <returns>Types</returns>
         public IEnumerable<SelectListItem> GetComboTypes()
         {
             var model = new PetViewModel
@@ -90,11 +104,20 @@ namespace VeterinaryClinic.Repositories
             };
             return model.Types;
         }
-
+        /// <summary>
+        /// Método que retorna todos os pets com os customers.
+        /// </summary>
+        /// <returns>Pets with customers</returns>
         public IQueryable GetCustomerName()
         {
             return _context.Pets.Include(p => p.Customer);
         }
+        /// <summary>
+        /// Método que cria um pet.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="userName"></param>
+        /// <returns>Pet</returns>
         public async Task AddCustomerToPetAsync(PetViewModel model, string userName)
         {
             Guid imageId = Guid.Empty;
@@ -120,7 +143,7 @@ namespace VeterinaryClinic.Repositories
             var petIndex = await _context.Pets
                 .Where(p => p.Customer.User == user && p.Customer.Id == customer.Id)
                 .FirstOrDefaultAsync();
-          
+
 
             if (petIndex == null)
             {
@@ -131,11 +154,11 @@ namespace VeterinaryClinic.Repositories
                     Name = model.Name,
                     DateOfBirth = model.DateOfBirth,
                     Type = model.TypeId.ToString(),
-                    TypeId = model.TypeId,              
+                    TypeId = model.TypeId,
                     Gender = model.Gender,
                     Customer = customer,
                     CustomerId = customer.Id,
-                    
+
                 };
                 _context.Pets.Add(petIndex);
             }
@@ -146,6 +169,12 @@ namespace VeterinaryClinic.Repositories
             }
             await _context.SaveChangesAsync();
         }
+        /// <summary>
+        /// Método que edita um pet.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="userName"></param>
+        /// <returns>Edit</returns>
         public async Task EditCustomerToPetAsync(PetViewModel model, string userName)
         {
             Guid imageId = Guid.Empty;
@@ -156,7 +185,7 @@ namespace VeterinaryClinic.Repositories
                 imageId = await _blobHelper.UploadBlobAsync(model.ImageFile, "pets");
 
             }
-             _converterHelper.ToPet(model, imageId, false);
+            _converterHelper.ToPet(model, imageId, false);
 
             var user = await _userHelper.GetUserByEmailAsync(userName);
             if (user == null)
@@ -184,6 +213,10 @@ namespace VeterinaryClinic.Repositories
             _context.Pets.Update(petIndex);
             await _context.SaveChangesAsync();
         }
+        /// <summary>
+        /// Método que preenche a combo com email dos customers.
+        /// </summary>
+        /// <returns>Emails</returns>
         public IEnumerable<SelectListItem> GetComboCustomersEmail()
         {
             var list = _context.Customers.Select(p => new SelectListItem
@@ -193,14 +226,14 @@ namespace VeterinaryClinic.Repositories
 
             }).ToList();
             var allEmails = "";
-            foreach ( var email in list ) 
-            { 
-                if(allEmails != "")
+            foreach (var email in list)
+            {
+                if (allEmails != "")
                 {
                     allEmails = allEmails + ",";
                 }
                 allEmails = allEmails + email.Value.ToString();
-            
+
             }
             list.Insert(0, new SelectListItem
             {

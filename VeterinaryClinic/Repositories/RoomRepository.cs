@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Localization;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -26,11 +24,18 @@ namespace VeterinaryClinic.Repositories
             _userHelper = userHelper;
             _converterHelper = converterHelper;
         }
-
+        /// <summary>
+        /// Método que retorna todos os rooms com vet.
+        /// </summary>
+        /// <returns>Rooms with vets</returns>
         public IQueryable GetAllWithVets()
         {
             return _context.Rooms.Include(p => p.Vet);
         }
+        /// <summary>
+        /// Método que preenche a com vets.
+        /// </summary>
+        /// <returns>Vets</returns>
         public IEnumerable<SelectListItem> GetComboVets()
         {
             var list = _context.Vets.Select(c => new SelectListItem
@@ -49,6 +54,10 @@ namespace VeterinaryClinic.Repositories
 
             return list;
         }
+        /// <summary>
+        /// Método que preenche a combo types.
+        /// </summary>
+        /// <returns>Types</returns>
         public IEnumerable<SelectListItem> GetComboTypes()
         {
             var model = new RoomViewModel
@@ -68,6 +77,12 @@ namespace VeterinaryClinic.Repositories
             return model.Types;
 
         }
+        /// <summary>
+        /// Método que cria uma room.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="userName"></param>
+        /// <returns>Room</returns>
         public async Task AddVetToRoomAsync(RoomViewModel model, string userName)
         {
 
@@ -92,6 +107,11 @@ namespace VeterinaryClinic.Repositories
 
             await _context.SaveChangesAsync();
         }
+        /// <summary>
+        /// Métofo que retorna uma room através do user.
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns>Room</returns>
         public async Task<IQueryable<Room>> GetRoomAsync(string userName)
         {
             var user = await _userHelper.GetUserByEmailAsync(userName);
@@ -106,6 +126,12 @@ namespace VeterinaryClinic.Repositories
                   .OrderByDescending(a => a.RoomNumber);
 
         }
+        /// <summary>
+        /// Método que para editar a room.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="username"></param>
+        /// <returns>Edit</returns>
         public async Task EditRoomAsync(RoomViewModel model, string username)
         {
             _converterHelper.ToRoom(model, false);
@@ -117,9 +143,9 @@ namespace VeterinaryClinic.Repositories
 
             }
             var vet = await _context.Vets.FindAsync(model.VetId);
-            if (vet == null) 
+            if (vet == null)
             {
-              
+
                 var roomIndex = new RoomViewModel
                 {
                     Id = model.Id,
@@ -134,7 +160,7 @@ namespace VeterinaryClinic.Repositories
                 };
                 _context.Rooms.Update(roomIndex);
                 var room = _context.Rooms.FindAsync(model.Id);
-                 room.Result.Vet = vet;
+                room.Result.Vet = vet;
                 _context.Rooms.Update(room.Result);
 
             }
@@ -154,7 +180,7 @@ namespace VeterinaryClinic.Repositories
                 };
                 _context.Rooms.Update(roomIndex);
             }
-        
+
 
             await _context.SaveChangesAsync();
 

@@ -1,17 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Razor.Language.Intermediate;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Vereyon.Web;
 using VeterinaryClinic.Data;
-using VeterinaryClinic.Data.Entities;
-using VeterinaryClinic.Enums;
 using VeterinaryClinic.Helpers;
-using VeterinaryClinic.Migrations;
 using VeterinaryClinic.Models;
 using VeterinaryClinic.Repositories;
 
@@ -418,6 +413,7 @@ namespace VeterinaryClinic.Controllers
         }
 
         [Route("concludeappointment")]
+        [Authorize(Roles = "Vet, Assistant, Receptionist")]
         public async Task<IActionResult> ConcludeAppointment(int? id)
         {
             if (id == null)
@@ -447,6 +443,7 @@ namespace VeterinaryClinic.Controllers
 
         [HttpPost]
         [Route("concludeappointment")]
+        [Authorize(Roles = "Vet, Assistant, Receptionist")]
         public async Task<IActionResult> ConcludeAppointment(BillViewModel model)
         {
             var response = await _appointmentRespository.ConcludeAppointmentAsync(model);
@@ -469,13 +466,13 @@ namespace VeterinaryClinic.Controllers
             return RedirectToAction("Index");
         }
 
-        
+
         [Route("appointmentnotfound")]
         public IActionResult AppointmentNotFound()
         {
             return View();
         }
-       
+
 
 
 

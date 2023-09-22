@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using VeterinaryClinic.Data;
-using VeterinaryClinic.Data.Entities;
 using VeterinaryClinic.Helpers;
 using VeterinaryClinic.Models;
 using VeterinaryClinic.Repositories;
@@ -17,7 +13,7 @@ namespace VeterinaryClinic.Controllers
     [Authorize(Roles = "Admin")]
     public class VetsController : Controller
     {
-       
+
         private readonly IVetRepository _vetRepository;
         private readonly IUserHelper _userHelper;
         private readonly IConverterHelper _converterHelper;
@@ -79,7 +75,7 @@ namespace VeterinaryClinic.Controllers
         [Route("createvet")]
         public async Task<IActionResult> Create(VetViewModel model)
         {
-            
+
             if (ModelState.IsValid)
             {
                 await _vetRepository.AddSpecialityToVetAsync(model, this.User.Identity.Name);
@@ -105,7 +101,7 @@ namespace VeterinaryClinic.Controllers
             {
                 Specialities = _vetRepository.GetComboSpecialities(),
 
-            };            
+            };
             ViewBag.Specialities = model.Specialities;
             model = _converterHelper.ToVetViewModel(vet);
             return View(model);
@@ -119,7 +115,7 @@ namespace VeterinaryClinic.Controllers
         [Route("editvet")]
         public async Task<IActionResult> Edit(VetViewModel model)
         {
-            
+
             if (ModelState.IsValid)
             {
                 try
@@ -132,7 +128,7 @@ namespace VeterinaryClinic.Controllers
                         imageId = await _blobHelper.UploadBlobAsync(model.ImageFile, "vets");
 
                     }
-                    var vet = _converterHelper.ToVet(model, imageId,false);
+                    var vet = _converterHelper.ToVet(model, imageId, false);
                     vet.User = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
                     vet.Speciality = model.SpecialityId;
                     await _vetRepository.UpdateAsync(vet);
@@ -196,7 +192,7 @@ namespace VeterinaryClinic.Controllers
                 }
                 return View("Error");
             }
-          
+
         }
         [Route("vetnotfound")]
         public IActionResult VetNotFound()

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Rotativa.AspNetCore;
 using System.Linq;
@@ -27,13 +28,13 @@ namespace VeterinaryClinic.Controllers
         }
 
         // GET: Bills
-
+        [Authorize(Roles = "Customer, Vet, Assistant, Receptionist")]
         public IActionResult Index()
         {
             var model = _billRepository.GetBills();
             return View(model);
         }
-
+        [Authorize(Roles = " Vet, Assistant, Receptionist")]
         // GET: Bills/Edit/5
         [Route("editbill")]
         public async Task<IActionResult> Edit(int? id)
@@ -58,6 +59,7 @@ namespace VeterinaryClinic.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("editbill")]
+        [Authorize(Roles = "Vet, Assistant, Receptionist")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Cost")] Bill bill)
         {
             if (id != bill.Id)
@@ -97,6 +99,7 @@ namespace VeterinaryClinic.Controllers
             return View();
         }
         [Route("printbill")]
+        [Authorize(Roles = "Customer, Vet, Assistant, Receptionist")]
         public IActionResult PrintBill(int id)
         {
             var model = _context.Bills

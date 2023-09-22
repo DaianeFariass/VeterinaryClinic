@@ -21,19 +21,25 @@ namespace VeterinaryClinic.Repositories
         public VetRepository(DataContext context,
             IUserHelper userHelper,
             IConverterHelper converterHelper,
-            IBlobHelper blobHelper) : base(context) 
+            IBlobHelper blobHelper) : base(context)
         {
             _context = context;
             _userHelper = userHelper;
             _converterHelper = converterHelper;
             _blobHelper = blobHelper;
         }
-
+        /// <summary>
+        /// Método que retorna os vets com o user.
+        /// </summary>
+        /// <returns>Vets</returns>
         public IQueryable GetAllWithUsers()
         {
             return _context.Vets.Include(v => v.User);
         }
-
+        /// <summary>
+        /// Método que preenche a combo vets.
+        /// </summary>
+        /// <returns>Vets</returns>
         public IEnumerable<SelectListItem> GetComboVets()
         {
             var list = _context.Vets.Select(p => new SelectListItem
@@ -51,6 +57,10 @@ namespace VeterinaryClinic.Repositories
 
             return list;
         }
+        /// <summary>
+        /// Método que preenche a combo specialities.
+        /// </summary>
+        /// <returns>Specialities</returns>
         public IEnumerable<SelectListItem> GetComboSpecialities()
         {
             var model = new VetViewModel
@@ -65,11 +75,17 @@ namespace VeterinaryClinic.Repositories
                     new SelectListItem{Text = "Ophthalmology", Value = "Ophthalmology"},
                     new SelectListItem{Text = "Pathology", Value = "Pathology"},
                     new SelectListItem{Text = "Surgery", Value = "Surgery"},
-                 
+
                 },
             };
             return model.Specialities;
         }
+        /// <summary>
+        /// Método para adicionar um vet.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="userName"></param>
+        /// <returns>Vet</returns>
         public async Task AddSpecialityToVetAsync(VetViewModel model, string userName)
         {
             Guid imageId = Guid.Empty;
@@ -79,7 +95,7 @@ namespace VeterinaryClinic.Repositories
                 imageId = await _blobHelper.UploadBlobAsync(model.ImageFile, "vets");
 
             }
-            var vet = _converterHelper.ToVet(model, imageId, true);         
+            var vet = _converterHelper.ToVet(model, imageId, true);
             var user = await _userHelper.GetUserByEmailAsync(userName);
             if (user == null)
             {
@@ -100,7 +116,7 @@ namespace VeterinaryClinic.Repositories
                 Email = model.Email,
                 Speciality = model.SpecialityId,
                 SpecialityId = model.SpecialityId,
-                User= user,
+                User = user,
 
             };
             _context.Vets.Add(vetIndex);

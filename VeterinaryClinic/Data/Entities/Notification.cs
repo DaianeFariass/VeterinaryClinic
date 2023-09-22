@@ -1,5 +1,4 @@
-﻿
-using VeterinaryClinic.Enums;
+﻿using VeterinaryClinic.Enums;
 
 namespace VeterinaryClinic.Data.Entities
 {
@@ -9,8 +8,8 @@ namespace VeterinaryClinic.Data.Entities
 
         public Appointment Appointment { get; set; }
 
-        public NotificationTypes NotificationTypes { get; set;}
+        public NotificationTypes NotificationTypes { get; set; }
 
-       
+
     }
 }

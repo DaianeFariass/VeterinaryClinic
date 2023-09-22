@@ -28,7 +28,12 @@ namespace VeterinaryClinic.Repositories
             _converterHelper = converterHelper;
             _blobHelper = blobHelper;
         }
-
+        /// <summary>
+        /// Método que adiciona o role ao employee.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="userName"></param>
+        /// <returns>Employee</returns>
         public async Task AddRoleToEmployeeAsync(EmployeeViewModel model, string userName)
         {
             Guid imageId = Guid.Empty;
@@ -44,7 +49,7 @@ namespace VeterinaryClinic.Repositories
             {
                 return;
 
-            }       
+            }
             var employeeIndex = await _context.Employees
                 .Where(v => v.User == user)
                 .FirstOrDefaultAsync();
@@ -66,13 +71,19 @@ namespace VeterinaryClinic.Repositories
 
             await _context.SaveChangesAsync();
         }
-
+        /// <summary>
+        /// Método que retorna os employees com o user.
+        /// </summary>
+        /// <returns>Employees</returns>
         public IQueryable GetAllWithUsers()
         {
             return _context.Employees.Include(v => v.User);
         }
-
-        public IEnumerable<SelectListItem> GetComboEmployess()
+        /// <summary>
+        /// Método para preencher a combobox employees
+        /// </summary>
+        /// <returns>Employees</returns>
+        public IEnumerable<SelectListItem> GetComboEmployees()
         {
             var list = _context.Employees.Select(p => new SelectListItem
             {
@@ -89,7 +100,10 @@ namespace VeterinaryClinic.Repositories
 
             return list;
         }
-
+        /// <summary>
+        /// Método que preenche a combo com Roles.
+        /// </summary>
+        /// <returns>Roles</returns>
         public IEnumerable<SelectListItem> GetComboRoles()
         {
             var model = new EmployeeViewModel
@@ -102,7 +116,7 @@ namespace VeterinaryClinic.Repositories
                     new SelectListItem{Text = "Vet", Value = "Vet"},
                     new SelectListItem{Text = "Assistant", Value = "Assistant"},
                     new SelectListItem{Text = "Receptionist", Value = "Receptionist"},
-      
+
                 },
             };
             return model.Roles;

@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace VeterinaryClinic.Data.Entities
@@ -23,19 +21,19 @@ namespace VeterinaryClinic.Data.Entities
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = false)]
         public DateTime DateOfBirth { get; set; }
 
-       
+
         public string Type { get; set; }
 
-      
+
         public string Gender { get; set; }
 
-      
+
         public Customer Customer { get; set; }
 
 
         public string ImageFullPath => ImageId == Guid.Empty
-              ? $" https://provetclinic.azurewebsites.net/images/imagemindisponivel.png"
-              : $" https://provetclinic.blob.core.windows.net/pets/{ImageId}";
+               ? $" https://petcareclinic.blob.core.windows.net/pets/imagemindisponivel.png"
+               : $" https://petcareclinic.blob.core.windows.net/pets/{ImageId}";
 
     }
 }

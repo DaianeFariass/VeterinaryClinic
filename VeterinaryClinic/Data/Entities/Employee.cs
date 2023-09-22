@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.Xml.Linq;
-using System;
 
 namespace VeterinaryClinic.Data.Entities
 {
@@ -29,7 +27,7 @@ namespace VeterinaryClinic.Data.Entities
         public User User { get; set; }
 
         public string ImageFullPath => ImageId == Guid.Empty
-               ? $" https://provetclinic.azurewebsites.net/images/imagemindisponivel.png"
-               : $" https://provetclinic.blob.core.windows.net/employees/{ImageId}";
+              ? $" https://petcareclinic.blob.core.windows.net/employees/imagemindisponivel.png"
+              : $" https://petcareclinic.blob.core.windows.net/employees/{ImageId}";
     }
 }

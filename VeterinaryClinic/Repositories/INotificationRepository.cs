@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using VeterinaryClinic.Data;
 using VeterinaryClinic.Data.Entities;
 
 namespace VeterinaryClinic.Repositories

@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using VeterinaryClinic.Repositories;
 
 namespace VeterinaryClinic.Controllers.API
@@ -18,10 +15,10 @@ namespace VeterinaryClinic.Controllers.API
             _vetRepository = vetRepository;
         }
         [HttpGet]
-        public IActionResult GetVets() 
+        public IActionResult GetVets()
         {
             return Ok(_vetRepository.GetAllWithUsers());
-        
+
         }
     }
 }

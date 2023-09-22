@@ -1,12 +1,18 @@
 ﻿using System;
 using VeterinaryClinic.Data.Entities;
 using VeterinaryClinic.Models;
-using VeterinaryClinic.Repositories;
 
 namespace VeterinaryClinic.Helpers
 {
     public class ConverterHelper : IConverterHelper
     {
+        /// <summary>
+        /// Método que retorna um novo customer.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="imageId"></param>
+        /// <param name="isNew"></param>
+        /// <returns>Customer</returns>
         public Customer ToCustomer(CustomerViewModel model, Guid imageId, bool isNew)
         {
             return new Customer
@@ -21,7 +27,11 @@ namespace VeterinaryClinic.Helpers
                 User = model.User,
             };
         }
-
+        /// <summary>
+        /// Método que retorna uma nova CustomerViewModel.
+        /// </summary>
+        /// <param name="customer"></param>
+        /// <returns>Model</returns>
         public CustomerViewModel ToCustomerViewModel(Customer customer)
         {
             return new CustomerViewModel
@@ -37,6 +47,13 @@ namespace VeterinaryClinic.Helpers
 
             };
         }
+        /// <summary>
+        /// Método que retorna um novo employee.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="imageId"></param>
+        /// <param name="isNew"></param>
+        /// <returns>Employee</returns>
         public Employee ToEmployee(EmployeeViewModel model, Guid imageId, bool isNew)
         {
             return new Employee
@@ -52,7 +69,13 @@ namespace VeterinaryClinic.Helpers
 
             };
         }
-
+        /// <summary>
+        /// Método que retorna uma nova EmployeeViewModel.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="imageId"></param>
+        /// <param name="isNew"></param>
+        /// <returns>Model</returns>
         public EmployeeViewModel ToEmployeeViewModel(Employee employee)
         {
             return new EmployeeViewModel
@@ -69,6 +92,13 @@ namespace VeterinaryClinic.Helpers
             };
 
         }
+        /// <summary>
+        /// Método que retorna um novo pet.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="imageId"></param>
+        /// <param name="isNew"></param>
+        /// <returns>Pet</returns>
         public Pet ToPet(PetViewModel model, Guid imageId, bool isNew)
         {
             return new Pet
@@ -83,7 +113,11 @@ namespace VeterinaryClinic.Helpers
 
             };
         }
-
+        /// <summary>
+        /// Método que retorna uma nova PetViewModel.
+        /// </summary>
+        /// <param name="pet"></param>
+        /// <returns>Model</returns>
         public PetViewModel ToPetViewModel(Pet pet)
         {
             return new PetViewModel
@@ -99,6 +133,13 @@ namespace VeterinaryClinic.Helpers
             };
 
         }
+        /// <summary>
+        /// Método que retorna um novo vet.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="imageId"></param>
+        /// <param name="isNew"></param>
+        /// <returns>Vet</returns>
         public Vet ToVet(VetViewModel model, Guid imageId, bool isNew)
         {
             return new Vet
@@ -114,6 +155,11 @@ namespace VeterinaryClinic.Helpers
 
             };
         }
+        /// <summary>
+        /// Método que retorna uma nova VetViewModel.
+        /// </summary>
+        /// <param name="vet"></param>
+        /// <returns>Model</returns>
         public VetViewModel ToVetViewModel(Vet vet)
         {
             return new VetViewModel
@@ -129,6 +175,12 @@ namespace VeterinaryClinic.Helpers
             };
 
         }
+        /// <summary>
+        /// Método que retorna uma nova Room.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="isNew"></param>
+        /// <returns>Room</returns>
         public Room ToRoom(RoomViewModel model, bool isNew)
         {
 
@@ -143,6 +195,11 @@ namespace VeterinaryClinic.Helpers
             };
 
         }
+        /// <summary>
+        /// Método que retorna uma nova RoomViewModel.
+        /// </summary>
+        /// <param name="room"></param>
+        /// <returns>Model</returns>
         public RoomViewModel ToRoomViewModel(Room room)
         {
 
@@ -159,6 +216,12 @@ namespace VeterinaryClinic.Helpers
             };
 
         }
+        /// <summary>
+        /// Método que retorna um novo appointmentDetailTemp.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="isNew"></param>
+        /// <returns>AppointmentDetailTemp</returns>
         public AppointmentDetailTemp ToAppointmentDetailTemp(AppointmentDetailsViewModel model, bool isNew)
         {
             return new AppointmentDetailTemp
@@ -173,6 +236,11 @@ namespace VeterinaryClinic.Helpers
             };
 
         }
+        /// <summary>
+        /// Método que retorna uma nova AppointmentDetailsViewModel.
+        /// </summary>
+        /// <param name="appointment"></param>
+        /// <returns>Model</returns>
         public AppointmentDetailsViewModel ToAppointmentDetailsViewModel(AppointmentDetailTemp appointment)
         {
             return new AppointmentDetailsViewModel
@@ -187,6 +255,12 @@ namespace VeterinaryClinic.Helpers
 
             };
         }
+        /// <summary>
+        /// Método que retorna um novo appointment.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="isNew"></param>
+        /// <returns>Appointment</returns>
         public Appointment ToAppointment(AppointmentViewModel model, bool isNew)
         {
             return new Appointment
@@ -201,7 +275,11 @@ namespace VeterinaryClinic.Helpers
             };
 
         }
-
+        /// <summary>
+        /// Método que retorna uma nova AppointmentViewModel.
+        /// </summary>
+        /// <param name="appointment"></param>
+        /// <returns>Model</returns>
         public AppointmentViewModel ToAppointmentViewModel(Appointment appointment)
         {
             return new AppointmentViewModel
@@ -216,7 +294,12 @@ namespace VeterinaryClinic.Helpers
 
             };
         }
-
+        /// <summary>
+        /// Método que retorna um novo pet report.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="isNew"></param>
+        /// <returns>Pet Report</returns>
         public PetReport ToPetReport(PetReportViewModel model, bool isNew)
         {
             return new PetReport
@@ -229,7 +312,11 @@ namespace VeterinaryClinic.Helpers
                 MedicineName = model.MedicineName
             };
         }
-
+        /// <summary>
+        /// Método que retorna uma nova PetViewModel.
+        /// </summary>
+        /// <param name="petReport"></param>
+        /// <returns>Model</returns>
         public PetReportViewModel ToPetReportViewModel(PetReport petReport)
         {
             return new PetReportViewModel
@@ -242,6 +329,12 @@ namespace VeterinaryClinic.Helpers
                 MedicineName = petReport.MedicineName
             };
         }
+        /// <summary>
+        /// Método que retorna uma nova bill.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="isNew"></param>
+        /// <returns>Bill</returns>
         public Bill ToBill(BillViewModel model, bool isNew)
         {
             return new Bill
@@ -252,7 +345,11 @@ namespace VeterinaryClinic.Helpers
                 User = model.User,
             };
         }
-
+        /// <summary>
+        /// Método que retorna uma nova BillViewModel.
+        /// </summary>
+        /// <param name="bill"></param>
+        /// <returns>Model</returns>
         public BillViewModel ToBillViewModel(Bill bill)
         {
             return new BillViewModel
@@ -264,6 +361,6 @@ namespace VeterinaryClinic.Helpers
             };
 
         }
-            
+
     }
 }

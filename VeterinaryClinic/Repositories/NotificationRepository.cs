@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.WindowsAzure.Storage.Table.Queryable;
 using System.Linq;
 using System.Threading.Tasks;
 using VeterinaryClinic.Data;
@@ -14,6 +13,11 @@ namespace VeterinaryClinic.Repositories
         {
             _context = context;
         }
+        /// <summary>
+        /// Método para deletar as notificações.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Delete Notification</returns>
         public async Task DeleteNotificationAsync(int id)
         {
             var notification = await _context.Notifications.FindAsync(id);
@@ -26,6 +30,10 @@ namespace VeterinaryClinic.Repositories
             await _context.SaveChangesAsync();
 
         }
+        /// <summary>
+        /// Método que retorna todas as notificações.
+        /// </summary>
+        /// <returns>Notificações</returns>
         public IQueryable GetNotificationsAsync()
         {
 

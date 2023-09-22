@@ -1,6 +1,4 @@
-﻿using Org.BouncyCastle.Asn1.Misc;
-
-namespace VeterinaryClinic.Data.Entities
+﻿namespace VeterinaryClinic.Data.Entities
 {
     public class Bill : IEntity
     {

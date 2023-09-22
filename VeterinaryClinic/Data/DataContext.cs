@@ -1,8 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using System.Linq;
 using VeterinaryClinic.Data.Entities;
 
 namespace VeterinaryClinic.Data
@@ -25,7 +22,7 @@ namespace VeterinaryClinic.Data
         public DbSet<Bill> Bills { get; set; }
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
-          
+
 
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)

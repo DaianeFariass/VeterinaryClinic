@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using Syncfusion.EJ2.Linq;
-using VeterinaryClinic.Data;
-using VeterinaryClinic.Data.Entities;
+using System.Threading.Tasks;
 using VeterinaryClinic.Helpers;
 using VeterinaryClinic.Repositories;
 
@@ -15,7 +8,7 @@ namespace VeterinaryClinic.Controllers
 {
     public class NotificationsController : Controller
     {
-    
+
         private readonly INotificationRepository _notificationRepository;
 
         public NotificationsController(INotificationRepository notificationRepository)
@@ -24,13 +17,13 @@ namespace VeterinaryClinic.Controllers
         }
 
         // GET: Notifications
-      
+        [Authorize(Roles = "Vet, Assistant, Receptionist")]
         public IActionResult Index()
         {
             var model = _notificationRepository.GetNotificationsAsync();
             return View(model);
         }
-     
+        [Authorize(Roles = "Vet")]
         public async Task<IActionResult> DeleteNotification(int? id)
         {
             if (id == null)
